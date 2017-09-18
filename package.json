@@ -1,0 +1,19 @@
+{
+  "name": "react-native-reactive-form",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuldeepSaxena/react-native-cascadeGrid.git"
+  },
+  "author": "Kuldeep Saxena <kul.anjuma@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kuldeepSaxena/react-native-cascadeGrid/issues"
+  },
+  "homepage": "https://github.com/kuldeepSaxena/react-native-cascadeGrid#readme"
+}
