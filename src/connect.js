@@ -60,7 +60,6 @@ function connect(ReactComponent, formGroup) {
     }
     updateComponent = () => this.setState(this.state)
     render() {
-      console.log('RENDER CALLED');
       // return (
       //   <ReactComponent ref={(c) => { this.myForm = c; }} {...this.props} {...extraProps} />
       // );

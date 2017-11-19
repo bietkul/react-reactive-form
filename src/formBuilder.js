@@ -1,25 +1,6 @@
-// import React, { Component } from 'react';
 import { FormControl, FormArray, FormGroup, AbstractControl } from './model';
 
 export default class FormBuilder {
-  // group(formFieldsObj) {
-  //   const formControls = [];
-  //   if (formFieldsObj) {
-  //     Object.keys(formFieldsObj).forEach((fieldName) => {
-  //       if (formFieldsObj[fieldName] instanceof FormGroup) {
-  //         const formGroup = formFieldsObj[fieldName];
-  //         const formController = new FormControl(fieldName, formGroup.value, null);
-  //         console.log('SUCCESS WE GOT HERE ======>', formGroup);
-  //         formControls.push(formController);
-  //       } else {
-  //         // Create a form controller with name, value, validator & disabled
-  //         const formController = new FormControl(fieldName, formFieldsObj[fieldName][0], formFieldsObj[fieldName][1]);
-  //         formControls.push(formController);
-  //       }
-  //     });
-  //   }
-  //   return new FormGroup(formControls);
-  // }
   group(controlsConfig: {[key: string]: any}, extra: {[key: string]: any}|null = null): FormGroup {
     const controls = this._reduceControls(controlsConfig);
     const validator = extra != null ? extra.validator : null;
