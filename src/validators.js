@@ -1,4 +1,7 @@
+import { map } from 'rxjs/operator/map';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 import { AbstractControl } from './model';
+import { toObservable } from './utils';
 
 function isEmptyInputValue(value) {
   return value == null || value.length === 0;
@@ -14,6 +17,9 @@ function _mergeErrors(arrayOfErrors) {
   return Object.keys(res).length === 0 ? null : res;
 }
 function _executeValidators(control: AbstractControl, validators: Function): any[] {
+  return validators.map(v => v(control));
+}
+function _executeAsyncValidators(control: AbstractControl, validators: Function[]): any[] {
   return validators.map(v => v(control));
 }
 
@@ -128,14 +134,14 @@ export default class Validators {
       _mergeErrors(_executeValidators(control, presentValidators));
   }
 
-  // static composeAsync(validators: (AsyncValidatorFn|null)[]): AsyncValidatorFn|null {
-  //   if (!validators) return null;
-  //   const presentValidators: AsyncValidatorFn[] = validators.filter(isPresent);
-  //   if (presentValidators.length == 0) return null;
+  static composeAsync(validators: (Function|null)[]): Function|null {
+    if (!validators) return null;
+    const presentValidators: Function[] = validators.filter(isPresent);
+    if (presentValidators.length === 0) return null;
 
-  //   return function(control: AbstractControl) {
-  //     const observables = _executeAsyncValidators(control, presentValidators).map(toObservable);
-  //     return map.call(forkJoin(observables), _mergeErrors);
-  //   };
-  // }
+    return (control: AbstractControl) => {
+      const observables = _executeAsyncValidators(control, presentValidators).map(toObservable);
+      return map.call(forkJoin(observables), _mergeErrors);
+    };
+  }
 }

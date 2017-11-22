@@ -1,4 +1,79 @@
 import React, { Component } from 'react';
+import { FormGroup, FormArray, FormControl } from './model';
+import { isReactNative } from './utils';
+
+
+
+// React
+const propsToBeMap = {
+  value: 'value',
+  touched: 'touched',
+  untouched: 'untouched',
+  disabled: 'disabled',
+  enabled: 'enabled',
+  invalid: 'invalid',
+  valid: 'valid',
+  pristine: 'pristine',
+  dirty: 'dirty',
+  errors: 'errors',
+  hasError: 'hasError',
+  status: 'status',
+}
+const controlsToBeMap = {
+  ReactNative: {
+    value: 'value',
+    onChange: 'onChange',
+    onBlur: 'onBlur',
+    editable: 'enabled',
+    disabled: 'disabled',
+  },
+  default: {
+    value: 'value',
+    onChange: 'onChange',
+    onBlur: 'onBlur',
+    disabled: 'disabled',
+  }
+}
+const inputControls = isReactNative() ? controlsToBeMap.ReactNative : controlsToBeMap.default;
+function mapControlToProps(control: FormControl|FormGroup) {
+  const mappedObject = {};
+  const controlObject = {};
+  Object.keys(propsToBeMap).forEach((key) => {
+    const controlProperty = control[propsToBeMap[key]];
+    mappedObject[key] = controlProperty;
+  });
+  if(control instanceof FormControl) {
+    Object.keys(inputControls).forEach((key) => {
+      const controlProperty = control[inputControls[key]];
+      controlObject[key] = controlProperty;
+    });
+    mappedObject['input'] = controlObject;
+  }
+  return mappedObject;
+}
+function mapNestedControls(control: FormControl, name: String) {
+  var extraProps = {};
+  extraProps[name] = mapControlToProps(control);
+  if(control instanceof FormGroup|FormArray && control.controls) {
+    Object.keys(control.controls).forEach((childControlName) => {
+      // extraProps[controlName+'.'+childControlName] = mapControlToProps(control.controls[childControlName]);
+      extraProps = Object.assign(extraProps, mapNestedControls(control.controls[childControlName], name+'.'+childControlName));
+    })
+  }
+  return extraProps;
+}
+function mapProps(formControls) {
+  let extraProps = {};
+  if (formControls) {
+    Object.keys(formControls).forEach((controlName) => {
+      const control = formControls[controlName];
+      if (control) {
+        extraProps = Object.assign(extraProps, mapNestedControls(control, controlName));
+      }
+    });
+  }
+  return extraProps;
+}
 /**
  * Higher order component
  * @param {Component} ReactComponent
@@ -6,25 +81,16 @@ import React, { Component } from 'react';
  * @return {Component} connect
  */
 function connect(ReactComponent, formGroup) {
-  // const formControls = formGroup.controls;
-  // const extraProps = {};
-  // console.log('THIS IS FORM', formGroup.updateDOM);
-  // if (formControls) {
-  //   Object.keys(formControls).forEach((controlName) => {
-  //     if (formControls[controlName]) {
-  //       extraProps[controlName] = formControls[controlName];
-  //     }
-  //   });
-  // }
-  // formGroup.updateDOM.subscribe(() => {
-  //   console.log('THIS IS THE SUCCESS NOINWVBUOBWVBUWBVBWVBWUVBIUWBVBVBEVBWEBVIUWEBVIUWBEBWEVIUBWEU')
-  // }, (error) => {
-  //   console.log(error);
-  // });
+  const formControls = formGroup.controls;
+  const extraProps = mapProps(formControls);
+  console.log('THIS IS FORM', formGroup.updateDOM);
+  mapProps(formControls);
   class Connect extends Component {
     constructor(props) {
       super(props);
-      this.state = {};
+      this.state = {
+        extraProps
+      };
     }
     componentDidMount() {
       // Add listeners
@@ -58,14 +124,18 @@ function connect(ReactComponent, formGroup) {
       //   });
       // }
     }
-    updateComponent = () => this.setState(this.state)
+    updateComponent = () => {
+      this.setState({
+        extraProps: mapProps(formControls)
+      });
+    }
     render() {
-      // return (
-      //   <ReactComponent ref={(c) => { this.myForm = c; }} {...this.props} {...extraProps} />
-      // );
       return (
-        <ReactComponent ref={(c) => { this.myForm = c; }} {...this.props} />
+        <ReactComponent ref={(c) => { this.myForm = c; }} {...this.props} {...this.state.extraProps} />
       );
+      // return (
+      //   <ReactComponent ref={(c) => { this.myForm = c; }} {...this.props} />
+      // );
     }
 }
   return Connect;

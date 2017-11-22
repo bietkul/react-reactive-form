@@ -1,6 +1,24 @@
 import { Subject, Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
+import { toObservable, isEvent } from './utils';
 import Validators from './validators';
+
+// Can set different config for both react & react native
+// Can Also set Config For A particular FormControl, FormGroup & FormArray
+
+// React Native
+// const Config = {
+//   onChange: 'onChangeText',
+//   enabled: 'editable',
+//   onBlur: 'onblur',
+// };
+// React
+const Config = {
+  onChange: 'onChange',
+  enabled: 'enabled',
+  onBlur: 'onBlur',
+};
+
 /**
  * Indicates that a FormControl is valid, i.e. that no errors exist in the input value.
  */
@@ -23,22 +41,6 @@ export const PENDING = 'PENDING';
  */
 export const DISABLED = 'DISABLED';
 
-function isPromise(obj: any) {
-  // allow any Promise/A+ compliant thenable.
-  // It's up to the caller to ensure that obj.then conforms to the spec
-  return !!obj && typeof obj.then === 'function';
-}
-function isObservable(obj: any | Observable<any>) {
-  // TODO use Symbol.observable when https://github.com/ReactiveX/rxjs/issues/2415 will be resolved
-  return !!obj && typeof obj.subscribe === 'function';
-}
-function toObservable(r: any): Observable<any> {
-  const obs = isPromise(r) ? fromPromise(r) : r;
-  if (!(isObservable(obs))) {
-    throw new Error('Expected validator to return Promise or Observable.');
-  }
-  return obs;
-}
 
 function _find(control: AbstractControl, path: Array<string|number>| string, delimiter: string) {
   if (path == null) return null;
@@ -60,7 +62,13 @@ function isOptionsObj(validatorOrOpts): boolean {
   return validatorOrOpts != null && !Array.isArray(validatorOrOpts) &&
     typeof validatorOrOpts === 'object';
 }
-export function normalizeValidator(validator: Function): Function {
+function normalizeValidator(validator: Function): Function {
+  if (validator.validate) {
+    return (c: AbstractControl) => validator.validate(c);
+  }
+  return validator;
+}
+function normalizeAsyncValidator(validator) {
   if (validator.validate) {
     return (c: AbstractControl) => validator.validate(c);
   }
@@ -69,18 +77,39 @@ export function normalizeValidator(validator: Function): Function {
 function composeValidators(validators: Array<Function>): Function|null {
   return validators != null ? Validators.compose(validators.map(normalizeValidator)) : null;
 }
-function coerceToValidator(
-  validatorOrOpts) {
+function composeAsyncValidators(validators: Array<Function>) {
+  return validators != null ? Validators.composeAsync(validators.map(normalizeAsyncValidator)) :
+                          null;
+}
+function coerceToValidator(validatorOrOpts) {
   const validator =
     (isOptionsObj(validatorOrOpts) ? validatorOrOpts.validators :
                                      validatorOrOpts);
   return Array.isArray(validator) ? composeValidators(validator) : validator || null;
+}
+function coerceToAsyncValidator(
+  asyncValidator?: Function, validatorOrOpts) {
+  const origAsyncValidator =
+    (isOptionsObj(validatorOrOpts) ? validatorOrOpts.asyncValidators :
+                                     asyncValidator);
+
+  return Array.isArray(origAsyncValidator) ? composeAsyncValidators(origAsyncValidator) :
+                                           origAsyncValidator || null;
 }
 export class FormArray {}
 export class AbstractControl {
   constructor(validator, asyncValidator) {
     this.validator = validator;
     this.asyncValidator = asyncValidator;
+    this.touched = false;
+    /**
+   * A control is `pristine` if the user has not yet changed
+   * the value in the UI.
+   *
+   * Note that programmatic changes to a control's value will
+   * *not* mark it dirty.
+   */
+    this.pristine = true;
   }
   /**
    * Returns the update strategy of the `AbstractControl` (i.e.
@@ -90,6 +119,14 @@ export class AbstractControl {
   get updateOn() {
     return this._updateOn ? this._updateOn : (this.parent ? this.parent.updateOn : 'change');
   }
+  /**
+   * A control is `dirty` if the user has changed the value
+   * in the UI.
+   *
+   * Note that programmatic changes to a control's value will
+   * *not* mark it dirty.
+   */
+  get dirty(): boolean { return !this.pristine; }
   /**
    * A control is `valid` when its `status === VALID`.
    *
@@ -114,7 +151,7 @@ export class AbstractControl {
    * In other words, it has a status of `VALID`, `INVALID`, or
    * `PENDING`.
    */
-  get enabled(): boolean { return this.status !== DISABLED; }
+  get [Config.enabled](): boolean { return this.status !== DISABLED; }
    /**
    * A control is disabled if it's status is `DISABLED`
    */
@@ -126,6 +163,16 @@ export class AbstractControl {
    * a `blur` event on it.
    */
   get untouched(): boolean { return !this.touched; }
+  get root(): AbstractControl {
+    let x: AbstractControl = this;
+
+    while (x._parent) {
+      x = x._parent;
+    }
+
+    return x;
+  }
+
   _forEachChild(cb: Function): void {}
   setInitialStatus() {
     // console.log('setInitialStatus');
@@ -186,8 +233,8 @@ export class AbstractControl {
   _updateAncestors(onlySelf: boolean) {
     if (this._parent && !onlySelf) {
       this._parent.updateValueAndValidity();
-      // this._parent._updatePristine();
-      // this._parent._updateTouched();
+      this._parent._updatePristine();
+      this._parent._updateTouched();
     }
   }
   _anyControlsHaveStatus(status: string): boolean {
@@ -210,6 +257,27 @@ export class AbstractControl {
       this._asyncValidationSubscription =
         obs.subscribe(errors => this.setErrors(errors, { emitEvent }));
     }
+  }
+  _updatePristine(opts: {onlySelf?: boolean} = {}): void {
+    this.pristine = !this._anyControlsDirty();
+
+    if (this._parent && !opts.onlySelf) {
+      this._parent._updatePristine(opts);
+    }
+  }
+
+  _updateTouched(opts: {onlySelf?: boolean} = {}): void {
+    this.touched = this._anyControlsTouched();
+
+    if (this._parent && !opts.onlySelf) {
+      this._parent._updateTouched(opts);
+    }
+  }
+  _anyControlsDirty(): boolean {
+    return this._anyControls((control: AbstractControl) => control.dirty);
+  }
+  _anyControlsTouched(): boolean {
+    return this._anyControls((control: AbstractControl) => control.touched);
   }
   /**
    * Sets errors on a form control.
@@ -253,6 +321,7 @@ export class AbstractControl {
   _updateValue() {}
   _allControlsDisabled() {}
   _anyControls() {}
+  reset(value?: any, options?: Object): void {};
   /**
    * Resets the form control. This means by default:
    *
@@ -281,13 +350,6 @@ export class AbstractControl {
    * console.log(this.control.status);  // 'DISABLED'
    * ```
    */
-  reset(formState: any = null, options: {onlySelf?: boolean, emitEvent?: boolean} = {}): void {
-    this._applyFormState(formState);
-    this.markAsPristine(options);
-    this.markAsUntouched(options);
-    this.setValue(this.value, options);
-    this._pendingChange = false;
-  }
   /**
    * Marks the control as `touched`.
    *
@@ -299,6 +361,23 @@ export class AbstractControl {
 
     if (this._parent && !opts.onlySelf) {
       this._parent.markAsTouched(opts);
+    }
+  }
+    /**
+   * Marks the control as `pristine`.
+   *
+   * If the control has any children, it will also mark all children as `pristine`
+   * to maintain the model, and re-calculate the `pristine` status of all parent
+   * controls.
+   */
+  markAsPristine(opts: {onlySelf?: boolean} = {}): void {
+    this.pristine = true;
+    this._pendingDirty = false;
+
+    this._forEachChild((control: AbstractControl) => { control.markAsPristine({onlySelf: true}); });
+
+    if (this._parent && !opts.onlySelf) {
+      this._parent._updatePristine(opts);
     }
   }
    /**
@@ -317,6 +396,19 @@ export class AbstractControl {
 
     if (this._parent && !opts.onlySelf) {
       this._parent._updateTouched(opts);
+    }
+  }
+  /**
+   * Marks the control as `dirty`.
+   *
+   * This will also mark all direct ancestors as `dirty` to maintain
+   * the model.
+   */
+  markAsDirty(opts: {onlySelf?: boolean} = {}): void {
+    this.pristine = false;
+
+    if (this._parent && !opts.onlySelf) {
+      this._parent.markAsDirty(opts);
     }
   }
 
@@ -390,7 +482,7 @@ export class AbstractControl {
    *
    * If no path is given, it checks for the error on the present control.
    */
-  hasError(errorCode: string, path?: string[]): boolean { return !!this.getError(errorCode, path); }
+  hasError = (errorCode: string, path?: string[]): boolean => { return !!this.getError(errorCode, path); }
   _initObservables() {
     this.valueChanges = new Subject();
     this.statusChanges = new Subject();
@@ -405,7 +497,7 @@ export class AbstractControl {
 }
 export class FormControl extends AbstractControl {
   constructor(formState, validatorOrOpts, asyncValidator) {
-    super(coerceToValidator(validatorOrOpts), asyncValidator);
+    super(coerceToValidator(validatorOrOpts), coerceToAsyncValidator(asyncValidator));
     this.formState = formState;
     this.validatorsOrOpts = validatorOrOpts;
     this.asyncValidator = asyncValidator;
@@ -414,12 +506,21 @@ export class FormControl extends AbstractControl {
     this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     this._initObservables();
      // Auto things for React Native TextInput
-    this.onChangeText = (fieldValue) => {
-      this.setValue(fieldValue);
+    this.onChange = (event, value) => {
+      console.log('THIS IS EVENT',this,isEvent(event), event.target.value, value);
+      this.markAsDirty();
+      if(isEvent(event)) {
+        this.setValue(event.target.value);
+      } else {
+        this.setValue(event);
+      }
+      // this._updateDirty();
     };
     this.onBlur = () => {
+      console.log("OB BLUR CALLED =====", this.touched)
       if (!this.touched) {
         this.markAsTouched();
+        this._updateTouched();
       }
     };
   }
@@ -448,10 +549,17 @@ export class FormControl extends AbstractControl {
       this.value = this._pendingValue = formState;
     }
   }
+  reset(formState: any = null, options: {onlySelf?: boolean, emitEvent?: boolean} = {}): void {
+    this._applyFormState(formState);
+    this.markAsPristine(options);
+    this.markAsUntouched(options);
+    this.setValue(this.value, options);
+    this._pendingChange = false;
+  }
 }
 export class FormGroup extends AbstractControl {
   constructor(controls, validatorOrOpts, asyncValidator) {
-    super(coerceToValidator(validatorOrOpts), asyncValidator);
+    super(coerceToValidator(validatorOrOpts), coerceToAsyncValidator(asyncValidator));
     this.controls = controls;
     this.validatorOrOpts = validatorOrOpts;
     this.asyncValidator = asyncValidator;
@@ -525,5 +633,13 @@ export class FormGroup extends AbstractControl {
       }
     }
     return Object.keys(this.controls).length > 0 || this.disabled;
+  }
+  reset(value: any = {}, options: {onlySelf?: boolean, emitEvent?: boolean} = {}): void {
+    this._forEachChild((control: AbstractControl, name: string) => {
+      control.reset(value[name], {onlySelf: true, emitEvent: options.emitEvent});
+    });
+    this.updateValueAndValidity(options);
+    this._updatePristine(options);
+    this._updateTouched(options);
   }
 }
