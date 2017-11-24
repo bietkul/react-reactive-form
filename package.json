@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "flow-bin": "^0.37.0",
+    "babel-preset-flow": "^6.23.0",
     "react": "^16.0.0-alpha.12",
     "react-native": "^0.45.0-rc.0"
   },
