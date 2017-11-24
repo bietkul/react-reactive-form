@@ -1,19 +1,43 @@
 {
   "name": "react-reactive-form",
   "version": "1.0.0",
-  "description": "",
+  "description": "Angular like Reactive Forms in React",
+  "keywords": [
+    "forms",
+    "form",
+    "reactive",
+    "form-generator",
+    "form-builder",
+    "android",
+    "ios",
+    "react",
+    "native",
+    "react-native",
+    "native-modules",
+    "react-component"
+  ],
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "flow": "flow"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kuldeepSaxena/react-native-cascadeGrid.git"
+    "url": "git+https://github.com/bietkul/react-reactive-form"
   },
   "author": "Kuldeep Saxena <kul.anjuma@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kuldeepSaxena/react-native-cascadeGrid/issues"
+    "url": "https://github.com/bietkul/react-reactive-form/issues"
   },
-  "homepage": "https://github.com/kuldeepSaxena/react-native-cascadeGrid#readme"
+  "dependencies": {
+    "rx": "^4.1.0",
+    "rxjs": "^5.4.3"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.37.0",
+    "react": "^16.0.0-alpha.12",
+    "react-native": "^0.45.0-rc.0"
+  },
+  "homepage": "https://github.com/bietkul/react-reactive-form#readme"
 }
