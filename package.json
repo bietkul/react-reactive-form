@@ -16,9 +16,11 @@
     "native-modules",
     "react-component"
   ],
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src/ -d lib/",
+    "prepublish": "npm run build",
     "flow": "flow"
   },
   "repository": {
@@ -35,8 +37,9 @@
     "rxjs": "^5.4.3"
   },
   "devDependencies": {
-    "flow-bin": "^0.37.0",
+    "babel-cli": "^6.26.0",
     "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.59.0",
     "react": "^16.0.0-alpha.12",
     "react-native": "^0.45.0-rc.0"
   },
