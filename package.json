@@ -36,5 +36,6 @@
   "devDependencies": {
     "react": "^16.0.0-alpha.12"
   },
+  "typings": "./index.d.ts",
   "homepage": "https://github.com/bietkul/react-reactive-form#readme"
 }

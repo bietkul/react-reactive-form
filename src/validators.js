@@ -6,20 +6,19 @@ import { toObservable } from './utils';
 function isEmptyInputValue(value) {
   return value == null || value.length === 0;
 }
-function isPresent(o: any): boolean {
+function isPresent(o) {
   return o != null;
 }
 function _mergeErrors(arrayOfErrors) {
-  const res: {[key: string]: any} =
-      arrayOfErrors.reduce((res, errors) => {
+  const res = arrayOfErrors.reduce((res, errors) => {
         return errors != null ? { ...res, ...errors } : res;
       }, {});
   return Object.keys(res).length === 0 ? null : res;
 }
-function _executeValidators(control: AbstractControl, validators: Function): any[] {
+function _executeValidators(control, validators) {
   return validators.map(v => v(control));
 }
-function _executeAsyncValidators(control: AbstractControl, validators: Function[]): any[] {
+function _executeAsyncValidators(control, validators) {
   return validators.map(v => v(control));
 }
 
@@ -40,9 +39,9 @@ export default class Validators {
     };
   }
 
-  // /**
-  //  * Validator that requires controls to have a value less than a number.
-  //  */
+  /**
+  * Validator that requires controls to have a value less than a number.
+  */
   static max(max) {
     return (control) => {
       if (isEmptyInputValue(control.value) || isEmptyInputValue(max)) {
@@ -124,22 +123,27 @@ export default class Validators {
   /**
    * Compose multiple validators into a single function that returns the union
    * of the individual error maps.
+   * @param {(Function|null|undefined)[]|null} validators
+   * @return {Function|null}
    */
-  static compose(validators: (Function|null|undefined)[]|null): Function|null {
+  static compose(validators) {
     if (!validators) return null;
-    const presentValidators: Function[] = validators.filter(isPresent);
+    const presentValidators = validators.filter(isPresent);
     if (presentValidators.length === 0) return null;
-
-    return (control: AbstractControl) =>
+    return (control) =>
       _mergeErrors(_executeValidators(control, presentValidators));
   }
-
-  static composeAsync(validators: (Function|null)[]): Function|null {
+  /**
+   * Compose multiple async validators into a single function that returns the union
+   * of the individual error maps.
+   * @param {(Function|null|undefined)[]|null} validators
+   * @return {Function|null}
+   */
+  static composeAsync(validators) {
     if (!validators) return null;
-    const presentValidators: Function[] = validators.filter(isPresent);
+    const presentValidators = validators.filter(isPresent);
     if (presentValidators.length === 0) return null;
-
-    return (control: AbstractControl) => {
+    return (control) => {
       const observables = _executeAsyncValidators(control, presentValidators).map(toObservable);
       return map.call(forkJoin(observables), _mergeErrors);
     };

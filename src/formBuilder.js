@@ -1,28 +1,41 @@
 import { FormControl, FormArray, FormGroup, AbstractControl } from './model';
 
 export default class FormBuilder {
-  group(controlsConfig: {[key: string]: any}, extra: {[key: string]: any}|null = null): FormGroup {
+  /**
+   * Construct a new {@link FormGroup} with the given map of configuration.
+   * Valid keys for the `extra` parameter map are `validator` and `asyncValidator`.
+   * @param {{[key: string]: any}} controlsConfig
+   * @param {{[key: string]: any}|null} extra
+   * @return {FormGroup}
+   */
+  group(controlsConfig, extra) {
     const controls = this._reduceControls(controlsConfig);
     const validator = extra != null ? extra.validator : null;
     const asyncValidator = extra != null ? extra.asyncValidator : null;
     return new FormGroup(controls, validator, asyncValidator);
   }
-  /** First argument in form state you can set the initial form state
-   * for e.g {value: 'Something', disabled: true}
-   * Second argument is the validators
-   * Third argument is the async validator
+  /**
+   * Construct a new {@link FormControl} with the given `formState`,`validator`, and
+   * `asyncValidator`.
+   *
+   * `formState` can either be a standalone value for the form control or an object
+   * that contains both a value and a disabled status.
+   * @param {Object} formState
+   * @param {Function|Function[]|null} validator
+   * @param {Function|Function[]|null} asyncValidator
+   * @return {FormControl}
    */
-  control(formState, validator, asyncValidator): FormControl {
+  control(formState, validator, asyncValidator) {
     return new FormControl(formState, validator, asyncValidator);
   }
-  _reduceControls(controlsConfig: {[k: string]: any}): {[key: string]: AbstractControl} {
-    const controls: {[key: string]: AbstractControl} = {};
+  _reduceControls(controlsConfig) {
+    const controls = {};
     Object.keys(controlsConfig).forEach((controlName) => {
       controls[controlName] = this._createControl(controlsConfig[controlName]);
     });
     return controls;
   }
-  _createControl(controlConfig: any): AbstractControl {
+  _createControl(controlConfig) {
     if (controlConfig instanceof FormControl || controlConfig instanceof FormGroup ||
         controlConfig instanceof FormArray) {
       return controlConfig;

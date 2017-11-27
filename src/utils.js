@@ -1,17 +1,23 @@
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 
-export function isPromise(obj: any) {
-    // allow any Promise/A+ compliant thenable.
-    // It's up to the caller to ensure that obj.then conforms to the spec
+export function isPromise(obj) {
   return !!obj && typeof obj.then === 'function';
 }
-export function isObservable(obj: any | Observable<any>) {
-    // TODO use Symbol.observable when https://github.com/ReactiveX/rxjs/issues/2415 will be resolved
+/**
+* Checks if an object is Observable
+* @param {Observable} obj
+* @returns {Observable}
+*/
+export function isObservable(obj) {
   return !!obj && typeof obj.subscribe === 'function';
 }
-
-export function toObservable(r: any): Observable<any> {
+/**
+* Converts an object into Observable
+* @param {any} r
+* @returns {Observable}
+*/
+export function toObservable(r) {
   const obs = isPromise(r) ? fromPromise(r) : r;
   if (!(isObservable(obs))) {
     throw new Error('Expected validator to return Promise or Observable.');

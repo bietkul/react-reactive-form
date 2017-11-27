@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { FormGroup, FormArray, FormControl } from './model';
 import { isReactNative } from './utils';
 
-
-
 // React
 const propsToBeMap = {
   value: 'value',
@@ -35,7 +33,10 @@ const controlsToBeMap = {
   }
 }
 const inputControls = isReactNative() ? controlsToBeMap.ReactNative : controlsToBeMap.default;
-function mapControlToProps(control: FormControl|FormGroup) {
+/**
+* @param {FormControl|FormGroup} control
+*/
+function mapControlToProps(control) {
   const mappedObject = {};
   const controlObject = {};
   Object.keys(propsToBeMap).forEach((key) => {
@@ -51,7 +52,11 @@ function mapControlToProps(control: FormControl|FormGroup) {
   }
   return mappedObject;
 }
-function mapNestedControls(control: FormControl, name: String) {
+/**
+* @param {FormControl|FormGroup} control
+* @param {String} name
+*/
+function mapNestedControls(control, name) {
   var extraProps = {};
   extraProps[name] = mapControlToProps(control);
   if(control instanceof FormGroup|FormArray && control.controls) {
