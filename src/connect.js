@@ -47,7 +47,7 @@ function mapControlToProps(control: FormControl|FormGroup) {
       const controlProperty = control[inputControls[key]];
       controlObject[key] = controlProperty;
     });
-    mappedObject['input'] = controlObject;
+    mappedObject['handler'] = controlObject;
   }
   return mappedObject;
 }

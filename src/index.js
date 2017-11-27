@@ -1,6 +1,13 @@
-import FormBuilder from './src/formBuilder';
-import Validators from './src/validators';
-// import FormGroup from './src/formGroup';
-import connect from './src/connect';
+import FormBuilder from './formBuilder';
+import Validators from './validators';
+import { FormGroup, FormControl, FormArray } from './model';
+import connect from './connect';
 
-export { FormBuilder, Validators, connect };
+export { 
+    FormBuilder,
+    FormGroup,
+    FormControl,
+    FormArray,
+    Validators, 
+    connect 
+};

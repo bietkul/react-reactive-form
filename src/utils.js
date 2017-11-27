@@ -24,5 +24,5 @@ export const isReactNative = () => (
   window.navigator.product &&
   window.navigator.product === 'ReactNative'
 );
-export const isEvent = (candidate: any) =>
+export const isEvent = (candidate) =>
 !!(candidate && candidate.stopPropagation && candidate.preventDefault);

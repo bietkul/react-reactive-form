@@ -8,6 +8,9 @@ Components
 .gitattributes
 _config.yml
 
+# Package-lock
+package_lock
+
 # Documents
 CONTRIBUTING.md
 ISSUE_TEMPLATE.txt

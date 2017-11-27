@@ -1,7 +1,7 @@
 {
   "name": "react-reactive-form",
   "version": "1.0.0",
-  "description": "Angular like Reactive Forms in React",
+  "description": "Angular like Reactive Forms in React/React-Native",
   "keywords": [
     "forms",
     "form",
@@ -18,10 +18,7 @@
   ],
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src/ -d lib/",
-    "prepublish": "npm run build",
-    "flow": "flow"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -37,11 +34,7 @@
     "rxjs": "^5.4.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-flow": "^6.23.0",
-    "flow-bin": "^0.59.0",
-    "react": "^16.0.0-alpha.12",
-    "react-native": "^0.45.0-rc.0"
+    "react": "^16.0.0-alpha.12"
   },
   "homepage": "https://github.com/bietkul/react-reactive-form#readme"
 }

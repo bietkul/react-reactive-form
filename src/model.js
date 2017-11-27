@@ -3,22 +3,6 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { toObservable, isEvent } from './utils';
 import Validators from './validators';
 
-// Can set different config for both react & react native
-// Can Also set Config For A particular FormControl, FormGroup & FormArray
-
-// React Native
-// const Config = {
-//   onChange: 'onChangeText',
-//   enabled: 'editable',
-//   onBlur: 'onblur',
-// };
-// React
-const Config = {
-  onChange: 'onChange',
-  enabled: 'enabled',
-  onBlur: 'onBlur',
-};
-
 /**
  * Indicates that a FormControl is valid, i.e. that no errors exist in the input value.
  */
@@ -151,7 +135,7 @@ export class AbstractControl {
    * In other words, it has a status of `VALID`, `INVALID`, or
    * `PENDING`.
    */
-  get [Config.enabled](): boolean { return this.status !== DISABLED; }
+  get enabled(): boolean { return this.status !== DISABLED; }
    /**
    * A control is disabled if it's status is `DISABLED`
    */

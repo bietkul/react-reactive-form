@@ -3,6 +3,9 @@
 .AppleDouble
 .LSOverride
 
+### OSX ###
+package_lock
+
 # Icon must end with two \r
 
 
