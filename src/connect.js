@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { FormGroup, FormArray, FormControl } from './model';
 import { isReactNative } from './utils';
 
@@ -86,61 +86,64 @@ function mapProps(formControls) {
  * @return {Component} connect
  */
 function connect(ReactComponent, formGroup) {
+  console.log("CONNECT IS GETTING CALLED")
   const formControls = formGroup.controls;
   const extraProps = mapProps(formControls);
-  console.log('THIS IS FORM', formGroup.updateDOM);
   mapProps(formControls);
-  class Connect extends Component {
+  class Connect extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
         extraProps
       };
+      this.updateComponent = this.updateComponent.bind(this);
     }
     componentDidMount() {
       // Add listeners
-      // formGroup.updateDOM.subscribe(() => {
-      //   if (this.myForm) {
+      formGroup.updateDOM.subscribe(() => {
+        // if (this.myForm) {
+          this.updateComponent();
+        // }
+      }, (error) => {
+        console.log(error);
+      });
+      // formGroup.statusChanges.subscribe(() => {
       //     this.updateComponent();
-      //   }
       // }, (error) => {
       //   console.log(error);
       // });
-      formGroup.statusChanges.subscribe(() => {
-        if (this.myForm) {
-          this.updateComponent();
-        }
-      }, (error) => {
-        console.log(error);
-      });
-      formGroup.valueChanges.subscribe(() => {
-        if (this.myForm) {
-          this.updateComponent();
-        }
-      }, (error) => {
-        console.log(error);
-      });
+      // formGroup.valueChanges.subscribe(() => {
+      //     this.updateComponent();
+      // }, (error) => {
+      //   console.log(error);
+      // });
     }
     componentWillUnmount() {
-      // Remove listeners
-      // if (formGroup.updateDOM.observers) {
-      //   formGroup.updateDOM.observers.forEach((observer) => {
+      //Remove listeners
+      if (formGroup.updateDOM.observers) {
+        formGroup.updateDOM.observers.forEach((observer) => {
+          observer.unsubscribe();
+        });
+      }
+      // if (formGroup.statusChanges.observers) {
+      //   formGroup.statusChanges.observers.forEach((observer) => {
+      //     observer.unsubscribe();
+      //   });
+      // }
+      // if (formGroup.valueChanges.observers) {
+      //   formGroup.valueChanges.observers.forEach((observer) => {
       //     observer.unsubscribe();
       //   });
       // }
     }
-    updateComponent = () => {
+    updateComponent() {
       this.setState({
         extraProps: mapProps(formControls)
       });
     }
     render() {
-      return (
-        <ReactComponent ref={(c) => { this.myForm = c; }} {...this.props} {...this.state.extraProps} />
-      );
-      // return (
-      //   <ReactComponent ref={(c) => { this.myForm = c; }} {...this.props} />
-      // );
+      const props = Object.assign({}, this.props, this.state.extraProps);
+      return React.createElement(ReactComponent, props);
     }
 }
   return Connect;

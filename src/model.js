@@ -127,6 +127,7 @@ export class AbstractControl {
     */
     this.pristine = true;
     this._onDisabledChange = [];
+    this.hasError = this.hasError.bind(this);
   }
   /**
   * Returns the update strategy of the `AbstractControl` (i.e.
@@ -221,6 +222,9 @@ export class AbstractControl {
     if (opts.emitEvent !== false) {
       this.valueChanges.next(this.value);
       this.statusChanges.next(this.status);
+      if(this.root && this.root.updateDOM) {
+        this.root.updateDOM.next();
+      }
     }
 
     this._updateAncestors(!!opts.onlySelf);
@@ -259,13 +263,13 @@ export class AbstractControl {
     if (options.emitEvent !== false) {
       this.valueChanges.next(this.value);
       this.statusChanges.next(this.status);
+      if(this.root && this.root.updateDOM) {
+        this.root.updateDOM.next();
+      }
     }
     if (this.parent && !options.onlySelf) {
       // Will look on to it
       this.parent.updateValueAndValidity(options.onlySelf, options.emitEvent);
-    }
-    if (this.updateDOM) {
-      this.updateDOM.next();
     }
   }
   /**
@@ -278,7 +282,6 @@ export class AbstractControl {
   */
   markAsTouched(opts = {}) {
     this.touched = true;
-
     if (this._parent && !opts.onlySelf) {
       this._parent.markAsTouched(opts);
     }
@@ -401,7 +404,7 @@ export class AbstractControl {
   * @param {(String|Number)[]|String} path
   * @return {Booelan}
   */
-  hasError = (errorCode, path) => { return !!this.getError(errorCode, path); }
+  hasError(errorCode, path)  { return !!this.getError(errorCode, path); }
   /**
   * Empties out the sync validator list.
   */
@@ -493,6 +496,9 @@ export class AbstractControl {
     this.status = this._calculateStatus();
     if (emitEvent) {
       this.statusChanges.next();
+      if(this.root && this.root.updateDOM) {
+        this.root.updateDOM.next();
+      }
     }
     if (this._parent) {
       this._parent._updateControlsErrors(emitEvent);
@@ -547,7 +553,8 @@ export class FormControl extends AbstractControl {
     this.onBlur = () => {
       if (!this.touched) {
         this.markAsTouched();
-        this._updateTouched();
+        this.root.updateDOM.next();
+        // this._updateTouched();
       }
     };
   }
@@ -618,6 +625,7 @@ export class FormGroup extends AbstractControl {
   _forEachChild(callback) {
     Object.keys(this.controls).forEach(k => callback(this.controls[k], k));
   }
+
   _onCollectionChange() {}
   /**
    * Check whether there is an enabled control with the given name in the group.
@@ -628,7 +636,7 @@ export class FormGroup extends AbstractControl {
    * @return {Boolean}
    */
   contains(controlName) {
-    return Object.prototype.hasOwnProperty.call(this.controls, 'controlName') && this.controls[controlName].enabled;
+    return this.controls.hasOwnProperty(controlName) && this.controls[controlName].enabled;
   }
   /**
   * @param {Function} condition
@@ -652,6 +660,15 @@ export class FormGroup extends AbstractControl {
           }
           return acc;
         });
+  }
+  _reduceErrors() {
+    return this._reduceChildren(
+      {}, (acc, control, name) => {
+        if (control.enabled || this.disabled) {
+          acc[name] = control.errors;
+        }
+        return acc;
+      });
   }
   /**
   * @param {Function} fn

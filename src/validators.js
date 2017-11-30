@@ -11,7 +11,7 @@ function isPresent(o) {
 }
 function _mergeErrors(arrayOfErrors) {
   const res = arrayOfErrors.reduce((res, errors) => {
-        return errors != null ? { ...res, ...errors } : res;
+        return errors != null ? Object.assign({}, res, errors) : res;
       }, {});
   return Object.keys(res).length === 0 ? null : res;
 }
