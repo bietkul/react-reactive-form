@@ -1,5 +1,4 @@
-import { Subject, Observable } from 'rxjs';
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import { Subject } from 'rxjs';
 import { toObservable, isEvent } from './utils';
 import Validators from './validators';
 
@@ -541,11 +540,32 @@ export class FormControl extends AbstractControl {
     this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     this._initObservables();
     this.onChange = (event) => {
+      console.log("event called", event.target.value,event.target.type )
       if(!this.dirty) {
         this.markAsDirty();
       }
       if(isEvent(event)) {
-        this.setValue(event.target.value);
+        switch(event.target.type) {
+          case "checkbox":
+            this.setValue(event.target.checked);
+            break;
+          case "select-multiple":
+            if(event.target.options) {
+              let options = event.target.options;
+              var value = [];
+              for (var i = 0, l = options.length; i < l; i++) {
+                if (options[i].selected) {
+                  value.push(options[i].value);
+                }
+              }
+              this.setValue(value);
+            } else {
+              this.setValue(event.target.value);
+            }
+            break;
+          default:
+            this.setValue(event.target.value);
+        }
       } else {
         this.setValue(event);
       }

@@ -30,6 +30,7 @@ const controlsToBeMap = {
     onChange: 'onChange',
     onBlur: 'onBlur',
     disabled: 'disabled',
+    checked: 'value'
   }
 }
 const inputControls = isReactNative() ? controlsToBeMap.ReactNative : controlsToBeMap.default;
@@ -61,8 +62,7 @@ function mapNestedControls(control, name) {
   extraProps[name] = mapControlToProps(control);
   if(control instanceof FormGroup|FormArray && control.controls) {
     Object.keys(control.controls).forEach((childControlName) => {
-      // extraProps[controlName+'.'+childControlName] = mapControlToProps(control.controls[childControlName]);
-      extraProps = Object.assign(extraProps, mapNestedControls(control.controls[childControlName], name+'.'+childControlName));
+      extraProps[name] = Object.assign(extraProps[name], mapNestedControls(control.controls[childControlName], childControlName));
     })
   }
   return extraProps;
@@ -86,7 +86,6 @@ function mapProps(formControls) {
  * @return {Component} connect
  */
 function connect(ReactComponent, formGroup) {
-  console.log("CONNECT IS GETTING CALLED")
   const formControls = formGroup.controls;
   const extraProps = mapProps(formControls);
   mapProps(formControls);
@@ -101,22 +100,10 @@ function connect(ReactComponent, formGroup) {
     componentDidMount() {
       // Add listeners
       formGroup.updateDOM.subscribe(() => {
-        // if (this.myForm) {
-          this.updateComponent();
-        // }
+        this.updateComponent();
       }, (error) => {
         console.log(error);
       });
-      // formGroup.statusChanges.subscribe(() => {
-      //     this.updateComponent();
-      // }, (error) => {
-      //   console.log(error);
-      // });
-      // formGroup.valueChanges.subscribe(() => {
-      //     this.updateComponent();
-      // }, (error) => {
-      //   console.log(error);
-      // });
     }
     componentWillUnmount() {
       //Remove listeners
@@ -125,16 +112,6 @@ function connect(ReactComponent, formGroup) {
           observer.unsubscribe();
         });
       }
-      // if (formGroup.statusChanges.observers) {
-      //   formGroup.statusChanges.observers.forEach((observer) => {
-      //     observer.unsubscribe();
-      //   });
-      // }
-      // if (formGroup.valueChanges.observers) {
-      //   formGroup.valueChanges.observers.forEach((observer) => {
-      //     observer.unsubscribe();
-      //   });
-      // }
     }
     updateComponent() {
       this.setState({
