@@ -113,7 +113,7 @@ export class AbstractControl {
     this.validator = validator;
     this.asyncValidator = asyncValidator;
     /**
-     * A control is marked `touched` once the user has triggered
+    * A control is marked `touched` once the user has triggered
     * a `blur` event on it.
     */
     this.touched = false;
@@ -154,6 +154,10 @@ export class AbstractControl {
   */
   get valid() { return this.status === VALID; }
   /**
+  * @return {Boolean} 
+  */
+  get pending() { return this.status === PENDING; }
+  /**
   * A control is `invalid` when its `status === INVALID`.
   *
   * In order to have this status, the control must have failed
@@ -180,9 +184,9 @@ export class AbstractControl {
   * @return {Boolean}
   */
   get enabled() { return this.status !== DISABLED; }
-   /**
-   * A control is disabled if it's status is `DISABLED`
-   */
+  /**
+  * A control is disabled if it's status is `DISABLED`
+  */
   get disabled() {
     return this.status === DISABLED;
   }
@@ -335,11 +339,11 @@ export class AbstractControl {
     }
   }
   /**
-   * Sets the synchronous validators that are active on this control.  Calling
-   * this will overwrite any existing sync validators.
-   * @param {Function|Function[]|null} newValidator
-   * @return {void}
-   */
+  * Sets the synchronous validators that are active on this control.  Calling
+  * this will overwrite any existing sync validators.
+  * @param {Function|Function[]|null} newValidator
+  * @return {void}
+  */
   setValidators(newValidator) {
     this.validator = coerceToValidator(newValidator);
   }
@@ -518,6 +522,7 @@ export class AbstractControl {
   _anyControls() {}
   reset(value, options) {};
   setValue() {}
+  patchValue() {};
   _registerOnCollectionChange(fn) { this._onCollectionChange = fn; }
   /**
   * @param {{validators: Function|Function[]|null, asyncValidators: Function|Function[]|null, updateOn: 'change' | 'blur' | 'submit'}} opts
@@ -540,7 +545,6 @@ export class FormControl extends AbstractControl {
     this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     this._initObservables();
     this.onChange = (event) => {
-      console.log("event called", event.target.value,event.target.type )
       if(!this.dirty) {
         this.markAsDirty();
       }
@@ -579,6 +583,39 @@ export class FormControl extends AbstractControl {
     };
   }
   /**
+  * @param {{onlySelf: Boolean, emitEvent: Boolean}} options
+  * @return {void}
+  */
+  setValue(value, options = {}) {
+    this.value = this._pendingValue = value;
+    this.updateValueAndValidity(options);
+  }
+  /**
+  * Patches the value of a control.
+  *
+  * This function is functionally the same as setValue at this level.
+  * It exists for symmetry with patchValue on `FormGroups` and
+  * `FormArrays`, where it does behave differently.
+  * @param {any} value
+  * @param {{onlySelf: Boolean, emitEvent: Boolean}} options
+  * @return {void}
+  */
+  patchValue(value, options = {}) {
+    this.setValue(value, options);
+  }
+
+  /**
+  * @param {{onlySelf: Boolean, emitEvent: Boolean}} options
+  * @return {void}
+  */
+  reset(formState = null, options = {}) {
+    this._applyFormState(formState);
+    this.markAsPristine(options);
+    this.markAsUntouched(options);
+    this.setValue(this.value, options);
+    this._pendingChange = false;
+  }
+  /**
   * @param {Function} condition
   * @return {Boolean}
   */
@@ -587,14 +624,6 @@ export class FormControl extends AbstractControl {
   * @return {Boolean}
   */
   _allControlsDisabled() { return this.disabled; }
-  /**
-  * @param {{onlySelf: Boolean, emitEvent: Boolean}} options
-  * @return {void}
-  */
-  setValue(value, options = {}) {
-    this.value = this._pendingValue = value;
-    this.updateValueAndValidity(options);
-  }
   /**
   * @return {Boolean}
   */
@@ -614,17 +643,6 @@ export class FormControl extends AbstractControl {
       this.value = this._pendingValue = formState;
     }
   }
-  /**
-  * @param {{onlySelf: Boolean, emitEvent: Boolean}} options
-  * @return {void}
-  */
-  reset(formState = null, options = {}) {
-    this._applyFormState(formState);
-    this.markAsPristine(options);
-    this.markAsUntouched(options);
-    this.setValue(this.value, options);
-    this._pendingChange = false;
-  }
 }
 export class FormGroup extends AbstractControl {
   constructor(controls, validatorOrOpts, asyncValidator) {
@@ -639,15 +657,6 @@ export class FormGroup extends AbstractControl {
     this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
   }
   /**
-  * @param {{(v: any, k: String) => void}} callback
-  * @return {void}
-  */
-  _forEachChild(callback) {
-    Object.keys(this.controls).forEach(k => callback(this.controls[k], k));
-  }
-
-  _onCollectionChange() {}
-  /**
    * Check whether there is an enabled control with the given name in the group.
    *
    * It will return false for disabled controls. If you'd like to check for existence in the group
@@ -658,6 +667,132 @@ export class FormGroup extends AbstractControl {
   contains(controlName) {
     return this.controls.hasOwnProperty(controlName) && this.controls[controlName].enabled;
   }
+  /**
+  * Registers a control with the group's list of controls.
+  *
+  * This method does not update the value or validity of the control, so for most cases you'll want
+  * to use addControl instead.
+  * @param {String} name
+  * @param {AbstractControl} control
+  * @return {AbstractControl}
+  */
+  registerControl(name, control) {
+    if (this.controls[name]) return this.controls[name];
+    this.controls[name] = control;
+    control.setParent(this);
+    control._registerOnCollectionChange(this._onCollectionChange);
+    return control;
+  }
+
+  /**
+  * Add a control to this group.
+  * @param {String} name
+  * @param {AbstractControl} control
+  * @return {void}
+  */
+  addControl(name, control) {
+    this.registerControl(name, control);
+    this.updateValueAndValidity();
+    this._onCollectionChange();
+  }
+
+  /**
+  * Remove a control from this group.
+  * @param {String} name
+  * @return {void}
+  */
+  removeControl(name) {
+    if (this.controls[name]) this.controls[name]._registerOnCollectionChange(() => {});
+    delete (this.controls[name]);
+    this.updateValueAndValidity();
+    this._onCollectionChange();
+  }
+
+  /**
+  * Replace an existing control.
+  * @param {String} name
+  * @param {AbstractControl} control
+  * @return {void}
+  */
+  setControl(name, control) {
+    if (this.controls[name]) this.controls[name]._registerOnCollectionChange(() => {});
+    delete (this.controls[name]);
+    if (control) this.registerControl(name, control);
+    this.updateValueAndValidity();
+    this._onCollectionChange();
+  }
+  /**
+  *  Sets the value of the FormGroup. It accepts an object that matches
+  *  the structure of the group, with control names as keys.
+  *
+  * This method performs strict checks, so it will throw an error if you try
+  * to set the value of a control that doesn't exist or if you exclude the
+  * value of a control.
+  *
+  *  ### Example
+  *  form.setValue({first: 'Jon', last: 'Snow'});
+  *  console.log(form.value);   // {first: 'Jon', last: 'Snow'}
+  * @param {{[key: string]: any}} value
+  * @param {{onlySelf: boolean, emitEvent: boolean}} options
+  * @return {void}
+  */
+  setValue(value, options = {}) {
+    this._checkAllValuesPresent(value);
+    Object.keys(value).forEach(name => {
+      this._throwIfControlMissing(name);
+      this.controls[name].setValue(value[name], {onlySelf: true, emitEvent: options.emitEvent});
+    });
+    this.updateValueAndValidity(options);
+  }
+  /**
+  *  Patches the value of the FormGroup. It accepts an object with control
+  *  names as keys, and will do its best to match the values to the correct controls
+  *  in the group.
+  *
+  *  It accepts both super-sets and sub-sets of the group without throwing an error.
+  *
+  *  ### Example
+  *  ```
+  *  console.log(form.value);   // {first: null, last: null}
+  *
+  *  form.patchValue({first: 'Jon'});
+  *  console.log(form.value);   // {first: 'Jon', last: null}
+  *
+  *  ```
+  * @param {{[key: string]: any}} value
+  * @param {{onlySelf: boolean, emitEvent: boolean}} options
+  * @return {void}
+   */
+  patchValue(value, options = {}) {
+    Object.keys(value).forEach(name => {
+      if (this.controls[name]) {
+        this.controls[name].patchValue(value[name], {onlySelf: true, emitEvent: options.emitEvent});
+      }
+    });
+    this.updateValueAndValidity(options);
+  }
+  /**
+  * The aggregate value of the FormGroup, including any disabled controls.
+  *
+  * If you'd like to include all values regardless of disabled status, use this method.
+  * Otherwise, the `value` property is the best way to get the value of the group.
+  */
+  getRawValue() {
+    return this._reduceChildren(
+        {}, (acc, control, name) => {
+          acc[name] = control instanceof FormControl ? control.value : control.getRawValue();
+          return acc;
+        });
+  }
+  /**
+  * @param {{(v: any, k: String) => void}} callback
+  * @return {void}
+  */
+  _forEachChild(callback) {
+    Object.keys(this.controls).forEach(k => callback(this.controls[k], k));
+  }
+
+  _onCollectionChange() {}
   /**
   * @param {Function} condition
   * @return {Boolean}
@@ -716,16 +851,21 @@ export class FormGroup extends AbstractControl {
     }
     return Object.keys(this.controls).length > 0 || this.disabled;
   }
-  /**
-  * @param {{onlySelf: Boolean, emitEvent: Boolean}} options
-  * @return {void}
-  */
-  reset(value = {}, options = {}) {
+  _checkAllValuesPresent(value) {
     this._forEachChild((control, name) => {
-      control.reset(value[name], {onlySelf: true, emitEvent: options.emitEvent});
+      if (value[name] === undefined) {
+        throw new Error(`Must supply a value for form control with name: '${name}'.`);
+      }
     });
-    this.updateValueAndValidity(options);
-    this._updatePristine(options);
-    this._updateTouched(options);
+  }
+  _throwIfControlMissing(name) {
+    if (!Object.keys(this.controls).length) {
+      throw new Error(`
+        There are no form controls registered with this group yet.
+      `);
+    }
+    if (!this.controls[name]) {
+      throw new Error(`Cannot find form control with name: ${name}.`);
+    }
   }
 }
