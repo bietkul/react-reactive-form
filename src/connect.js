@@ -16,6 +16,7 @@ const propsToBeMap = {
   errors: 'errors',
   hasError: 'hasError',
   status: 'status',
+  pending: 'pending',
 }
 const controlsToBeMap = {
   ReactNative: {
