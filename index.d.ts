@@ -206,6 +206,13 @@ declare abstract class AbstractControl {
     abstract reset(value?: any, options?: Object): void;
 }
 declare module "react-reactive-form" {
+    /**
+    * Creates an `AbstractControl` from a user-specified configuration.
+    *
+    * It is essentially syntactic sugar that shortens the `new FormGroup()`,
+    * `new FormControl()`, and `new FormArray()` boilerplate that can build up in larger
+    * forms.
+    */
     export class FormBuilder {
         /**
         * Construct a new `FormGroup` with the given map of configuration.
@@ -231,11 +238,141 @@ declare module "react-reactive-form" {
         array(controlsConfig: any[], validator?: ValidatorFn|null,
         asyncValidator?: AsyncValidatorFn|null): FormArray
     }
+    /**
+    * Tracks the value and validity state of an array of `FormControl`,
+    * `FormGroup` or `FormArray` instances.
+    *
+    * A `FormArray` aggregates the values of each child `FormControl` into an array.
+    * It calculates its status by reducing the statuses of its children. For example, if one of
+    * the controls in a `FormArray` is invalid, the entire array becomes invalid.
+    *
+    * `FormArray` is one of the three fundamental building blocks used to define forms in Reactive Form,
+    * along with `FormControl` and `FormGroup`.
+    *
+    *
+    * When instantiating a `FormArray`, pass in an array of child controls as the first
+    * argument.
+    *
+    * ### Example
+    *
+    * ```
+    * const arr = new FormArray([
+    *   new FormControl('Jon', Validators.minLength(2)),
+    *   new FormControl('Snow'),
+    * ]);
+    *
+    * console.log(arr.value);   // ['Jon', 'Snow']
+    * console.log(arr.status);  // 'VALID'
+    * ```
+    *
+    * You can also include array-level validators and async validators. These come in handy
+    * when you want to perform validation that considers the value of more than one child
+    * control.
+    *
+    * The two types of validators can be passed in separately as the second and third arg
+    * respectively, or together as part of an options object.
+    *
+    * ```
+    * const arr = new FormArray([
+    *   new FormControl('Jon'),
+    *   new FormControl('Snow')
+    * ], {validators: myValidator, asyncValidators: myAsyncValidator});
+    * ```
+    *
+    * The options object can also be used to set a default value for each child
+    * control's `updateOn` property. If you set `updateOn` to `'blur'` at the
+    * array level, all child controls will default to 'blur', unless the child
+    * has explicitly specified a different `updateOn` value.
+    *
+    * ```ts
+    * const c = new FormArray([
+    *    new FormControl()
+    * ], {updateOn: 'blur'});
+    * ```
+    *
+    * ### Adding or removing controls
+    *
+    * To change the controls in the array, use the `push`, `insert`, or `removeAt` methods
+    * in `FormArray` itself. These methods ensure the controls are properly tracked in the
+    * form's hierarchy. Do not modify the array of `AbstractControl`s used to instantiate
+    * the `FormArray` directly, as that will result in strange and unexpected behavior such
+    * as broken change detection.
+    *
+    */
     export class FormArray extends AbstractControl  {
         setValue(value: any, options?: Object): void;
         patchValue(value: any, options?: Object): void;
         reset(value?: any, options?: Object): void;
     }
+    /**
+    * Tracks the value and validity state of a group of `FormControl`
+    * instances.
+    *
+    * A `FormGroup` aggregates the values of each child `FormControl` into one object,
+    * with each control name as the key.  It calculates its status by reducing the statuses
+    * of its children. For example, if one of the controls in a group is invalid, the entire
+    * group becomes invalid.
+    *
+    * `FormGroup` is one of the three fundamental building blocks used to define forms in Reactive Form,
+    * along with `FormControl` and `FormArray`.
+    *
+    * @howToUse
+    *
+    * When instantiating a `FormGroup`, pass in a collection of child controls as the first
+    * argument. The key for each child will be the name under which it is registered.
+    *
+    * ### Example
+    *
+    * ```
+    * const form = new FormGroup({
+    *   first: new FormControl('Jon', Validators.minLength(2)),
+    *   last: new FormControl('Snow'),
+    * });
+    *
+    * console.log(form.value);   // {first: 'Jon', last; 'Snow'}
+    * console.log(form.status);  // 'VALID'
+    * ```
+    *
+    * You can also include group-level validators as the second arg, or group-level async
+    * validators as the third arg. These come in handy when you want to perform validation
+    * that considers the value of more than one child control.
+    *
+    * ### Example
+    *
+    * ```
+    * const form = new FormGroup({
+    *   password: new FormControl('', Validators.minLength(2)),
+    *   passwordConfirm: new FormControl('', Validators.minLength(2)),
+    * }, passwordMatchValidator);
+    *
+    *
+    * function passwordMatchValidator(g: FormGroup) {
+    *    return g.get('password').value === g.get('passwordConfirm').value
+    *       ? null : {'mismatch': true};
+    * }
+    * ```
+    *
+    * Like `FormControl` instances, you can alternatively choose to pass in
+    * validators and async validators as part of an options object.
+    *
+    * ```
+    * const form = new FormGroup({
+    *   password: new FormControl('')
+    *   passwordConfirm: new FormControl('')
+    * }, {validators: passwordMatchValidator, asyncValidators: otherValidator});
+    * ```
+    *
+    * The options object can also be used to set a default value for each child
+    * control's `updateOn` property. If you set `updateOn` to `'blur'` at the
+    * group level, all child controls will default to 'blur', unless the child
+    * has explicitly specified a different `updateOn` value.
+    *
+    * ```ts
+    * const c = new FormGroup({
+    *    one: new FormControl()
+    * }, {updateOn: 'blur'});
+    * ```
+    */
     export class FormGroup extends AbstractControl {
         constructor(
             controls: {[key: string]: AbstractControl},
@@ -346,6 +483,67 @@ declare module "react-reactive-form" {
         */
         reset(value: any, options?: {onlySelf?: boolean, emitEvent?: boolean}): void
     }
+    /**
+    * Tracks the value and validation status of an individual form control.
+    *
+    * It is one of the three fundamental building blocks of Reactive forms, along with
+    * FormGroup and FormArray.
+    *
+    * When instantiating a FormControl, you can pass in an initial value as the
+    * first argument. Example:
+    *
+    * ```ts
+    * const ctrl = new FormControl('some value');
+    * console.log(ctrl.value);     // 'some value'
+    *```
+    *
+    * You can also initialize the control with a form state object on instantiation,
+    * which includes both the value and whether or not the control is disabled.
+    * You can't use the value key without the disabled key; both are required
+    * to use this way of initialization.
+    *
+    * ```ts
+    * const ctrl = new FormControl({value: 'n/a', disabled: true});
+    * console.log(ctrl.value);     // 'n/a'
+    * console.log(ctrl.status);   // 'DISABLED'
+    * ```
+    *
+    * The second FormControl argument can accept one of three things:
+    * * a sync validator function
+    * * an array of sync validator functions
+    * * an options object containing validator and/or async validator functions
+    *
+    * Example of a single sync validator function:
+    *
+    * ```ts
+    * const ctrl = new FormControl('', Validators.required);
+    * console.log(ctrl.value);     // ''
+    * console.log(ctrl.status);   // 'INVALID'
+    * ```
+    *
+    * Example using options object:
+    *
+    * ```ts
+    * const ctrl = new FormControl('', {
+    *    validators: Validators.required,
+    *    asyncValidators: myAsyncValidator
+    * });
+    * ```
+    *
+    * The options object can also be used to define when the control should update.
+    * By default, the value and validity of a control updates whenever the value
+    * changes. You can configure it to update on the blur event instead by setting
+    * the `updateOn` option to `'blur'`.
+    *
+    * ```ts
+    * const c = new FormControl('', { updateOn: 'blur' });
+    * ```
+    *
+    * You can also set `updateOn` to `'submit'`, which will delay value and validity
+    * updates until the parent form of the control fires a submit event.
+    *
+    * See its superclass, AbstractControl, for more properties and methods.
+    */
     export class FormControl extends AbstractControl {
         constructor(formState: any,
             validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,

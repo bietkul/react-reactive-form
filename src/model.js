@@ -103,7 +103,6 @@ function coerceToAsyncValidator(asyncValidator, validatorOrOpts) {
   return Array.isArray(origAsyncValidator) ? composeAsyncValidators(origAsyncValidator) :
                                            origAsyncValidator || null;
 }
-export class FormArray {}
 export class AbstractControl {
   /**
   * @param {Function|null} validator
@@ -867,5 +866,197 @@ export class FormGroup extends AbstractControl {
     if (!this.controls[name]) {
       throw new Error(`Cannot find form control with name: ${name}.`);
     }
+  }
+}
+export class FormArray extends AbstractControl {
+  constructor(controls, validatorOrOpts, asyncValidator) {
+    super(
+        coerceToValidator(validatorOrOpts),
+        coerceToAsyncValidator(asyncValidator, validatorOrOpts));
+    this._initObservables();
+    this._setUpdateStrategy(validatorOrOpts);
+    this._setUpControls();
+    this.updateValueAndValidity({onlySelf: true, emitEvent: false});
+  }
+  /**
+  * Get the `AbstractControl` at the given `index` in the array.
+  * @param {Number} index
+  * @return {AbstractControl}
+  */
+  at(index) { return this.controls[index]; }
+
+  /**
+  * Insert a new `AbstractControl` at the end of the array.
+  * @param {AbstractControl} control
+  * @return {Void}
+  */
+  push(control) {
+    this.controls.push(control);
+    this._registerControl(control);
+    this.updateValueAndValidity();
+    this._onCollectionChange();
+  }
+
+  /**
+  * Insert a new `AbstractControl` at the given `index` in the array.
+  * @param {Number} index
+  * @param {AbstractControl} control
+  */
+  insert(index, control) {
+    this.controls.splice(index, 0, control);
+
+    this._registerControl(control);
+    this.updateValueAndValidity();
+    this._onCollectionChange();
+  }
+
+  /**
+  * Remove the control at the given `index` in the array.
+  * @param {Number} index
+  */
+  removeAt(index) {
+    if (this.controls[index]) this.controls[index]._registerOnCollectionChange(() => {});
+    this.controls.splice(index, 1);
+    this.updateValueAndValidity();
+    this._onCollectionChange();
+  }
+
+  /**
+  * Replace an existing control.
+  * @param {Number} index
+  * @param {AbstractControl} control
+  */
+  setControl(index, control) {
+    if (this.controls[index]) this.controls[index]._registerOnCollectionChange(() => {});
+    this.controls.splice(index, 1);
+
+    if (control) {
+      this.controls.splice(index, 0, control);
+      this._registerControl(control);
+    }
+
+    this.updateValueAndValidity();
+    this._onCollectionChange();
+  }
+
+  /**
+  * Length of the control array.
+  * @return {Number}
+  */
+  get length() { return this.controls.length; }
+
+  /**
+  * Sets the value of the `FormArray`. It accepts an array that matches
+  * the structure of the control.
+  * @param {any[]} value
+  * @param {{onlySelf?: boolean, emitEvent?: boolean}} options
+  */
+  setValue(value, options = {}) {
+    this._checkAllValuesPresent(value);
+    value.forEach((newValue, index) => {
+      this._throwIfControlMissing(index);
+      this.at(index).setValue(newValue, {onlySelf: true, emitEvent: options.emitEvent});
+    });
+    this.updateValueAndValidity(options);
+  }
+
+  /**
+  *  Patches the value of the `FormArray`. It accepts an array that matches the
+  *  structure of the control, and will do its best to match the values to the correct
+  *  controls in the group.
+  * @param {any[]} value
+  * @param {{onlySelf?: boolean, emitEvent?: boolean}} options
+  */
+  patchValue(value, options = {}) {
+    value.forEach((newValue, index) => {
+      if (this.at(index)) {
+        this.at(index).patchValue(newValue, {onlySelf: true, emitEvent: options.emitEvent});
+      }
+    });
+    this.updateValueAndValidity(options);
+  }
+
+  /**
+  * Resets the {@link FormArray}. This means by default:
+  * @param {any[]} value
+  * @param {{onlySelf?: boolean, emitEvent?: boolean}} options
+  */
+  reset(value, options = {}) {
+    this._forEachChild((control, index) => {
+      control.reset(value[index], {onlySelf: true, emitEvent: options.emitEvent});
+    });
+    this.updateValueAndValidity(options);
+    this._updatePristine(options);
+    this._updateTouched(options);
+  }
+
+  /**
+  * The aggregate value of the array, including any disabled controls.
+  *
+  * If you'd like to include all values regardless of disabled status, use this method.
+  * Otherwise, the `value` property is the best way to get the value of the array.
+  * @return {any[]}
+  */
+  getRawValue() {
+    return this.controls.map((control) => {
+      return control instanceof FormControl ? control.value : control.getRawValue();
+    });
+  }
+
+  _syncPendingControls() {
+    let subtreeUpdated = this.controls.reduce((updated, child) => {
+      return child._syncPendingControls() ? true : updated;
+    }, false);
+    if (subtreeUpdated) this.updateValueAndValidity({onlySelf: true});
+    return subtreeUpdated;
+  }
+
+  _throwIfControlMissing(index) {
+    if (!this.controls.length) {
+      throw new Error(`
+        There are no form controls registered with this array yet.
+      `);
+    }
+    if (!this.at(index)) {
+      throw new Error(`Cannot find form control at index ${index}`);
+    }
+  }
+
+  _forEachChild(cb) {
+    this.controls.forEach((control, index) => { cb(control, index); });
+  }
+
+  _updateValue() {
+    this.value =
+        this.controls.filter((control) => control.enabled || this.disabled)
+            .map((control) => control.value);
+  }
+
+  _anyControls(condition) {
+    return this.controls.some((control) => control.enabled && condition(control));
+  }
+
+  _setUpControls() {
+    this._forEachChild((control) => this._registerControl(control));
+  }
+
+  _checkAllValuesPresent(value) {
+    this._forEachChild((control, i) => {
+      if (value[i] === undefined) {
+        throw new Error(`Must supply a value for form control at index: ${i}.`);
+      }
+    });
+  }
+
+  _allControlsDisabled() {
+    for (const control of this.controls) {
+      if (control.enabled) return false;
+    }
+    return this.controls.length > 0 || this.disabled;
+  }
+
+  _registerControl(control) {
+    control.setParent(this);
+    control._registerOnCollectionChange(this._onCollectionChange);
   }
 }
