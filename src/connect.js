@@ -50,8 +50,7 @@ function getHandler(inputType, value, control) {
       delete mappedObject.value;
       mappedObject.value = value;
       break;
-  } 
-  console.log("THIS IS MAPPED OBJECT", mappedObject, controlObject);
+  }
   return mappedObject;
 }
 /**
