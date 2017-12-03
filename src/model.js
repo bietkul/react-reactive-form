@@ -659,7 +659,7 @@ export class FormGroup extends AbstractControl {
    * Check whether there is an enabled control with the given name in the group.
    *
    * It will return false for disabled controls. If you'd like to check for existence in the group
-   * only, use {@link AbstractControl#get get} instead.
+   * only, use `AbstractControl` get instead.
    * @param {String} controlName
    * @return {Boolean}
    */
@@ -873,6 +873,10 @@ export class FormArray extends AbstractControl {
     super(
         coerceToValidator(validatorOrOpts),
         coerceToAsyncValidator(asyncValidator, validatorOrOpts));
+    this.controls = controls;
+    this.validatorOrOpts = validatorOrOpts;
+    this.asyncValidator = asyncValidator;
+    this.updateDOM = new Subject();
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
     this._setUpControls();
@@ -977,7 +981,7 @@ export class FormArray extends AbstractControl {
   }
 
   /**
-  * Resets the {@link FormArray}. This means by default:
+  * Resets the `FormArray`. This means by default:
   * @param {any[]} value
   * @param {{onlySelf?: boolean, emitEvent?: boolean}} options
   */
