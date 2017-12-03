@@ -31,10 +31,29 @@ const controlsToBeMap = {
     onChange: 'onChange',
     onBlur: 'onBlur',
     disabled: 'disabled',
-    checked: 'value'
   }
 }
 const inputControls = isReactNative() ? controlsToBeMap.ReactNative : controlsToBeMap.default;
+function getHandler(inputType, value, control) {
+  const controlObject = {};
+  Object.keys(inputControls).forEach((key) => {
+    const controlProperty = control[inputControls[key]];
+    controlObject[key] = controlProperty;
+  });
+  const mappedObject = controlObject;
+  switch(inputType) {
+    case 'checkbox':
+      mappedObject['checked'] = !!mappedObject.value;
+      break;
+    case 'radio':
+      mappedObject['checked'] = mappedObject.value === value;
+      delete mappedObject.value;
+      mappedObject.value = value;
+      break;
+  } 
+  console.log("THIS IS MAPPED OBJECT", mappedObject, controlObject);
+  return mappedObject;
+}
 /**
 * @param {FormControl|FormGroup} control
 */
@@ -46,11 +65,7 @@ function mapControlToProps(control) {
     mappedObject[key] = controlProperty;
   });
   if(control instanceof FormControl) {
-    Object.keys(inputControls).forEach((key) => {
-      const controlProperty = control[inputControls[key]];
-      controlObject[key] = controlProperty;
-    });
-    mappedObject['handler'] = controlObject;
+    mappedObject['handler'] = (inputType, value) => getHandler(inputType, value, control);
   }
   return mappedObject;
 }
