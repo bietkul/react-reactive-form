@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { toObservable, isEvent } from './utils';
 import Validators from './validators';
 
@@ -224,7 +224,7 @@ export class AbstractControl {
     if (opts.emitEvent !== false) {
       this.valueChanges.next(this.value);
       this.statusChanges.next(this.status);
-      if(this.root && this.root.updateDOM) {
+      if(this.root === this && this.root.updateDOM) {
         this.root.updateDOM.next();
       }
     }
@@ -265,7 +265,7 @@ export class AbstractControl {
     if (options.emitEvent !== false) {
       this.valueChanges.next(this.value);
       this.statusChanges.next(this.status);
-      if(this.root && this.root.updateDOM) {
+      if(this.root === this && this.root.updateDOM) {
         this.root.updateDOM.next();
       }
     }
@@ -498,7 +498,7 @@ export class AbstractControl {
     this.status = this._calculateStatus();
     if (emitEvent) {
       this.statusChanges.next();
-      if(this.root && this.root.updateDOM) {
+      if(this.root === this && this.root.updateDOM) {
         this.root.updateDOM.next();
       }
     }
@@ -535,7 +535,8 @@ export class AbstractControl {
 }
 export class FormControl extends AbstractControl {
   constructor(formState, validatorOrOpts, asyncValidator) {
-    super(coerceToValidator(validatorOrOpts), coerceToAsyncValidator(asyncValidator));
+    super(coerceToValidator(validatorOrOpts),
+    coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.formState = formState;
     this.validatorsOrOpts = validatorOrOpts;
     this.asyncValidator = asyncValidator;
@@ -645,11 +646,12 @@ export class FormControl extends AbstractControl {
 }
 export class FormGroup extends AbstractControl {
   constructor(controls, validatorOrOpts, asyncValidator) {
-    super(coerceToValidator(validatorOrOpts), coerceToAsyncValidator(asyncValidator));
+    super(coerceToValidator(validatorOrOpts),
+    coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.controls = controls;
     this.validatorOrOpts = validatorOrOpts;
     this.asyncValidator = asyncValidator;
-    this.updateDOM = new Subject();
+    this.updateDOM = new BehaviorSubject();
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
     this._setUpControls();
@@ -876,7 +878,7 @@ export class FormArray extends AbstractControl {
     this.controls = controls;
     this.validatorOrOpts = validatorOrOpts;
     this.asyncValidator = asyncValidator;
-    this.updateDOM = new Subject();
+    this.updateDOM = new BehaviorSubject();
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
     this._setUpControls();
