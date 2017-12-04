@@ -176,7 +176,7 @@ declare abstract class AbstractControl {
     *
     * ```
     */
-    setErrors: (errors: ValidationErrors, opts?: {onlySelf?: boolean}) => void;
+    setErrors: (errors: ValidationErrors|null, opts?: {onlySelf?: boolean}) => void;
     /**
     * Returns error data if the control with the given path has the error specified. Otherwise
     * returns null or undefined.
@@ -378,6 +378,7 @@ declare module "react-reactive-form" {
             controls: {[key: string]: AbstractControl},
             validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
             asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null)
+        controls: {[key: string]: AbstractControl}
         /**
         * Registers a control with the group's list of controls.
         *
@@ -481,7 +482,7 @@ declare module "react-reactive-form" {
         * console.log(this.form.get('first').status);  // 'DISABLED'
         * ```
         */
-        reset(value: any, options?: {onlySelf?: boolean, emitEvent?: boolean}): void
+        reset(value?: any, options?: {onlySelf?: boolean, emitEvent?: boolean}): void
     }
     /**
     * Tracks the value and validation status of an individual form control.
@@ -597,7 +598,7 @@ declare module "react-reactive-form" {
         * console.log(this.control.status);  // 'DISABLED'
         * ```
         */
-        reset(formState: any, options?: {onlySelf?: boolean, emitEvent?: boolean}): void
+        reset(formState?: any, options?: {onlySelf?: boolean, emitEvent?: boolean}): void
     }
     export class Validators {
         /**
