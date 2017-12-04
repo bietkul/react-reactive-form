@@ -746,6 +746,20 @@ export class FormGroup extends AbstractControl {
     this.updateValueAndValidity(options);
   }
   /**
+  * Resets the `FormGroup`.
+  * @param {any} value
+  * @param {{onlySelf: boolean, emitEvent: boolean}} options
+  * @return {void}
+  */
+  reset(value = {}, options = {}) {
+    this._forEachChild((control, name) => {
+      control.reset(value[name], {onlySelf: true, emitEvent: options.emitEvent});
+    });
+    this.updateValueAndValidity(options);
+    this._updatePristine(options);
+    this._updateTouched(options);
+  }
+  /**
   *  Patches the value of the FormGroup. It accepts an object with control
   *  names as keys, and will do its best to match the values to the correct controls
   *  in the group.
@@ -983,11 +997,11 @@ export class FormArray extends AbstractControl {
   }
 
   /**
-  * Resets the `FormArray`. This means by default:
+  * Resets the `FormArray`.
   * @param {any[]} value
   * @param {{onlySelf?: boolean, emitEvent?: boolean}} options
   */
-  reset(value, options = {}) {
+  reset(value = [], options = {}) {
     this._forEachChild((control, index) => {
       control.reset(value[index], {onlySelf: true, emitEvent: options.emitEvent});
     });
