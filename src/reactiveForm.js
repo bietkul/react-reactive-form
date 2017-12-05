@@ -37,7 +37,12 @@ const inputControls = isReactNative() ? controlsToBeMap.ReactNative : controlsTo
 function getHandler(inputType, value, control) {
   const controlObject = {};
   Object.keys(inputControls).forEach((key) => {
-    const controlProperty = control[inputControls[key]];
+    let controlProperty = null;
+    if(key === 'value') {
+      controlProperty = control[inputControls[key]] || "";
+    } else {
+      controlProperty = control[inputControls[key]];
+    }
     controlObject[key] = controlProperty;
   });
   const mappedObject = controlObject;
