@@ -1,7 +1,7 @@
 import FormBuilder from './formBuilder';
 import Validators from './validators';
 import { FormGroup, FormControl, FormArray } from './model';
-import reactiveForm from './connect';
+import reactiveForm from './reactiveForm';
 
 export { 
     FormBuilder,

@@ -1,6 +1,5 @@
 import { map } from 'rxjs/operator/map';
 import { forkJoin } from 'rxjs/observable/forkJoin';
-import { AbstractControl } from './model';
 import { toObservable } from './utils';
 
 function isEmptyInputValue(value) {

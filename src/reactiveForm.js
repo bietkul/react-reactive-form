@@ -47,9 +47,9 @@ function getHandler(inputType, value, control) {
       break;
     case 'radio':
       mappedObject['checked'] = mappedObject.value === value;
-      delete mappedObject.value;
       mappedObject.value = value;
       break;
+    default:
   }
   return mappedObject;
 }
@@ -58,7 +58,6 @@ function getHandler(inputType, value, control) {
 */
 function mapControlToProps(control) {
   const mappedObject = {};
-  const controlObject = {};
   Object.keys(propsToBeMap).forEach((key) => {
     const controlProperty = control[propsToBeMap[key]];
     mappedObject[key] = controlProperty;
@@ -98,13 +97,13 @@ function mapProps(formControls) {
  * Higher order component
  * @param {Component} ReactComponent
  * @param {FormGroup} formGroup
- * @return {Component} connect
+ * @return {Component} reactiveForm
  */
-function connect(ReactComponent, formGroup) {
+function reactiveForm(ReactComponent, formGroup) {
   const formControls = formGroup.controls;
   const extraProps = mapProps(formControls);
   mapProps(formControls);
-  class Connect extends React.Component {
+  class ReactiveForm extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -138,6 +137,6 @@ function connect(ReactComponent, formGroup) {
       return React.createElement(ReactComponent, props);
     }
 }
-  return Connect;
+  return ReactiveForm;
 }
-export default connect;
+export default reactiveForm;

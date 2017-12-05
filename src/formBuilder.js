@@ -1,4 +1,4 @@
-import { FormControl, FormArray, FormGroup, AbstractControl } from './model';
+import { FormControl, FormArray, FormGroup } from './model';
 
 export default class FormBuilder {
   /**

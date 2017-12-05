@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 
 export function isPromise(obj) {
