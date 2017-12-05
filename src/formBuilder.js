@@ -2,7 +2,7 @@ import { FormControl, FormArray, FormGroup } from './model';
 
 export default class FormBuilder {
   /**
-   * Construct a new {@link FormGroup} with the given map of configuration.
+   * Construct a new `FormGroup` with the given map of configuration.
    * Valid keys for the `extra` parameter map are `validator` and `asyncValidator`.
    * @param {{[key: string]: any}} controlsConfig
    * @param {{[key: string]: any}|null} extra
@@ -15,7 +15,16 @@ export default class FormBuilder {
     return new FormGroup(controls, validator, asyncValidator);
   }
   /**
-   * Construct a new {@link FormControl} with the given `formState`,`validator`, and
+   * Construct a `FormArray` from the given `controlsConfig` array of
+   * configuration, with the given optional `validator` and `asyncValidator`.
+   */
+  array(controlsConfig, validator, asyncValidator) {
+    const controls = controlsConfig.map(c => this._createControl(c));
+    return new FormArray(controls, validator, asyncValidator);
+  }
+
+  /**
+   * Construct a new `FormControl` with the given `formState`,`validator`, and
    * `asyncValidator`.
    *
    * `formState` can either be a standalone value for the form control or an object
