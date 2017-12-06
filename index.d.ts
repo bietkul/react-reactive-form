@@ -14,8 +14,7 @@ export type Handler = {
     checked?: boolean;
     editable?: boolean;
 }
-
-export interface FormProps {
+type Meta = {
     value: any;
     touched: boolean;
     untouched: boolean;
@@ -28,11 +27,14 @@ export interface FormProps {
     errors: ValidationErrors;
     status: Status;
     pending: boolean;
-    [key: string]: any;
     hasError: (errorCode: string, path?: String|Number[]|String) => boolean;
+    getError: (errorCode: string, path: String|Number[]|String) => any;
     handler: (inputType?: InputType, value?: string) => Handler;
 }
-type MetadataObj = {[key: string]: FormProps}
+interface Child {
+    [key: string]: Meta;  
+}
+export type FormProps = Child & Meta;
 export type FormHooks = 'change' | 'blur' | 'submit';
 
 export interface AbstractControlOptions {
