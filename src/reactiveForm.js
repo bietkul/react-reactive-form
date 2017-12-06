@@ -15,6 +15,7 @@ const propsToBeMap = {
   dirty: 'dirty',
   errors: 'errors',
   hasError: 'hasError',
+  getError: 'getError',
   status: 'status',
   pending: 'pending',
 }
