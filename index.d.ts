@@ -4,6 +4,35 @@ import { Observable } from 'rxjs';
 export type ValidationErrors = {
     [key: string]: any
 };
+export type Status = 'VALID'|'INVALID'|'DISABLED'|'PENDING';
+export type InputType = 'checkbox'|'radio';
+export type Handler = {
+    value: any;
+    onChange: (e: any) => void;
+    onBlur: (e: any) => void;
+    disabled: boolean;
+    checked?: boolean;
+    editable?: boolean;
+}
+
+export interface FormProps {
+    value: any;
+    touched: boolean;
+    untouched: boolean;
+    disabled: boolean;
+    enabled: boolean;
+    invalid: boolean;
+    valid: boolean;
+    pristine: boolean;
+    dirty: boolean;
+    errors: ValidationErrors;
+    status: Status;
+    pending: boolean;
+    [key: string]: any;
+    hasError: (errorCode: string, path?: String|Number[]|String) => boolean;
+    handler: (inputType?: InputType, value?: string) => Handler;
+}
+type MetadataObj = {[key: string]: FormProps}
 export type FormHooks = 'change' | 'blur' | 'submit';
 
 export interface AbstractControlOptions {
@@ -190,7 +219,7 @@ declare abstract class AbstractControl {
     *
     * If no path is given, it checks for the error on the present control.
     */
-    hasError: (errorCode: string, path: String|Number[]|String) => boolean;
+    hasError: (errorCode: string, path?: String|Number[]|String) => boolean;
     setParent: (parent: FormGroup|FormArray) => void;
     /**
     * Sets the value of the control. Abstract method (implemented in sub-classes).
