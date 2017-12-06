@@ -26,6 +26,31 @@ export const PENDING = 'PENDING';
  */
 export const DISABLED = 'DISABLED';
 
+function getControlValue(event) {
+  if(isEvent(event)) {
+    switch(event.target.type) {
+      case "checkbox":
+        return event.target.checked;
+        break;
+      case "select-multiple":
+        if(event.target.options) {
+          let options = event.target.options;
+          var value = [];
+          for (var i = 0, l = options.length; i < l; i++) {
+            if (options[i].selected) {
+              value.push(options[i].value);
+            }
+          }
+          return value;
+        }
+        return event.target.value;
+        break;
+      default:
+        return event.target.value;
+    }
+  }
+  return event;
+}
 /**
 * @param {AbstractControl} control
 * @param {(String|Number)[]|String} path
@@ -545,40 +570,16 @@ export class FormControl extends AbstractControl {
     this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     this._initObservables();
     this.onChange = (event) => {
+      const value = getControlValue(event);
       if(!this.dirty) {
         this.markAsDirty();
       }
-      if(isEvent(event)) {
-        switch(event.target.type) {
-          case "checkbox":
-            this.setValue(event.target.checked);
-            break;
-          case "select-multiple":
-            if(event.target.options) {
-              let options = event.target.options;
-              var value = [];
-              for (var i = 0, l = options.length; i < l; i++) {
-                if (options[i].selected) {
-                  value.push(options[i].value);
-                }
-              }
-              this.setValue(value);
-            } else {
-              this.setValue(event.target.value);
-            }
-            break;
-          default:
-            this.setValue(event.target.value);
-        }
-      } else {
-        this.setValue(event);
-      }
+      this.setValue(value);
     };
     this.onBlur = () => {
       if (!this.touched) {
         this.markAsTouched();
         this.root.updateDOM.next();
-        // this._updateTouched();
       }
     };
   }
