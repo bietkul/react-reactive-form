@@ -39,8 +39,8 @@ export default class Validators {
   }
 
   /**
-  * Validator that requires controls to have a value less than a number.
-  */
+   * Validator that requires controls to have a value less than a number.
+   */
   static max(max) {
     return (control) => {
       if (isEmptyInputValue(control.value) || isEmptyInputValue(max)) {

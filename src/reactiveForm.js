@@ -2,7 +2,7 @@ import React from 'react';
 import { FormGroup, FormArray, FormControl } from './model';
 import { isReactNative } from './utils';
 
-// React
+// Common props
 const propsToBeMap = {
   value: 'value',
   touched: 'touched',
@@ -18,6 +18,7 @@ const propsToBeMap = {
   getError: 'getError',
   status: 'status',
   pending: 'pending',
+  pendingValue: '_pendingValue'
 }
 const controlsToBeMap = {
   ReactNative: {
@@ -40,7 +41,11 @@ function getHandler(inputType, value, control) {
   Object.keys(inputControls).forEach((key) => {
     let controlProperty = null;
     if(key === 'value') {
-      controlProperty = control[inputControls[key]] || "";
+      if(control.updateOn !== "change") {
+        controlProperty = control._pendingValue || "";
+      } else {
+        controlProperty = control.value || "";
+      }
     } else {
       controlProperty = control[inputControls[key]];
     }
@@ -60,8 +65,8 @@ function getHandler(inputType, value, control) {
   return mappedObject;
 }
 /**
-* @param {FormControl|FormGroup} control
-*/
+ * @param {FormControl|FormGroup} control
+ */
 function mapControlToProps(control) {
   const mappedObject = {};
   Object.keys(propsToBeMap).forEach((key) => {
@@ -74,9 +79,9 @@ function mapControlToProps(control) {
   return mappedObject;
 }
 /**
-* @param {FormControl|FormGroup} control
-* @param {String} name
-*/
+ * @param {FormControl|FormGroup} control
+ * @param {String} name
+ */
 function mapNestedControls(control, name) {
   var extraProps = {};
   extraProps[name] = mapControlToProps(control);

@@ -3,39 +3,43 @@ import { FormControl, FormArray, FormGroup } from './model';
 export default class FormBuilder {
   /**
    * Construct a new `FormGroup` with the given map of configuration.
-   * Valid keys for the `extra` parameter map are `validator` and `asyncValidator`.
+   * Valid keys for the `extra` parameter map are `validators`, `asyncValidators` & `updateOn`.
    * @param {{[key: string]: any}} controlsConfig
    * @param {{[key: string]: any}|null} extra
    * @return {FormGroup}
    */
   group(controlsConfig, extra) {
     const controls = this._reduceControls(controlsConfig);
-    const validator = extra != null ? extra.validator : null;
-    const asyncValidator = extra != null ? extra.asyncValidator : null;
-    return new FormGroup(controls, validator, asyncValidator);
+    const validators = extra != null ? extra.validators : null;
+    const asyncValidators = extra != null ? extra.asyncValidators : null;
+    const updateOn = extra != null ? extra.updateOn : null;
+    return new FormGroup(controls, {validators, asyncValidators, updateOn});
   }
   /**
    * Construct a `FormArray` from the given `controlsConfig` array of
-   * configuration, with the given optional `validator` and `asyncValidator`.
+   * Valid keys for the `extra` parameter map are `validators`, `asyncValidators` & `updateOn`.
    */
-  array(controlsConfig, validator, asyncValidator) {
+  array(controlsConfig, extra) {
     const controls = controlsConfig.map(c => this._createControl(c));
-    return new FormArray(controls, validator, asyncValidator);
+    const validators = extra != null ? extra.validators : null;
+    const asyncValidators = extra != null ? extra.asyncValidators : null;
+    const updateOn = extra != null ? extra.updateOn : null;
+    return new FormArray(controls, {validators, asyncValidators, updateOn});
   }
 
   /**
-   * Construct a new `FormControl` with the given `formState`,`validator`, and
-   * `asyncValidator`.
-   *
+   * Construct a new `FormControl` with the given `formState`,`validator`,`asyncValidator`
+   * and `updateOn`
    * `formState` can either be a standalone value for the form control or an object
    * that contains both a value and a disabled status.
    * @param {Object} formState
    * @param {Function|Function[]|null} validator
    * @param {Function|Function[]|null} asyncValidator
+   * @param {string} updatOn
    * @return {FormControl}
    */
-  control(formState, validator, asyncValidator) {
-    return new FormControl(formState, validator, asyncValidator);
+  control(formState, validators, asyncValidators, updateOn) {
+    return new FormControl(formState, { validators, asyncValidators, updateOn });
   }
   _reduceControls(controlsConfig) {
     const controls = {};
@@ -52,7 +56,8 @@ export default class FormBuilder {
       const value = controlConfig[0];
       const validator = controlConfig.length > 1 ? controlConfig[1] : null;
       const asyncValidator = controlConfig.length > 2 ? controlConfig[2] : null;
-      return this.control(value, validator, asyncValidator);
+      const updateOn = controlConfig.length > 3 ? controlConfig[3] : null;
+      return this.control(value, validator, asyncValidator, updateOn);
     }
     return this.control(controlConfig);
   }
