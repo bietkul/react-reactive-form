@@ -15,5 +15,6 @@ npm install react-reactive-form --save
 # Basic Example
 # Documentation
 * [Getting Started](docs/GettingStarted.md)
-* [Examples](https://redux-form.com/7.2.0/examples/)
-* [API](https://redux-form.com/7.2.0/docs/api/)
+* [Examples](examples/)
+* [API](docs/api/)
+# Code Sandboxes
