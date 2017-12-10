@@ -13,7 +13,8 @@ It's a library inspired by the angular's `Reactive Forms`, which allows to creat
 npm install react-reactive-form --save
 ```
 # Basic Example
-```import React, { Component } from 'react';
+```js
+import React, { Component } from 'react';
 import { FormBuilder, Validators, reactiveForm } from "react-reactive-form";
 
 // Create the controls
