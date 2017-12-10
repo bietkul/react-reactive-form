@@ -634,6 +634,14 @@ declare module "react-reactive-form" {
          * ```
          */
         reset(value?: any, options?: {onlySelf?: boolean, emitEvent?: boolean}): void
+        /**
+         * Submit action, can be used to tell the form that it has been submitted.
+         * Useful when `updateOn` property is `submit`.
+         * ```
+         * <form onSubmit={this.form.onSubmit}/>
+         * ```
+         */
+        onSubmit():void
     }
     /**
      * Tracks the value and validation status of an individual form control.
@@ -700,7 +708,13 @@ declare module "react-reactive-form" {
         constructor(formState: any,
             validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
             asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null);
+        /**
+         * Function needs to be called whenever a value change happens.
+         */
         onChange: (value: any) => void;
+        /**
+         * Function needs to be called whenever a blur event triggers.
+         */
         onBlur: () => void;
         /**
          * Set the value of the form control to `value`.
