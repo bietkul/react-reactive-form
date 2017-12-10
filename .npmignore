@@ -1,17 +1,5 @@
-# Source file
-Components
-
-# Dotfiles
-.babelrc
-.eslintignore
-.eslintrc.json
-.gitattributes
-_config.yml
-
-# Package-lock
-package_lock
-
-# Documents
-CONTRIBUTING.md
-ISSUE_TEMPLATE.txt
-img
+examples
+docs
+.npmignore
+package-lock.json
+yarn.lock
