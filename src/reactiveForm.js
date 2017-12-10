@@ -55,10 +55,12 @@ function getHandler(inputType, value, control) {
   switch(inputType) {
     case 'checkbox':
       mappedObject['checked'] = !!mappedObject.value;
+      mappedObject['type'] = inputType;
       break;
     case 'radio':
       mappedObject['checked'] = mappedObject.value === value;
       mappedObject.value = value;
+      mappedObject['type'] = inputType;
       break;
     default:
   }

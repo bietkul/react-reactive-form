@@ -13,6 +13,7 @@ export type Handler = {
     disabled: boolean;
     checked?: boolean;
     editable?: boolean;
+    type?: string;
 }
 type Meta = {
     value: any;
