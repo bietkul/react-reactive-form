@@ -11,7 +11,7 @@ The basic implementation of reactive forms is super easy but it's good to have k
 To connect your components to reactive-form you need to use the `reactiveForm` method. It returns a higher order component 
 which regulary provides latest control(mapped) props to your component.
 
-```reactiveForm(ReactComponent: React.SFC|React.ComponentClass<any>, form: FormGroup|FormBuilder):React.ComponentClass<any>```
+```reactiveForm(ReactComponent: React.SFC|React.ComponentClass<any>, form: FormGroup|FormArray):React.ComponentClass<any>```
 ## Basic Usage Guide
 It may be helpful to read a brief description of the core form classes.
 * [Abstract Control](api/AbstractControl)
