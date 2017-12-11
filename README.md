@@ -1,5 +1,5 @@
 # React Reactive Forms
-It's a library inspired by the angular's `Reactive Forms`, which allows to create a tree of form control objects in the component class and bind them with native form control elements.
+It's a library inspired by the [Angular's Reactive Forms](https://angular.io/guide/reactive-forms), which allows to create a tree of form control objects in the component class and bind them with native form control elements.
 # Features
 - UI Independent.
 - Nested forms.
