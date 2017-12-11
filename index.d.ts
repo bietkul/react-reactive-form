@@ -44,7 +44,7 @@ export interface AbstractControlOptions {
   asyncValidators?: AsyncValidatorFn|AsyncValidatorFn[]|null;
   updateOn?: FormHooks;
 }
-export interface ValidatorFn { (c: AbstractControl): ValidationErrors|null; }
+export interface ValidatorFn { (c: AbstractControl|FormGroup): ValidationErrors|null; }
 export interface AsyncValidatorFn {
     (c: AbstractControl): Promise<ValidationErrors|null>|Observable<ValidationErrors|null>;
 }

@@ -594,7 +594,6 @@ export class FormControl extends AbstractControl {
     coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.formState = formState;
     this.validatorsOrOpts = validatorOrOpts;
-    this.asyncValidator = asyncValidator;
     this._applyFormState(formState);
     this._setUpdateStrategy(validatorOrOpts);
     this._pendingChange = this.updateOn !== "change";
@@ -721,7 +720,6 @@ export class FormGroup extends AbstractControl {
     coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.controls = controls;
     this.validatorOrOpts = validatorOrOpts;
-    this.asyncValidator = asyncValidator;
     this.updateDOM = new BehaviorSubject();
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
@@ -972,7 +970,6 @@ export class FormArray extends AbstractControl {
         coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.controls = controls;
     this.validatorOrOpts = validatorOrOpts;
-    this.asyncValidator = asyncValidator;
     this.updateDOM = new BehaviorSubject();
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
