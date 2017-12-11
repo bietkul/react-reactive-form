@@ -394,7 +394,7 @@ declare module "react-reactive-form" {
          *  console.log(arr.value);   // ['Jon', 'Snow']
          *  ```
          */
-        setValue(value: any[], options: {onlySelf?: boolean, emitEvent?: boolean} = {}): void
+        setValue(value: any[], options: {onlySelf?: boolean, emitEvent?: boolean}): void
         /**
          *  Patches the value of the `FormArray`. It accepts an array that matches the
          *  structure of the control, and will do its best to match the values to the correct
@@ -415,7 +415,7 @@ declare module "react-reactive-form" {
          *  console.log(arr.value);   // ['Jon', null]
          *  ```
          */
-        patchValue(value: any[], options: {onlySelf?: boolean, emitEvent?: boolean} = {}): void
+        patchValue(value: any[], options: {onlySelf?: boolean, emitEvent?: boolean}): void
         /**
          * Resets the `FormArray`. This means by default:
          *
@@ -447,7 +447,7 @@ declare module "react-reactive-form" {
          * console.log(this.arr.get(0).status);  // 'DISABLED'
          * ```
          */
-        reset(value: any = [], options: {onlySelf?: boolean, emitEvent?: boolean} = {}): void
+        reset(value: any[], options: {onlySelf?: boolean, emitEvent?: boolean}): void
         /**
          * The aggregate value of the array, including any disabled controls.
          *
