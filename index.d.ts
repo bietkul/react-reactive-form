@@ -279,7 +279,7 @@ declare module "react-reactive-form" {
          *
          */
         control(formState: Object, validators?: ValidatorFn|ValidatorFn[]|null,
-            asyncValidators?: AsyncValidatorFn|AsyncValidatorFn[]|null, updateOn: FormHooks): FormControl
+            asyncValidators?: AsyncValidatorFn|AsyncValidatorFn[]|null, updateOn?: FormHooks): FormControl
         /**
          * Construct a `FormArray` from the given `controlsConfig` array of
          * configuration.
