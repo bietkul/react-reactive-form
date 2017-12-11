@@ -799,5 +799,5 @@ declare module "react-reactive-form" {
          */
         static pattern(pattern: string|RegExp): ValidatorFn
     }
-    export function reactiveForm(ReactComponent: React.SFC|React.ComponentClass<any>, formGroup: FormGroup):React.ComponentClass<any>;
+    export function reactiveForm(ReactComponent: React.SFC|React.ComponentClass<any>, form: FormGroup|FormArray):React.ComponentClass<any>;
 }
