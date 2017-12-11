@@ -1,7 +1,5 @@
 # Getting Started With `react-reactive-form`
-The basic implementation of reactive forms is super easy but it's good to have knowledge of these things.
-* [React](https://facebook.github.io/react/) and
-  [Higher-Order Components (HOCs)](https://facebook.github.io/react/docs/higher-order-components.html).
+The basic implementation of reactive forms is super easy but it may be helpful to read a brief description of the core form classes.
 * [Abstract Control](api/AbstractControl)
 * [Form Group](api/FormGroup)
 * [Form Array](api/FormArray)
@@ -9,7 +7,7 @@ The basic implementation of reactive forms is super easy but it's good to have k
 * [Form Builder](api/FormBuilder)
 ## Overview
 To connect your components to reactive-form you need to use the `reactiveForm` method. It returns a higher order component 
-which regulary provides latest control(mapped) props to your component.
+which regulary provides control(mapped) props to your component.
 
 ```reactiveForm(ReactComponent: React.SFC|React.ComponentClass<any>, form: FormGroup|FormArray):React.ComponentClass<any>```
 ## Basic Usage Guide
@@ -72,7 +70,7 @@ export default reactiveForm(Login, loginform);
 ```
 
 ### step3: Use handlers to bind input elements
-In below given example `username.handler` is a function which binds the input element to the corresponding control.
+In below given example `username.handler` is a function which binds the input element to the `username` control.
 ```js
 import React, { Component } from 'react';
 import { FormBuilder, Validators, reactiveForm } from "./react-reactive-form";
