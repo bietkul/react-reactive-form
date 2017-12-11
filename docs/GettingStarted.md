@@ -9,7 +9,9 @@ The basic implementation of reactive forms is super easy but it may be helpful t
 To connect your components to reactive-form you need to use the `reactiveForm` method. It returns a higher order component 
 which regulary provides control(mapped) props to your component.
 
-```reactiveForm(ReactComponent: React.SFC|React.ComponentClass<any>, form: FormGroup|FormArray):React.ComponentClass<any>```
+```ts
+reactiveForm(ReactComponent: React.SFC|React.ComponentClass<any>, form: FormGroup|FormArray):React.ComponentClass<any>
+```
 ## Basic Usage Guide
 ### step 1: Create FormGroup or FormArray
 A form group is a collection object of form controls & form array is the collection array of form controls.
