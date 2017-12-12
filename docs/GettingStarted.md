@@ -1,23 +1,18 @@
 # Getting Started With `react-reactive-form`
-The basic implementation of reactive forms is super easy but it's good to have knowledge of these things.
-* [React](https://facebook.github.io/react/) and
-  [Higher-Order Components (HOCs)](https://facebook.github.io/react/docs/higher-order-components.html).
-* [Abstract Control](api/AbstractControl)
-* [Form Group](api/FormGroup)
-* [Form Array](api/FormArray)
-* [Form Control](api/FormControl)
-* [Form Builder](api/FormBuilder)
+The basic implementation of reactive forms is super easy but it may be helpful to read a brief description of the core form classes.
+* [Abstract Control](api/AbstractControl.md)
+* [Form Group](api/FormGroup.md)
+* [Form Array](api/FormArray.md)
+* [Form Control](api/FormControl.md)
+* [Form Builder](api/FormBuilder.md)
 ## Overview
 To connect your components to reactive-form you need to use the `reactiveForm` method. It returns a higher order component 
-which regulary provides latest control(mapped) props to your component.
+which regulary provides control(mapped) props to your component.
 
-```reactiveForm(ReactComponent: React.SFC|React.ComponentClass<any>, form: FormGroup|FormArray):React.ComponentClass<any>```
+```ts
+reactiveForm(ReactComponent: React.SFC|React.ComponentClass<any>, form: FormGroup|FormArray):React.ComponentClass<any>
+```
 ## Basic Usage Guide
-It may be helpful to read a brief description of the core form classes.
-* [Abstract Control](api/AbstractControl)
-* [Form Control](api/FormControl)
-* [Form Group](api/FormGroup)
-* [Form Array](api/FormArray)
 ### step 1: Create FormGroup or FormArray
 A form group is a collection object of form controls & form array is the collection array of form controls.
 
@@ -55,7 +50,7 @@ const loginForm = new FormGroup({
 
 ### step2: Connect form with component
 Use the `reactiveForm` method to connect your form group or array to the Component in which you want to use input handlers.
-Now you'll start receiving the [mapped control props](api/Props) with input handlers.  
+Now you'll start receiving the [mapped control props](api/Props.md) with input handlers.  
 ```js
 import React, { Component } from 'react';
 import { FormBuilder, reactiveForm } from "react-reactive-form";
@@ -72,7 +67,7 @@ export default reactiveForm(Login, loginform);
 ```
 
 ### step3: Use handlers to bind input elements
-In below given example `username.handler` is a function which binds the input element to the corresponding control.
+In below given example `username.handler` is a function which binds the input element to the `username` control.
 ```js
 import React, { Component } from 'react';
 import { FormBuilder, Validators, reactiveForm } from "./react-reactive-form";
