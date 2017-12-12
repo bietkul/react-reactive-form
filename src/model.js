@@ -384,6 +384,18 @@ export class AbstractControl {
     }
   }
   /**
+   * Marks the control as `pending`.
+   * @param {{onlySelf: Boolean}} opts
+   * @return {void}
+   */
+  markAsPending(opts = {}) {
+    this.status = PENDING;
+
+    if (this._parent && !opts.onlySelf) {
+      this._parent.markAsPending(opts);
+    }
+  }
+  /**
    * Sets the synchronous validators that are active on this control.  Calling
    * this will overwrite any existing sync validators.
    * @param {Function|Function[]|null} newValidator
@@ -391,6 +403,13 @@ export class AbstractControl {
    */
   setValidators(newValidator) {
     this.validator = coerceToValidator(newValidator);
+  }
+  /**
+   * Sets the async validators that are active on this control. Calling this
+   * will overwrite any existing async validators.
+   */
+  setAsyncValidators(newValidator) {
+    this.asyncValidator = coerceToAsyncValidator(newValidator);
   }
   /**
    * Sets errors on a form control.

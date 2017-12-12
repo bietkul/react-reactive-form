@@ -61,6 +61,7 @@ declare abstract class AbstractControl {
      */
     statusChanges: Observable<any>;
     value: any;
+    status: string;
     /**
      * A control is `valid` when its `status === VALID`.
      *
@@ -130,6 +131,8 @@ declare abstract class AbstractControl {
      * Possible values: `'change'` (default) | `'blur'` | `'submit'`
      */
     updateOn: string;
+    validator: ValidatorFn | null;
+    asyncValidator: AsyncValidatorFn | null;
     /**
      * Retrieves a child control given the control's name or path.
      *
@@ -202,6 +205,11 @@ declare abstract class AbstractControl {
      * this will overwrite any existing sync validators.
      */
     setValidators: (newValidator: Function|Function[]|null) => void;
+    /**
+     * Sets the async validators that are active on this control. 
+     * Calling this will overwrite any existing async validators.
+     */
+    setAsyncValidators(newValidator: AsyncValidatorFn | AsyncValidatorFn[]): void
     /**
      * Empties out the sync validator list.
      */
