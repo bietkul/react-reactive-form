@@ -266,3 +266,5 @@ If no path is given, it checks for the error on the present control.
 get root: AbstractControl
 ```
 Retrieves the top-level ancestor of this control.
+<br/></br>
+Note: This document is a derivative of ["Abstract Control Document"](https://angular.io/api/forms/AbstractControl) by Google, under [CC BY](https://creativecommons.org/licenses/by/4.0/).
