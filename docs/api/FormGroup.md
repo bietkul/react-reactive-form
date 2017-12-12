@@ -185,6 +185,18 @@ The aggregate value of the FormGroup, including any disabled controls.
 If you'd like to include all values regardless of disabled status, use this method. 
 Otherwise, the value property is the best way to get the value of the group.
 
+##
+```ts
+onSubmit():void
+```
+Submit action, can be used to tell the form that it has been submitted.
+Useful when `updateOn` property is `submit`.
+
+Example
+```ts
+<form onSubmit={this.form.onSubmit}/>
+```
+
 <br/></br>
 Note: This document is a derivative of ["Form Group Document"](https://angular.io/api/forms/FormGroup) by Google, 
 under [CC BY](https://creativecommons.org/licenses/by/4.0/).
