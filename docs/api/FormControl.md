@@ -66,6 +66,7 @@ This defaults to `false`.
 
 If `emitEvent` is true, this change will cause a valueChanges event on the FormControl to be emitted. 
 This defaults to `true` (as it falls through to updateValueAndValidity)
+##
 ```ts
 patchValue(value: any, options: {
     onlySelf?: boolean;
@@ -76,6 +77,7 @@ Patches the value of a control.
 
 This function is functionally the same as `setValue` at this level. 
 It exists for symmetry with patchValue on `FormGroups` and `FormArrays`, where it does behave differently.
+##
 ```ts
 reset(formState: any = null, options: {
     onlySelf?: boolean;
@@ -102,11 +104,12 @@ this.control.reset({value: 'Jon', disabled: true});
 console.log(this.control.value);  // 'Jon'
 console.log(this.control.status);  // 'DISABLED'
 ```
+##
 ```ts
 onChange: (value: any) => void;
 ```
 Function needs to be called whenever a value change happens.
-
+##
 ```ts
 onBlur: () => void;
 ```
