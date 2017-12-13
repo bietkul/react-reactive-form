@@ -44,9 +44,9 @@ export interface AbstractControlOptions {
   asyncValidators?: AsyncValidatorFn|AsyncValidatorFn[]|null;
   updateOn?: FormHooks;
 }
-export interface ValidatorFn { (c: AbstractControl|FormGroup): ValidationErrors|null; }
+export interface ValidatorFn { (c: AbstractControl|FormGroup|FormArray): ValidationErrors|null; }
 export interface AsyncValidatorFn {
-    (c: AbstractControl): Promise<ValidationErrors|null>|Observable<ValidationErrors|null>;
+    (c: AbstractControl|FormGroup|FormArray): Promise<ValidationErrors|null>|Observable<ValidationErrors|null>;
 }
 declare abstract class AbstractControl {
     constructor(validator: ValidatorFn|null, asyncValidator: AsyncValidatorFn|null)
@@ -463,6 +463,14 @@ declare module "react-reactive-form" {
          * Otherwise, the `value` property is the best way to get the value of the array.
          */
         getRawValue(): any[]
+        /**
+         * Submit action, can be used to tell the form that it has been submitted.
+         * Useful when `updateOn` property is `submit`.
+         * ```
+         * <form onSubmit={this.form.onSubmit}/>
+         * ```
+         */
+        onSubmit():void
     }
     /**
      * Tracks the value and validity state of a group of `FormControl`
