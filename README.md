@@ -62,7 +62,7 @@ class Login extends Component {
                     <input {...rememberMe.handler('checkbox')}/>
                 </div>
                 <button onClick={this.handleReset}>Reset</button>
-                <button type="submit">Submit</button>
+                <button disabled={loginForm.invalid} type="submit">Submit</button>
             </form>
         );
     }
