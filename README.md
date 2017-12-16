@@ -74,7 +74,6 @@ export default reactiveForm(Login, loginForm);
 ```
 # Documentation
 * [Getting Started](docs/GettingStarted.md)
-* [Examples](examples/)
 * [API](docs/api/)
 # Code Sandboxes
 Try out `react-reactive-forms` in these sandbox versions of the Examples.
@@ -82,3 +81,5 @@ Try out `react-reactive-forms` in these sandbox versions of the Examples.
 * [Sync & Async Validation](https://codesandbox.io/s/qq8xq7j2w)
 
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
+
+And don't forget to star the repo, I will ensure more frequent updates! Thanks!
