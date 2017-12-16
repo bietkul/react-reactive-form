@@ -3,11 +3,11 @@
 
 It's a library inspired by the [Angular's Reactive Forms](https://angular.io/guide/reactive-forms), which allows to create a tree of form control objects in the component class and bind them with native form control elements.
 # Features
-- UI Independent.
+- UI independent.
+- Zero dependencies. 
 - Nested forms.
-- Not depends on any kind of state management library.
 - Subscribers for value & status changes of controls.
-- Provides a list of validators & also supports custom sync & async validators.
+- Provides a set of validators & also supports custom sync & async validators.
 - Better form management with `FormGroup` & `FormArray` apis.
 - Customizable update strategy for better performace with large forms.
 # Installation
