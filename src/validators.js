@@ -1,6 +1,4 @@
-import { map } from 'rxjs/operator/map';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { toObservable } from './utils';
+import { fromPromise } from './utils';
 
 function isEmptyInputValue(value) {
   return value == null || value.length === 0;
@@ -143,8 +141,8 @@ export default class Validators {
     const presentValidators = validators.filter(isPresent);
     if (presentValidators.length === 0) return null;
     return (control) => {
-      const observables = _executeAsyncValidators(control, presentValidators).map(toObservable);
-      return map.call(forkJoin(observables), _mergeErrors);
+      const observables = _executeAsyncValidators(control, presentValidators);
+      return fromPromise(Promise.all(observables), _mergeErrors);
     };
   }
 }

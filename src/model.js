@@ -1,5 +1,5 @@
-import { Subject, BehaviorSubject } from 'rxjs';
 import { toObservable, isEvent } from './utils';
+import Subject from "./observable";
 import Validators from './validators';
 
 export const FormHooks = 'change' | 'blur' | 'submit';
@@ -739,7 +739,7 @@ export class FormGroup extends AbstractControl {
     coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.controls = controls;
     this.validatorOrOpts = validatorOrOpts;
-    this.updateDOM = new BehaviorSubject();
+    this.updateDOM = new Subject();
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
     this._setUpControls();
@@ -989,7 +989,7 @@ export class FormArray extends AbstractControl {
         coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.controls = controls;
     this.validatorOrOpts = validatorOrOpts;
-    this.updateDOM = new BehaviorSubject();
+    this.updateDOM = new Subject();
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
     this._setUpControls();

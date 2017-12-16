@@ -1,11 +1,12 @@
 {
   "name": "react-reactive-form",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Angular like Reactive Forms in React/React-Native",
   "keywords": [
     "forms",
     "form",
     "reactive",
+    "reactive-form",
     "form-generator",
     "form-builder",
     "android",
@@ -28,9 +29,6 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bietkul/react-reactive-form/issues"
-  },
-  "dependencies": {
-    "rxjs": "^5.4.3"
   },
   "devDependencies": {
     "react": "^16.1.1"

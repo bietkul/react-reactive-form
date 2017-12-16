@@ -124,19 +124,17 @@ function reactiveForm(ReactComponent, formGroup) {
       };
       this.updateComponent = this.updateComponent.bind(this);
     }
-    componentDidMount() {
+    componentWillMount() {
       // Add listeners
       formGroup.updateDOM.subscribe(() => {
         this.updateComponent();
-      }, (error) => {
-        console.log(error);
       });
     }
     componentWillUnmount() {
       //Remove listeners
       if (formGroup.updateDOM.observers) {
         formGroup.updateDOM.observers.forEach((observer) => {
-          observer.unsubscribe();
+          formGroup.updateDOM.unsubscribe(observer);
         });
       }
     }

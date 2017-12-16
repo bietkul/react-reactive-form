@@ -1,12 +1,34 @@
-import { fromPromise } from 'rxjs/observable/fromPromise';
+import Observable from "./observable";
 
+/** Converts a promise into Observable
+* @param {Promise} r
+* @param {(value: any) => any} cb
+* @returns {Observable}
+*/
+export function fromPromise(r, cb) {
+  const observable = new Observable();
+  const mappedValue = (value) =>  cb ? cb(value): value;
+
+  r.then((value) => {
+    observable.next(mappedValue(value));
+  },
+  (error) => {
+    observable.next(mappedValue(error));
+  }).then(null, error => {throw(mappedValue(error));});
+  return observable;
+}
+/**
+ * Checks if an object is a Promise
+ * @param {Observable} obj
+ * @returns {boolean}
+ */
 export function isPromise(obj) {
   return !!obj && typeof obj.then === 'function';
 }
 /**
  * Checks if an object is Observable
  * @param {Observable} obj
- * @returns {Observable}
+ * @returns {boolean}
  */
 export function isObservable(obj) {
   return !!obj && typeof obj.subscribe === 'function';

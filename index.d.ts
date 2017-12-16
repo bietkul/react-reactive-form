@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Observable } from 'rxjs';
 
 export type ValidationErrors = {
     [key: string]: any
@@ -14,6 +13,11 @@ export type Handler = {
     checked?: boolean;
     editable?: boolean;
     type?: string;
+}
+export interface Observable<T> {
+    observers: Array<T>;
+    subscribe: (fn:Function) => void;
+    unsubscribe: (fn:Function) => void;
 }
 type Meta = {
     value: any;
