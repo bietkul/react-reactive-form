@@ -7,14 +7,14 @@ import Observable from "./observable";
 */
 export function fromPromise(r, cb) {
   const observable = new Observable();
-  const mappedValue = (value) =>  cb ? cb(value): value;
 
   r.then((value) => {
+    const mappedValue = (value) =>  cb ? cb(value): value;
     observable.next(mappedValue(value));
   },
   (error) => {
-    observable.next(mappedValue(error));
-  }).then(null, error => {throw(mappedValue(error));});
+    observable.next(error);
+  }).then(null, error => {throw(error);});
   return observable;
 }
 /**
