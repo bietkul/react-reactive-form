@@ -21,8 +21,7 @@ import React, { Component } from 'react';
 import { FormBuilder, Validators, reactiveForm } from "react-reactive-form";
 
 // Create the controls
-const fb = new FormBuilder();
-const loginForm = fb.group({
+const loginForm = FormBuilder.group({
   username: ['', Validators.required],
   password: ['', Validators.required],
   rememberMe: false
