@@ -20,7 +20,7 @@ There are two ways to create these:
 
 #### With FormBuilder
 The FormBuilder class helps reduce repetition and clutter by handling details of control creation for you.
-`FormBuilder.group` is a method that creates a FormGroup. `FormBuilder.group` takes an object whose keys and values are 
+`FormBuilder.group` is a static method that creates a FormGroup. `FormBuilder.group` takes an object whose keys and values are 
 `FormControl` names and their definitions. In this example, the username control is defined by its initial data value, 
 an empty string.
 
@@ -30,8 +30,7 @@ series of new FormControl(...) statements.
 ```js
 import { FormBuilder } from "react-reactive-form";
 
-const fb = new FormBuilder();
-const loginForm = fb.group({
+const loginForm = FormBuilder.group({
   username: [''],
   password: [''],
 });
@@ -55,8 +54,7 @@ Now you'll start receiving the [mapped control props](api/Props.md) with input h
 import React, { Component } from 'react';
 import { FormBuilder, reactiveForm } from "react-reactive-form";
 
-const fb = new FormBuilder();
-const loginForm = fb.group({
+const loginForm = FormBuilder.group({
   username: [''],
   password: [''],
 });
@@ -73,8 +71,7 @@ import React, { Component } from 'react';
 import { FormBuilder, Validators, reactiveForm } from "./react-reactive-form";
 
 // Create the controls
-const fb = new FormBuilder();
-const loginForm = fb.group({
+const loginForm = FormBuilder.group({
   username: ['', Validators.required],
   password: ['', Validators.required],
   rememberMe: false
