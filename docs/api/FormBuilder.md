@@ -5,13 +5,11 @@ It is essentially syntactic sugar that shortens the new FormGroup(), new FormCon
 and new FormArray() boilerplate that can build up in larger forms.
 
 ## How To Use
-To use, create an instance of FormBuilder into your component class.By using it you can call its methods directly.
 ```ts
 imoprt { FormBuilder } from "react-reactive-form";
 ...
-const fb = new FormBuilder();
-const form = fb.group({
-  name: fb.group({
+const form = FormBuilder.group({
+  name: FormBuilder.group({
      first: ['Jon', Validators.minLength(2)],
      last: 'Snow',
   }),
@@ -21,7 +19,7 @@ const form = fb.group({
 ## Members
 
 ```ts
-group(controlsConfig: {
+static group(controlsConfig: {
     [key: string]: any;
 }, extra: {
     [key: string]: any;
@@ -32,7 +30,7 @@ Valid keys for the `extra` parameter map are same as [AbstractControlOptions](Ab
 
 ##
 ```ts
-control(
+static control(
 formState: Object, 
 validator?: ValidatorFn | ValidatorFn[] | null, 
 asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
@@ -43,7 +41,7 @@ formState can either be a standalone value for the form control or an object tha
 
 ## 
 ```ts
-array(controlsConfig: any[], extra?: AbstractControlOptions|null): FormArray
+static array(controlsConfig: any[], extra?: AbstractControlOptions|null): FormArray
 ```
 Construct a `FormArray` from the given `controlsConfig` array of configuration.
 Valid keys for the `extra` parameter map are same as [AbstractControlOptions](AbstractControlOptions.md).
