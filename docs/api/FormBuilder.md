@@ -31,10 +31,10 @@ Valid keys for the `extra` parameter map are same as [AbstractControlOptions](Ab
 ##
 ```ts
 static control(
-formState: Object, 
-validator?: ValidatorFn | ValidatorFn[] | null, 
-asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
-updateOn: FormHooks): FormControl
+  formState: Object, 
+  validator?: ValidatorFn | ValidatorFn[] | null, 
+  asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null,
+  updateOn: FormHooks): FormControl
 ```
 Construct a new FormControl with the given formState,validator,asyncValidator and updateOn.
 formState can either be a standalone value for the form control or an object that contains both a value and a disabled status.
