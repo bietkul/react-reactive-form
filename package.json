@@ -12,10 +12,7 @@
     "android",
     "ios",
     "react",
-    "native",
-    "react-native",
-    "native-modules",
-    "react-component"
+    "react-native"
   ],
   "main": "src/index.js",
   "scripts": {
