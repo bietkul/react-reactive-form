@@ -281,7 +281,7 @@ declare module "react-reactive-form" {
          * Construct a new `FormGroup` with the given map of configuration.
          * Valid keys for the `extra` parameter map are same as `AbstractControlOptions`.
          */
-        group(controlsConfig: {[key: string]: any}, extra?: AbstractControlOptions|null): FormGroup
+        static group(controlsConfig: {[key: string]: any}, extra?: AbstractControlOptions|null): FormGroup
         /**
          * Construct a new `FormControl` with the given `formState`,`validators`,
          * `asyncValidators` and `updateOn`.
@@ -290,14 +290,14 @@ declare module "react-reactive-form" {
          * that contains both a value and a disabled status.
          *
          */
-        control(formState: Object, validators?: ValidatorFn|ValidatorFn[]|null,
+        static control(formState: Object, validators?: ValidatorFn|ValidatorFn[]|null,
             asyncValidators?: AsyncValidatorFn|AsyncValidatorFn[]|null, updateOn?: FormHooks): FormControl
         /**
          * Construct a `FormArray` from the given `controlsConfig` array of
          * configuration.
          * Valid keys for the `extra` parameter map are same as `AbstractControlOptions`.
          */
-        array(controlsConfig: any[], extra?: AbstractControlOptions|null): FormArray
+        static array(controlsConfig: any[], extra?: AbstractControlOptions|null): FormArray
     }
     /**
      * Tracks the value and validity state of an array of `FormControl`,
