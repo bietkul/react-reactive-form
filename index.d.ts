@@ -34,7 +34,7 @@ type Meta = {
     pending: boolean;
     _pendingValue: any;
     hasError: (errorCode: string, path?: String|Number[]|String) => boolean;
-    getError: (errorCode: string, path: String|Number[]|String) => any;
+    getError: (errorCode: string, path?: String|Number[]|String) => any;
     handler: (inputType?: InputType, value?: string) => Handler;
 }
 interface Child {
