@@ -653,9 +653,12 @@ export class FormControl extends AbstractControl {
         }
       }
     };
-  }
-  handler(inputType, value) {
-    return getHandler(inputType, value, this);
+    /**
+     * Returns the required props to bind an input element.
+     * @param {string} inputType
+     * @param {any} value
+     */
+    this.handler = (inputType, value) => getHandler(inputType, value, this);
   }
   /**
    * @param {{onlySelf: Boolean, emitEvent: Boolean}} options

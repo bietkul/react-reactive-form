@@ -254,7 +254,11 @@ declare abstract class AbstractControl {
      * If no path is given, it checks for the error on the present control.
      */
     hasError: (errorCode: string, path?: String|Number[]|String) => boolean;
-    setParent: (parent: FormGroup|FormArray) => void;
+    /**
+     * Binds an input element to control.
+     */
+    handler: (inputType?: InputType, value?: string) => Handler;
+    setParent: (parent: FormGroup|FormArray) => void; 
     /**
      * Sets the value of the control. Abstract method (implemented in sub-classes).
      */
@@ -268,7 +272,12 @@ declare abstract class AbstractControl {
      */
     abstract reset(value?: any, options?: Object): void;
 }
+export interface FieldProps {
+    render: (control: FormArray|FormControl|FormGroup) => React.ReactElement<any>|React.ReactElement<any>[];
+    control: AbstractControl;
+}
 declare module "react-reactive-form" {
+    export class Field extends React.Component<FieldProps, any> {}
     /**
      * Creates an `AbstractControl` from a user-specified configuration.
      *
@@ -362,13 +371,17 @@ declare module "react-reactive-form" {
      */
     export class FormArray extends AbstractControl  {
         /**
+         * Array of controls
+         */
+        controls: AbstractControl[];
+        /**
          * Length of the control array.
          */
-        length: number
+        length: number;
         /**
          * Get the `AbstractControl` at the given `index` in the array.
          */
-        at(index: number): AbstractControl
+        at(index: number): AbstractControl;
         /**
          * Insert a new `AbstractControl` at the end of the array.
          */
@@ -736,6 +749,10 @@ declare module "react-reactive-form" {
          * Function needs to be called whenever a blur event triggers.
          */
         onBlur: () => void;
+        /**
+         * Binds an input element to control.
+         */
+        handler: (inputType?: InputType, value?: string) => Handler;
         /**
          * Set the value of the form control to `value`.
          *
