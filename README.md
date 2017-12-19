@@ -164,6 +164,7 @@ Try out `react-reactive-forms` in these sandbox versions of the Examples.
 * [Simple Form](https://codesandbox.io/s/4rxokpr270)
 * [Sync & Async Validation](https://codesandbox.io/s/qq8xq7j2w)
 * [User Register Form With Nested Forms](https://codesandbox.io/s/p2rqmr8qk7)
+* [Form Array With Dynamic Controls](https://codesandbox.io/s/nw9wxw2nvl)
 
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
 
