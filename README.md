@@ -74,7 +74,9 @@ export default reactiveForm(Login, loginForm);
 ```
 
 ### Note: 
-While dealing with larger forms & [Form Array’s](docs/api/FormArray.md) it’s highly recommended to use the [Field](docs/api/Field.md) component instead of `reactiveForm` method.`Field` component subscribes a particular control & only update it when it’s or it’s parent state changes, which of course reduces the re-rendering and boost the performance significantly.
+While working with larger forms, deep nested forms & [Form Array’s](docs/api/FormArray.md) it’s highly recommended to use the [Field](docs/api/Field.md) component instead of `reactiveForm` method.
+
+`Field` component subscribes a particular control & only update it when it’s or it’s parent’s state changes, which of course reduces the re-rendering and boost the performance significantly.
 
 
 ```js
