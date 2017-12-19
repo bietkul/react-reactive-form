@@ -73,7 +73,8 @@ class Login extends Component {
 export default reactiveForm(Login, loginForm);
 ```
 
-Note: While dealing with larger forms & [Form Array’s](docs/api/FormArray.md) it’s highly recommended to use the [Field](docs/api/Field.md) component instead of `reactiveForm` method.`Field` component subscribes a particular control & only update it when it’s or it’s parent state changes, which of course reduces the re-rendering and boost the performance significantly.
+### Note: 
+While dealing with larger forms & [Form Array’s](docs/api/FormArray.md) it’s highly recommended to use the [Field](docs/api/Field.md) component instead of `reactiveForm` method.`Field` component subscribes a particular control & only update it when it’s or it’s parent state changes, which of course reduces the re-rendering and boost the performance significantly.
 
 
 ```js
@@ -162,6 +163,7 @@ export default class Login extends Component {
 Try out `react-reactive-forms` in these sandbox versions of the Examples.
 * [Simple Form](https://codesandbox.io/s/4rxokpr270)
 * [Sync & Async Validation](https://codesandbox.io/s/qq8xq7j2w)
+* [User Register Form With Nested Forms](https://codesandbox.io/s/p2rqmr8qk7)
 
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
 
