@@ -3,6 +3,9 @@
 ## [reactiveForm](ReactiveForm.md)
 A higher order component which connects form with react component.
 
+## [Field](Field.md)
+A subscription based higher order component which connects a control with react component.
+
 ## [Abstract Control](AbstractControl.md)
 Base class for [FormControl](FormControl.md), [FormGroup](FormGroup.md), and [FormArray](FormArray.md).
 
