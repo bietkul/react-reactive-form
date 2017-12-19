@@ -114,7 +114,14 @@ Function needs to be called whenever a value change happens.
 onBlur: () => void;
 ```
 Function needs to be called whenever a blur event triggers.
-<br/></br>
+##
+```ts
+handler: (inputType?: InputType, value?: string) => Handler;
+```
+Returns the props required to bind a control with an input element.
+
+For more details see the handler section of [props](Props.md).
+
 Note: This document is a derivative of ["Form Control Document"](https://angular.io/api/forms/FormControl) by Google,
 under [CC BY](https://creativecommons.org/licenses/by/4.0/).
 
