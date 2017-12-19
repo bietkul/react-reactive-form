@@ -53,3 +53,68 @@ export const isReactNative = () => (
 );
 export const isEvent = (candidate) =>
 !!(candidate && candidate.stopPropagation && candidate.preventDefault);
+
+// Common props
+export const propsToBeMap = {
+  value: 'value',
+  touched: 'touched',
+  untouched: 'untouched',
+  disabled: 'disabled',
+  enabled: 'enabled',
+  invalid: 'invalid',
+  valid: 'valid',
+  pristine: 'pristine',
+  dirty: 'dirty',
+  errors: 'errors',
+  hasError: 'hasError',
+  getError: 'getError',
+  status: 'status',
+  pending: 'pending',
+  pendingValue: '_pendingValue'
+}
+export const controlsToBeMap = {
+  ReactNative: {
+    value: 'value',
+    onChange: 'onChange',
+    onBlur: 'onBlur',
+    editable: 'enabled',
+    disabled: 'disabled',
+  },
+  default: {
+    value: 'value',
+    onChange: 'onChange',
+    onBlur: 'onBlur',
+    disabled: 'disabled',
+  }
+}
+export const inputControls = isReactNative() ? controlsToBeMap.ReactNative : controlsToBeMap.default;
+export function getHandler(inputType, value, control) {
+  const controlObject = {};
+  Object.keys(inputControls).forEach((key) => {
+    let controlProperty = null;
+    if(key === 'value') {
+      if(control.updateOn !== "change") {
+        controlProperty = control._pendingValue || "";
+      } else {
+        controlProperty = control.value || "";
+      }
+    } else {
+      controlProperty = control[inputControls[key]];
+    }
+    controlObject[key] = controlProperty;
+  });
+  const mappedObject = controlObject;
+  switch(inputType) {
+    case 'checkbox':
+      mappedObject['checked'] = !!mappedObject.value;
+      mappedObject['type'] = inputType;
+      break;
+    case 'radio':
+      mappedObject['checked'] = mappedObject.value === value;
+      mappedObject.value = value;
+      mappedObject['type'] = inputType;
+      break;
+    default:
+  }
+  return mappedObject;
+}

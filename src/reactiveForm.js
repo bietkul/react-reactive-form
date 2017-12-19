@@ -1,73 +1,9 @@
 import React from 'react';
 import { FormGroup, FormArray, FormControl } from './model';
-import { isReactNative } from './utils';
+import { getHandler, propsToBeMap } from './utils';
 
-// Common props
-const propsToBeMap = {
-  value: 'value',
-  touched: 'touched',
-  untouched: 'untouched',
-  disabled: 'disabled',
-  enabled: 'enabled',
-  invalid: 'invalid',
-  valid: 'valid',
-  pristine: 'pristine',
-  dirty: 'dirty',
-  errors: 'errors',
-  hasError: 'hasError',
-  getError: 'getError',
-  status: 'status',
-  pending: 'pending',
-  pendingValue: '_pendingValue'
-}
-const controlsToBeMap = {
-  ReactNative: {
-    value: 'value',
-    onChange: 'onChange',
-    onBlur: 'onBlur',
-    editable: 'enabled',
-    disabled: 'disabled',
-  },
-  default: {
-    value: 'value',
-    onChange: 'onChange',
-    onBlur: 'onBlur',
-    disabled: 'disabled',
-  }
-}
-const inputControls = isReactNative() ? controlsToBeMap.ReactNative : controlsToBeMap.default;
-function getHandler(inputType, value, control) {
-  const controlObject = {};
-  Object.keys(inputControls).forEach((key) => {
-    let controlProperty = null;
-    if(key === 'value') {
-      if(control.updateOn !== "change") {
-        controlProperty = control._pendingValue || "";
-      } else {
-        controlProperty = control.value || "";
-      }
-    } else {
-      controlProperty = control[inputControls[key]];
-    }
-    controlObject[key] = controlProperty;
-  });
-  const mappedObject = controlObject;
-  switch(inputType) {
-    case 'checkbox':
-      mappedObject['checked'] = !!mappedObject.value;
-      mappedObject['type'] = inputType;
-      break;
-    case 'radio':
-      mappedObject['checked'] = mappedObject.value === value;
-      mappedObject.value = value;
-      mappedObject['type'] = inputType;
-      break;
-    default:
-  }
-  return mappedObject;
-}
 /**
- * @param {FormControl|FormGroup} control
+ * @param {FormControl|FormGroup|FormArray} control
  */
 function mapControlToProps(control) {
   const mappedObject = {};
@@ -81,16 +17,18 @@ function mapControlToProps(control) {
   return mappedObject;
 }
 /**
- * @param {FormControl|FormGroup} control
+ * @param {FormControl|FormGroup|FormArray} control
  * @param {String} name
  */
 function mapNestedControls(control, name) {
   var extraProps = {};
   extraProps[name] = mapControlToProps(control);
-  if(control instanceof FormGroup|FormArray && control.controls) {
+  if(control instanceof FormGroup && control.controls) {
     Object.keys(control.controls).forEach((childControlName) => {
       extraProps[name] = Object.assign(extraProps[name], mapNestedControls(control.controls[childControlName], childControlName));
     })
+  } else if(control instanceof FormArray && control.controls) {
+    extraProps[name]['controls'] = control.controls;
   }
   return extraProps;
 }
@@ -126,15 +64,15 @@ function reactiveForm(ReactComponent, formGroup) {
     }
     componentWillMount() {
       // Add listeners
-      formGroup.updateDOM.subscribe(() => {
+      formGroup.stateChanges.subscribe(() => {
         this.updateComponent();
       });
     }
     componentWillUnmount() {
       //Remove listeners
-      if (formGroup.updateDOM.observers) {
-        formGroup.updateDOM.observers.forEach((observer) => {
-          formGroup.updateDOM.unsubscribe(observer);
+      if (formGroup.stateChanges.observers) {
+        formGroup.stateChanges.observers.forEach((observer) => {
+          formGroup.stateChanges.unsubscribe(observer);
         });
       }
     }

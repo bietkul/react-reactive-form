@@ -246,7 +246,7 @@ declare abstract class AbstractControl {
      *
      * If no path is given, it checks for the error on the present control.
      */
-    getError: (errorCode: string, path: String|Number[]|String) => any;
+    getError: (errorCode: string, path?: String|Number[]|String) => any;
     /**
      * Returns true if the control with the given path has the error specified. Otherwise
      * returns false.

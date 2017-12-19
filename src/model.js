@@ -1,4 +1,4 @@
-import { toObservable, isEvent } from './utils';
+import { toObservable, isEvent, getHandler } from './utils';
 import Subject from "./observable";
 import Validators from './validators';
 
@@ -267,9 +267,7 @@ export class AbstractControl {
     if (opts.emitEvent !== false) {
       this.valueChanges.next(this.value);
       this.statusChanges.next(this.status);
-      if(this.root === this && this.root.updateDOM) {
-        this.root.updateDOM.next();
-      }
+      this.stateChanges.next();
     }
 
     this._updateAncestors(!!opts.onlySelf);
@@ -312,9 +310,7 @@ export class AbstractControl {
     if (options.emitEvent !== false) {
       this.valueChanges.next(this.value);
       this.statusChanges.next(this.status);
-      if(this.root === this && this.root.updateDOM) {
-        this.root.updateDOM.next();
-      }
+      this.stateChanges.next();
     }
     if (this.parent && !options.onlySelf) {
       this.parent.updateValueAndValidity(options);
@@ -572,9 +568,7 @@ export class AbstractControl {
     this.status = this._calculateStatus();
     if (emitEvent) {
       this.statusChanges.next();
-      if(this.root === this && this.root.updateDOM) {
-        this.root.updateDOM.next();
-      }
+      this.stateChanges.next();
     }
     if (this._parent) {
       this._parent._updateControlsErrors(emitEvent);
@@ -583,6 +577,7 @@ export class AbstractControl {
   _initObservables() {
     this.valueChanges = new Subject();
     this.statusChanges = new Subject();
+    this.stateChanges = new Subject();
   }
   // Abstarct Methods
   /**
@@ -633,7 +628,7 @@ export class FormControl extends AbstractControl {
         this._pendingValue = value;
         this._pendingChange = true;
         if(!this._pendingDirty) { this._pendingDirty = true; }
-        this.root.updateDOM.next();
+        this.stateChanges.next();
       } else {
         if(!this.dirty) {
           this.markAsDirty();
@@ -654,10 +649,13 @@ export class FormControl extends AbstractControl {
           this._pendingTouched = true 
         } else {
           this.markAsTouched();
-          this.root.updateDOM.next();
+          this.stateChanges.next();
         }
       }
     };
+  }
+  handler(inputType, value) {
+    return getHandler(inputType, value, this);
   }
   /**
    * @param {{onlySelf: Boolean, emitEvent: Boolean}} options
@@ -722,7 +720,6 @@ export class FormControl extends AbstractControl {
   }
   _syncPendingControls() {
     if (this.updateOn === 'submit') {
-      console.log("called", this);
       if (this._pendingDirty) this.markAsDirty();
       if (this._pendingTouched) this.markAsTouched();
       if (this._pendingChange) {
