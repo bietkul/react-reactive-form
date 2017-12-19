@@ -125,7 +125,7 @@ export default reactiveForm(Login, loginForm);
 ```
 
 ### With `Field`
-[Field](api/Field.md) subscribes the component with a particular control's state changes which reduces unnecessary re-rendering of other fields.
+[Field](api/Field.md) subscribes the component to a particular control's state changes which improves the performance by restricting the re-rendering of other fields.  
 
 ```js
 import React, { Component } from 'react';
