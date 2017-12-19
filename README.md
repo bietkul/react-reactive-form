@@ -72,6 +72,89 @@ class Login extends Component {
 // React HOC to connect form with component.
 export default reactiveForm(Login, loginForm);
 ```
+
+Note: While dealing with larger forms & [Form Array’s](docs/api/FormArray.md) it’s highly recommended to use the [Field](docs/api/Field.md) component instead of `reactiveForm` method.`Field` component subscribes a particular control & only update it when it’s or it’s parent state changes, which of course reduces the re-rendering and boost the performance significantly.
+
+
+```js
+import React, { Component } from 'react';
+import { FormBuilder, Validators, Field } from "react-reactive-form";
+import { AbstractControl } from "react-reactive-form";
+
+// Create the controls
+const loginForm = FormBuilder.group({
+  username: ["", Validators.required],
+  password: ["", Validators.required],
+  rememberMe: false
+});
+
+export default class Login extends Component {
+    handleReset=(e) => {
+        loginForm.reset();
+        e.preventDefault();
+    }
+    handleSubmit=(e) => {
+        console.log("Form values", loginForm.value);
+        e.preventDefault();
+    }
+    render() {
+        return (
+              <Field
+                control={loginForm}
+                render={({ get, invalid }) => (
+                  <form onSubmit={this.handleSubmit}>
+                    <Field
+                      control={get("username")}
+                      render={({ handler, touched, hasError }) => (
+                        <div>
+                          <input {...handler()}/>
+                          <span>
+                              {touched 
+                              && hasError("required")
+                              && "Username is required"}
+                          </span>
+                        </div>  
+                      )}
+                    />
+                    <Field
+                      control={get("password")}
+                      render={({ handler, touched, hasError }) => (
+                        <div>
+                          <input {...handler()}/>
+                          <span>
+                              {touched 
+                              && hasError("required")
+                              && "Password is required"}
+                          </span>
+                        </div>  
+                      )}
+                    />
+                    <Field
+                      control={get("rememberMe")}
+                      render={({handler}) => (
+                        <div>
+                          <input {...handler("checkbox")}/>
+                        </div>
+                      )}
+                    />
+                    <button 
+                      onClick={this.handleReset}
+                    >
+                      Reset
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={invalid} 
+                    >
+                      Submit
+                    </button>
+                  </form>
+                )}
+              />
+        );
+    }
+}
+```
 # Documentation
 * [Getting Started](docs/GettingStarted.md)
 * [API](docs/api/)
