@@ -166,6 +166,8 @@ export class AbstractControl {
     this._pendingTouched = false;
     this._onDisabledChange = [];
     this.hasError = this.hasError.bind(this);
+    this.getError = this.getError.bind(this);
+    this.get = this.get.bind(this);
   }
   /**
    * Returns the update strategy of the `AbstractControl` (i.e.
