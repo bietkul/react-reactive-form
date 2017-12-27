@@ -84,26 +84,28 @@ import React, { Component } from 'react';
 import { FormBuilder, Validators, Field } from "react-reactive-form";
 import { AbstractControl } from "react-reactive-form";
 
-// Create the controls
-const loginForm = FormBuilder.group({
-  username: ["", Validators.required],
-  password: ["", Validators.required],
-  rememberMe: false
-});
-
 export default class Login extends Component {
+    constructor(props) {
+      super(props);
+      // Create the controls
+      this.loginForm = FormBuilder.group({
+        username: ["", Validators.required],
+        password: ["", Validators.required],
+        rememberMe: false
+      });
+    }
     handleReset=(e) => {
-        loginForm.reset();
+        this.loginForm.reset();
         e.preventDefault();
     }
     handleSubmit=(e) => {
-        console.log("Form values", loginForm.value);
+        console.log("Form values", this.loginForm.value);
         e.preventDefault();
     }
     render() {
         return (
               <Field
-                control={loginForm}
+                control={this.loginForm}
                 render={({ get, invalid }) => (
                   <form onSubmit={this.handleSubmit}>
                     <Field
