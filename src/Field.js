@@ -30,6 +30,9 @@ export default class Field extends React.Component {
         // Remove Listener
         this.removeListener();
     }
+    shouldComponentUpdate() {
+        return false;
+    }
     getComponent() {
         const { render, control } = this.props;
         if (control) {

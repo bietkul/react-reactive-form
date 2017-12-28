@@ -646,13 +646,13 @@ export class FormControl extends AbstractControl {
         if(!this.dirty) { this.markAsDirty(); }
         if(!this.touched) { this.markAsTouched(); }
         this.setValue(this._pendingValue, { validate: true });
-      } else if (!this.touched) {
-        if(this.updateOn === "submit" && !this._pendingTouched) { 
-          this._pendingTouched = true 
-        } else {
-          this.markAsTouched();
+      } else if(this.updateOn === "submit") {
+          this._pendingTouched = true;
+          this._pendingDirty = true;
+      } else {
+          if(!this.dirty) { this.markAsDirty(); }
+          if(!this.touched) { this.markAsTouched(); }
           this.stateChanges.next();
-        }
       }
     };
     /**
@@ -740,14 +740,16 @@ export class FormGroup extends AbstractControl {
     super(coerceToValidator(validatorOrOpts),
     coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.controls = controls;
+    this.submitted = false;
     this.validatorOrOpts = validatorOrOpts;
-    this.updateDOM = new Subject();
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
     this._setUpControls();
     this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
-    this.onSubmit = () => {
-      this._syncPendingControls();
+    this.handleSubmit = (e) => {
+      e.preventDefault();
+      this.submitted = true;
+      if(!this._syncPendingControls()) { this.updateValueAndValidity({ validate: true }) }
     }
   }
   /**
@@ -990,14 +992,16 @@ export class FormArray extends AbstractControl {
         coerceToValidator(validatorOrOpts),
         coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.controls = controls;
+    this.submitted = false;
     this.validatorOrOpts = validatorOrOpts;
-    this.updateDOM = new Subject();
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
     this._setUpControls();
     this.updateValueAndValidity({onlySelf: true, emitEvent: false});
-    this.onSubmit = () => {
-      this._syncPendingControls();
+    this.handleSubmit = (e) => {
+      e.preventDefault();
+      this.submitted = true;
+      if(!this._syncPendingControls()) { this.updateValueAndValidity({ validate: true }) }
     }
   }
   /**
