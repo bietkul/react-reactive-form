@@ -220,6 +220,7 @@ Example
         onDateChange={onChange}
       />
    )}
+ />
 ```
 
 Binds a React Native `DatePickerIOS` component.
