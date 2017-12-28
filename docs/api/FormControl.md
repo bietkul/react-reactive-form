@@ -158,6 +158,7 @@ Binds a React Native `TextInput` component.
 ```
 Binds a React Native `Switch` component.
 
+##
 A `handler` object can have these properties:
 
 ```ts
