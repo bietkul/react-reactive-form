@@ -118,9 +118,111 @@ Function needs to be called whenever a blur event triggers.
 ```ts
 handler: (inputType?: InputType, value?: string) => Handler;
 ```
-Returns the props required to bind a control with an input element.
+Returns the props required to bind a control to a native input element.
 
-For more details see the handler section of [props](Props.md).
+Note: 
+* `inputType` parameter is required for `checkbox`, `radio` and `switch`( React Native ) components.
+* `value` parameter only can be used for `radio` buttons to assign a value to a particular button.
+
+Example
+
+```ts
+  <input type="text" {...username.handler()}/>
+```
+Binds a `text` input.
+##
+```ts
+  <input type="date" {...birthday.handler()}/> 
+```
+Binds a `date` input.
+##
+```ts
+<input {...terms.handler("checkbox")}/>
+```
+Binds a `checkbox` input.
+##
+```ts
+<input {...gender.handler('radio', 'male')}/> Male
+<input {...gender.handler('radio', 'female')}/> Female
+<input {...gender.handler('radio', 'other')}/> Other
+```
+Binds a `radio` input.
+##
+```ts
+  <TextInput {...username.handler()}/>
+```
+Binds a React Native `TextInput` component.
+##
+```ts
+  <Switch {...terms.handler('switch')}/>
+```
+Binds a React Native `Switch` component.
+
+A `handler` object can have these properties:
+
+```ts
+value: any;
+```
+Sometimes this value can be different from the actual value of `control`.
+
+For example, if the `updateOn` property is `blur` or `submit` than the value property of handler will be `_pendingValue`
+of the control.
+
+The `_pendingValue` is the value of a control which is not validated yet which means the actual value of the
+control is different.
+
+So, this `value` is just to control the input element, for actual value of the control you can use the `value` property 
+of the mapped control prop.
+##
+```ts
+onChange: (e: any) => void;
+```
+Function needs to be called whenever a value change event triggers.
+##
+```ts
+onBlur: (e: any) => void;
+```
+Function needs to be called whenever a `blur` event triggers.
+##
+```ts
+disabled: boolean;
+```
+Tells the input element about the `disabled` status.
+##
+```ts
+checked?: boolean;
+```
+Checked property for `checkbox` and `radio` buttons.
+##
+```ts
+editable?: boolean;
+```
+React Native uses `editable` property to tell the `TextInput` about the `enabled` status.
+##
+```ts
+type?: string;
+```
+Returns the type of input element in case of `checkbox` & `radio` buttons.
+
+
+Although `handler` works well with all kind of inputs, you can also bind your custom input 
+components.
+
+Example
+
+```ts
+<Field 
+   control={myForm.get('birthday')}
+   render={({ onChange, value }) => (
+      <DatePickerIOS 
+        date={value}
+        dateForm="MM/DD/YYYY"
+        onDateChange={onChange}
+      />
+   )}
+```
+
+Binds a React Native `DatePickerIOS` component.
 
 Note: This document is a derivative of ["Form Control Document"](https://angular.io/api/forms/FormControl) by Google,
 under [CC BY](https://creativecommons.org/licenses/by/4.0/).
