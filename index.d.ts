@@ -4,7 +4,7 @@ export type ValidationErrors = {
     [key: string]: any
 };
 export type Status = 'VALID'|'INVALID'|'DISABLED'|'PENDING';
-export type InputType = 'checkbox'|'radio';
+export type InputType = 'checkbox'|'radio'|'switch';
 export type Handler = {
     value: any;
     onChange: (e: any) => void;

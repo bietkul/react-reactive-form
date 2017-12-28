@@ -74,11 +74,18 @@ export const propsToBeMap = {
 }
 export const controlsToBeMap = {
   ReactNative: {
-    value: 'value',
-    onChange: 'onChange',
-    onBlur: 'onBlur',
-    editable: 'enabled',
-    disabled: 'disabled',
+    switch: {
+      value: 'value',
+      onValueChange: 'onChange',
+      onBlur: 'onBlur',
+      disabled: 'disabled',
+    },
+    default: {
+      value: 'value',
+      onChange: 'onChange',
+      onBlur: 'onBlur',
+      editable: 'enabled',
+    }
   },
   default: {
     value: 'value',
@@ -87,16 +94,21 @@ export const controlsToBeMap = {
     disabled: 'disabled',
   }
 }
-export const inputControls = isReactNative() ? controlsToBeMap.ReactNative : controlsToBeMap.default;
+export const getAbsoluteValue = (value) => (value === undefined || value === null) ? "" : value;
+
+export const getInputControls = (inputType) => isReactNative() ? 
+  controlsToBeMap.ReactNative[inputType] ||  controlsToBeMap.ReactNative.default : controlsToBeMap.default;
+  
 export function getHandler(inputType, value, control) {
   const controlObject = {};
+  const inputControls = getInputControls(inputType);
   Object.keys(inputControls).forEach((key) => {
     let controlProperty = null;
     if(key === 'value') {
       if(control.updateOn !== "change") {
-        controlProperty = control._pendingValue || "";
+        controlProperty = getAbsoluteValue(control._pendingValue);
       } else {
-        controlProperty = control.value || "";
+        controlProperty = getAbsoluteValue(control.value);
       }
     } else {
       controlProperty = control[inputControls[key]];

@@ -1,4 +1,4 @@
-import { toObservable, isEvent, getHandler } from './utils';
+import { toObservable, isEvent, getHandler, isReactNative } from './utils';
 import Subject from "./observable";
 import Validators from './validators';
 
@@ -49,7 +49,7 @@ function getControlValue(event) {
         }
         return event.target.value;
       default:
-        return event.target.value;
+        return isReactNative() ? event.nativeEvent.text : event.target.value;
     }
   }
   return event;
