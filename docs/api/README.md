@@ -1,8 +1,5 @@
 # API
 
-## [reactiveForm](ReactiveForm.md)
-A higher order component which connects form with react component.
-
 ## [Field](Field.md)
 A subscription based higher order component which connects a control with react component.
 
