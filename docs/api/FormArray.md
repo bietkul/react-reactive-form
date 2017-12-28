@@ -59,6 +59,11 @@ controls: AbstractControl[]
 ```
 ##
 ```ts
+submitted: boolean
+```
+A form is submitted if the `handleSubmit` function has been called on it.
+##
+```ts
 at(index: number): AbstractControl
 ```
 Get the [AbstractControl](AbstractControl.md) at the given index in the array.
@@ -177,14 +182,14 @@ Otherwise, the `value` property is the best way to get the `value` of the array.
 
 ##
 ```ts
-onSubmit():void
+handleSubmit():void
 ```
 Submit action, can be used to tell the form that it has been submitted.
 Useful when `updateOn` property is `submit`.
 
 Example
 ```ts
-<form onSubmit={this.form.onSubmit}/>
+<form onSubmit={this.form.handleSubmit}/>
 ```
 <br/></br>
 Note: This document is a derivative of ["Form Array Document"](https://angular.io/api/forms/FormArray) by Google, 
