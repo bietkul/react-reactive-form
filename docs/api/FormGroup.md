@@ -69,7 +69,7 @@ controls: {
 ```ts
 submitted: boolean
 ```
-A form is submitted if the `handleSubmit` event has been triggered on it.
+A form is submitted if the `handleSubmit` function has been called on it.
 ##
 ```ts
 registerControl(name: string, control: AbstractControl): AbstractControl
