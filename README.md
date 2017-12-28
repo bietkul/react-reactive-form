@@ -20,7 +20,6 @@ npm install react-reactive-form --save
 ```js
 import React, { Component } from 'react';
 import { FormBuilder, Validators, Field } from "react-reactive-form";
-import { AbstractControl } from "react-reactive-form";
 
 export default class Login extends Component {
     constructor(props) {
