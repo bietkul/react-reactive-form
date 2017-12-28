@@ -67,6 +67,11 @@ controls: {
 ```
 ##
 ```ts
+submitted: boolean
+```
+A form is submitted if the `handleSubmit` event has been triggered on it.
+##
+```ts
 registerControl(name: string, control: AbstractControl): AbstractControl
 ```
 Registers a control with the group's list of controls.
@@ -187,14 +192,14 @@ Otherwise, the value property is the best way to get the value of the group.
 
 ##
 ```ts
-onSubmit():void
+handleSubmit():void
 ```
 Submit action, can be used to tell the form that it has been submitted.
-Useful when `updateOn` property is `submit`.
+Useful when `updateOn` property is `handleSubmit`.
 
 Example
 ```ts
-<form onSubmit={this.form.onSubmit}/>
+<form onSubmit={this.form.handleSubmit}/>
 ```
 
 <br/></br>
