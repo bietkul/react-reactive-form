@@ -4,7 +4,7 @@ export type ValidationErrors = {
     [key: string]: any
 };
 export type Status = 'VALID'|'INVALID'|'DISABLED'|'PENDING';
-export type InputType = 'checkbox'|'radio';
+export type InputType = 'checkbox'|'radio'|'switch';
 export type Handler = {
     value: any;
     onChange: (e: any) => void;
@@ -379,6 +379,10 @@ declare module "react-reactive-form" {
          */
         length: number;
         /**
+         * A form array is submitted if the `handleSubmit` event has been triggered on it.
+         */
+        submitted: boolean;
+        /**
          * Get the `AbstractControl` at the given `index` in the array.
          */
         at(index: number): AbstractControl;
@@ -484,10 +488,10 @@ declare module "react-reactive-form" {
          * Submit action, can be used to tell the form that it has been submitted.
          * Useful when `updateOn` property is `submit`.
          * ```
-         * <form onSubmit={this.form.onSubmit}/>
+         * <form onSubmit={this.form.handleSubmit}/>
          * ```
          */
-        onSubmit():void
+        handleSubmit(): void
     }
     /**
      * Tracks the value and validity state of a group of `FormControl`
@@ -563,6 +567,10 @@ declare module "react-reactive-form" {
             validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
             asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null)
         controls: {[key: string]: AbstractControl}
+        /**
+         * A form group is submitted if the `handleSubmit` event has been triggered on it.
+         */
+        submitted: boolean;
         /**
          * Registers a control with the group's list of controls.
          *
@@ -671,10 +679,10 @@ declare module "react-reactive-form" {
          * Submit action, can be used to tell the form that it has been submitted.
          * Useful when `updateOn` property is `submit`.
          * ```
-         * <form onSubmit={this.form.onSubmit}/>
+         * <form onSubmit={this.form.handleSubmit}/>
          * ```
          */
-        onSubmit():void
+        handleSubmit():void
     }
     /**
      * Tracks the value and validation status of an individual form control.

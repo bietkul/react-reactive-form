@@ -16,73 +16,10 @@ It's a library inspired by the [Angular's Reactive Forms](https://angular.io/gui
 npm install react-reactive-form --save
 ```
 # Basic Example
-```js
-import React, { Component } from 'react';
-import { FormBuilder, Validators, reactiveForm } from "react-reactive-form";
-
-// Create the controls
-const loginForm = FormBuilder.group({
-  username: ['', Validators.required],
-  password: ['', Validators.required],
-  rememberMe: false
-});
-
-class Login extends Component {
-    handleReset=(e) => {
-        loginForm.reset();
-        e.preventDefault();
-    }
-    handleSubmit=(e) => {
-        console.log("Form values", loginForm.value);
-        e.preventDefault();
-    }
-    render() {
-        const { 
-            username, 
-            password, 
-            rememberMe 
-        } = this.props;
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <div>
-                    <input {...username.handler()}/>
-                    <span>
-                        {username.touched 
-                        && username.hasError('required')
-                        && "Username is required"}
-                    </span>
-                </div>
-                <div>
-                    <input {...password.handler()}/>
-                    <span>
-                        {password.touched 
-                        && password.hasError('required') 
-                        && "Password is required"}
-                    </span>
-                </div>
-                <div>
-                    <input {...rememberMe.handler('checkbox')}/>
-                </div>
-                <button onClick={this.handleReset}>Reset</button>
-                <button disabled={loginForm.invalid} type="submit">Submit</button>
-            </form>
-        );
-    }
-}
-// React HOC to connect form with component.
-export default reactiveForm(Login, loginForm);
-```
-
-### Note: 
-While working with larger forms, deep nested forms & [Form Array’s](docs/api/FormArray.md) it’s highly recommended to use the [Field](docs/api/Field.md) component instead of `reactiveForm` method.
-
-`Field` component subscribes a particular control & only update it when it’s or it’s parent’s state changes, which of course reduces the re-rendering and boost the performance significantly.
-
 
 ```js
 import React, { Component } from 'react';
 import { FormBuilder, Validators, Field } from "react-reactive-form";
-import { AbstractControl } from "react-reactive-form";
 
 export default class Login extends Component {
     constructor(props) {
@@ -169,6 +106,7 @@ Try out `react-reactive-forms` in these sandbox versions of the Examples.
 * [Sync & Async Validation](https://codesandbox.io/s/qq8xq7j2w)
 * [User Registeration Form With Nested Forms](https://codesandbox.io/s/p2rqmr8qk7)
 * [Form Array With Dynamic Controls](https://codesandbox.io/s/nw9wxw2nvl)
+* [Update On Submit](https://codesandbox.io/s/3qk1ly16j1)
 
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
 
