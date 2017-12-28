@@ -24,6 +24,3 @@ Creates an [AbstractControl](AbstractControl.md) from a user-specified configura
 
 ## [Validators](Validators.md)
 Provides a set of validators used by form controls.
-
-## [Props](Props.md)
-The props that `reactive-form` generates to give to your form component.
