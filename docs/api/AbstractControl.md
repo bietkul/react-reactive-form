@@ -35,6 +35,11 @@ get parent: FormGroup | FormArray
 The parent control.
 ##
 ```ts
+submitted: boolean
+```
+A control is `submitted` if the `handleSubmit` function has been called on it.
+##
+```ts
 get status: string
 ```
 The validation status of the control. There are four possible validation statuses:
