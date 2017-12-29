@@ -67,11 +67,6 @@ controls: {
 ```
 ##
 ```ts
-submitted: boolean
-```
-A form is submitted if the `handleSubmit` function has been called on it.
-##
-```ts
 registerControl(name: string, control: AbstractControl): AbstractControl
 ```
 Registers a control with the group's list of controls.
