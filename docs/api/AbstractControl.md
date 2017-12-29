@@ -35,6 +35,11 @@ get parent: FormGroup | FormArray
 The parent control.
 ##
 ```ts
+submitted: boolean
+```
+A control is `submitted` if the `handleSubmit` function has been called on it.
+##
+```ts
 get status: string
 ```
 The validation status of the control. There are four possible validation statuses:
@@ -149,6 +154,20 @@ Empties out the sync validator list.
 clearAsyncValidators(): void
 ```
 Empties out the async validator list.
+##
+```ts
+markAsSubmitted: (opts?: {emitEvent?: boolean}) => void;
+```
+Marks the control as `submitted`.
+
+If the control has any children, it will also mark all children as `submitted`.
+##
+```ts
+markAsUnsubmitted: (opts?: {emitEvent?: boolean}) => void;
+```
+Marks the control as `unsubmitted`.
+ 
+If the control has any children, it will also mark all children as `unsubmitted`.
 ##
 ```ts
 markAsTouched(opts: {
