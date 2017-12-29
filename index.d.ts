@@ -67,6 +67,10 @@ declare abstract class AbstractControl {
     value: any;
     status: string;
     /**
+     * A control is `submitted` if the `handleSubmit` event has been triggered on it.
+     */
+    submitted: boolean;
+    /**
      * A control is `valid` when its `status === VALID`.
      *
      * In order to have this status, the control must have passed all its
@@ -174,6 +178,19 @@ declare abstract class AbstractControl {
      * Updates value, validity & status of the control & parent
      */
     updateValueAndValidity: (opts?: {onlySelf?: boolean, emitEvent?: boolean}) => void;
+    /**
+     * Marks the control as `submitted`.
+     *
+     * If the control has any children, it will also mark all children as `submitted`
+     */
+    markAsSubmitted: (opts?: {emitEvent?: boolean}) => void;
+    /**
+     * Marks the control as `unsubmitted`.
+     *
+     * If the control has any children, it will also mark all children as `unsubmitted`.
+     *
+     */
+    markAsUnsubmitted: (opts?: {emitEvent?: boolean}) => void;
     /**
      * Marks the control as `touched`.
      *
@@ -379,10 +396,6 @@ declare module "react-reactive-form" {
          */
         length: number;
         /**
-         * A form array is submitted if the `handleSubmit` event has been triggered on it.
-         */
-        submitted: boolean;
-        /**
          * Get the `AbstractControl` at the given `index` in the array.
          */
         at(index: number): AbstractControl;
@@ -567,10 +580,6 @@ declare module "react-reactive-form" {
             validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
             asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null)
         controls: {[key: string]: AbstractControl}
-        /**
-         * A form group is submitted if the `handleSubmit` event has been triggered on it.
-         */
-        submitted: boolean;
         /**
          * Registers a control with the group's list of controls.
          *

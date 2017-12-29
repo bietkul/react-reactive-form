@@ -153,6 +153,7 @@ export class AbstractControl {
      * a `blur` event on it.
      */
     this.touched = false;
+    this.submitted = false;
     /**
      * A control is `pristine` if the user has not yet changed
      * the value in the UI.
@@ -300,13 +301,13 @@ export class AbstractControl {
   updateValueAndValidity(options = {}) {
     this.setInitialStatus();
     this._updateValue();
-    const shouldValidate = this.enabled && (this.updateOn === "change" || options.validate); 
+    const shouldValidate = this.enabled && (this.updateOn !== "submit" || this.submitted);
     if (shouldValidate) {
       this._cancelExistingSubscription();
       this.errors = this._runValidator();
       this.status = this._calculateStatus();
       if (this.status === VALID || this.status === PENDING) {
-        this._runAsyncValidator(options.emitEvent);
+        this._runAsyncValidator(true);
       }
     }
     if (options.emitEvent !== false) {
@@ -330,6 +331,39 @@ export class AbstractControl {
     this.touched = true;
     if (this._parent && !opts.onlySelf) {
       this._parent.markAsTouched(opts);
+    }
+  }
+  /**
+   * Marks the control as `submitted`.
+   *
+   * If the control has any children, it will also mark all children as `submitted`
+   * @param {{emitEvent: Boolean}} opts
+   * @return {void}
+   */
+  markAsSubmitted(opts = {}) {
+    this.submitted= true;
+
+    this._forEachChild((control) => { control.markAsSubmitted(); });
+
+    if (opts.emitEvent !== false) {
+      this.stateChanges.next();
+    }
+  }
+  /**
+   * Marks the control as `unsubmitted`.
+   *
+   * If the control has any children, it will also mark all children as `unsubmitted`.
+   * 
+   * @param {{emitEvent: Boolean}} opts
+   * @return {void}
+   */
+  markAsUnsubmitted(opts = {}) {
+    this.submitted = false;
+
+    this._forEachChild((control) => { control.markAsUnsubmitted({ onlySelf: true }); });
+
+    if (opts.emitEvent !== false) {
+      this.stateChanges.next();
     }
   }
   /**
@@ -645,14 +679,17 @@ export class FormControl extends AbstractControl {
       if(this.updateOn === "blur") {
         if(!this.dirty) { this.markAsDirty(); }
         if(!this.touched) { this.markAsTouched(); }
-        this.setValue(this._pendingValue, { validate: true });
+        this.setValue(this._pendingValue);
       } else if(this.updateOn === "submit") {
           this._pendingTouched = true;
           this._pendingDirty = true;
       } else {
+          const emitChangeToView = !this.touched;
           if(!this.dirty) { this.markAsDirty(); }
           if(!this.touched) { this.markAsTouched(); }
-          this.stateChanges.next();
+          if(emitChangeToView) {
+            this.stateChanges.next();
+          }
       }
     };
     /**
@@ -728,7 +765,8 @@ export class FormControl extends AbstractControl {
       if (this._pendingDirty) this.markAsDirty();
       if (this._pendingTouched) this.markAsTouched();
       if (this._pendingChange) {
-        this.setValue(this._pendingValue, {validate: true});
+        this.setValue(this._pendingValue);
+        this._pendingChange = false;
         return true;
       }
     }
@@ -740,16 +778,15 @@ export class FormGroup extends AbstractControl {
     super(coerceToValidator(validatorOrOpts),
     coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.controls = controls;
-    this.submitted = false;
     this.validatorOrOpts = validatorOrOpts;
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
     this._setUpControls();
     this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     this.handleSubmit = (e) => {
-      e.preventDefault();
-      this.submitted = true;
-      if(!this._syncPendingControls()) { this.updateValueAndValidity({ validate: true }) }
+      if(e) { e.preventDefault(); }
+      if(!this.submitted) { this.markAsSubmitted({ emitEvent: false }); }
+      if(!this._syncPendingControls()) { this.updateValueAndValidity()};
     }
   }
   /**
@@ -851,6 +888,7 @@ export class FormGroup extends AbstractControl {
       control.reset(value[name], {onlySelf: true, emitEvent: options.emitEvent});
     });
     this.updateValueAndValidity(options);
+    this.markAsUnsubmitted();
     this._updatePristine(options);
     this._updateTouched(options);
   }
@@ -982,7 +1020,7 @@ export class FormGroup extends AbstractControl {
     let subtreeUpdated = this._reduceChildren(false, (updated, child) => {
       return child._syncPendingControls() ? true : updated;
     });
-    if (subtreeUpdated) this.updateValueAndValidity({onlySelf: true});
+    if (subtreeUpdated) this.updateValueAndValidity();
     return subtreeUpdated;
   }
 }
@@ -992,16 +1030,15 @@ export class FormArray extends AbstractControl {
         coerceToValidator(validatorOrOpts),
         coerceToAsyncValidator(asyncValidator, validatorOrOpts));
     this.controls = controls;
-    this.submitted = false;
     this.validatorOrOpts = validatorOrOpts;
     this._initObservables();
     this._setUpdateStrategy(validatorOrOpts);
     this._setUpControls();
     this.updateValueAndValidity({onlySelf: true, emitEvent: false});
     this.handleSubmit = (e) => {
-      e.preventDefault();
-      this.submitted = true;
-      if(!this._syncPendingControls()) { this.updateValueAndValidity({ validate: true }) }
+      if(e) { e.preventDefault(); }
+      if(!this.submitted) { this.markAsSubmitted({ emitEvent: false }); }
+      if(!this._syncPendingControls()) { this.updateValueAndValidity()};
     }
   }
   /**
@@ -1111,6 +1148,7 @@ export class FormArray extends AbstractControl {
       control.reset(value[index], {onlySelf: true, emitEvent: options.emitEvent});
     });
     this.updateValueAndValidity(options);
+    this.markAsUnsubmitted();
     this._updatePristine(options);
     this._updateTouched(options);
   }
@@ -1132,7 +1170,7 @@ export class FormArray extends AbstractControl {
     let subtreeUpdated = this.controls.reduce((updated, child) => {
       return child._syncPendingControls() ? true : updated;
     }, false);
-    if (subtreeUpdated) this.updateValueAndValidity({onlySelf: true});
+    if (subtreeUpdated) this.updateValueAndValidity();
     return subtreeUpdated;
   }
 
