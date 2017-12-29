@@ -59,11 +59,6 @@ controls: AbstractControl[]
 ```
 ##
 ```ts
-submitted: boolean
-```
-A form is submitted if the `handleSubmit` function has been called on it.
-##
-```ts
 at(index: number): AbstractControl
 ```
 Get the [AbstractControl](AbstractControl.md) at the given index in the array.
