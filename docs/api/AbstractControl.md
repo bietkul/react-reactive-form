@@ -156,6 +156,20 @@ clearAsyncValidators(): void
 Empties out the async validator list.
 ##
 ```ts
+markAsSubmitted: (opts?: {emitEvent?: boolean}) => void;
+```
+Marks the control as `submitted`.
+
+If the control has any children, it will also mark all children as `submitted`.
+##
+```ts
+markAsUnsubmitted: (opts?: {emitEvent?: boolean}) => void;
+```
+Marks the control as `unsubmitted`.
+ 
+If the control has any children, it will also mark all children as `unsubmitted`.
+##
+```ts
 markAsTouched(opts: {
     onlySelf?: boolean;
 } = {}): void
