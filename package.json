@@ -16,7 +16,7 @@
   ],
   "main": "src/index.js",
   "scripts": {
-   "test": "NODE_ENV=test"
+    "test": "NODE_ENV=test"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,15 @@
     "url": "https://github.com/bietkul/react-reactive-form/issues"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.16.0",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-flowtype": "^2.41.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.5.1",
+    "prettier": "^1.8.2",
+    "prettier-eslint-cli": "^4.4.2",
     "react": "^16.1.1"
   },
   "peerDependencies": {

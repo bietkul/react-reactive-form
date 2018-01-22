@@ -590,6 +590,9 @@ export class AbstractControl {
   _anyControlsDirty() {
     return this._anyControls((control) => control.dirty);
   }
+  _anyControlsUnsubmitted() {
+    return this._anyControls((control) => !control.submitted);
+  }
   /**
    * @return {Boolean}
    */
@@ -646,7 +649,7 @@ export class FormControl extends AbstractControl {
     this.validatorsOrOpts = validatorOrOpts;
     this._applyFormState(formState);
     this._setUpdateStrategy(validatorOrOpts);
-    this._pendingChange = this.updateOn !== "change";
+    this._pendingChange = true;
     this._pendingDirty = false;
     this._pendingTouched = false;
     this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
@@ -784,8 +787,9 @@ export class FormGroup extends AbstractControl {
     this._setUpControls();
     this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     this.handleSubmit = (e) => {
+      // console.log("FORM HAS BEEN SUBMITTED", this._syncPendingControls());
       if(e) { e.preventDefault(); }
-      if(!this.submitted) { this.markAsSubmitted({ emitEvent: false }); }
+      if(this._anyControlsUnsubmitted()) { this.markAsSubmitted({ emitEvent: false }); }
       if(!this._syncPendingControls()) { this.updateValueAndValidity()};
     }
   }
@@ -1037,7 +1041,7 @@ export class FormArray extends AbstractControl {
     this.updateValueAndValidity({onlySelf: true, emitEvent: false});
     this.handleSubmit = (e) => {
       if(e) { e.preventDefault(); }
-      if(!this.submitted) { this.markAsSubmitted({ emitEvent: false }); }
+      if(this._anyControlsUnsubmitted()) { this.markAsSubmitted({ emitEvent: false }); }
       if(!this._syncPendingControls()) { this.updateValueAndValidity()};
     }
   }
