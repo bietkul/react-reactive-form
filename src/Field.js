@@ -1,21 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FormControl } from './model'
+import { FormControl, FormArray, FormGroup } from './model'
 import { isFunction, warning } from './utils'
 
 export default class Field extends React.Component {
-  constructor(props, context) {
-    super(props, context)
-    this.configureControl(props, context)
-  }
-
   componentDidMount() {
+    const { control } = this.props
     // Add listener
-    this.addListener()
+    this.addListener(control)
   }
-  addListener() {
-    if (this.control) {
-      this.control.stateChanges.subscribe(() => {
+  componentWillReceiveProps(nextProps) {
+    const { control } = nextProps
+    if (this.props.control !== control) {
+      this.removeListener(control)
+      this.addListener(control)
+    }
+  }
+  addListener(control) {
+    if (control) {
+      control.stateChanges.subscribe(() => {
         this.forceUpdate()
       })
     }
@@ -29,35 +32,10 @@ export default class Field extends React.Component {
       }
     }
   }
-  configureControl(props, context) {
-    const { name, formState, opts, parent, control } = props
-    if (control) {
-      this.control = control
-    } else if (name) {
-      // Add control automatically
-      const parentControl = parent || context.parentControl
-      if (parentControl) {
-        if (!parentControl.get(name)) {
-          parentControl.addControl(name, new FormControl(formState, opts))
-        }
-        this.control = parentControl.get(name)
-      } else {
-      }
-    }
-  }
-  componentWillReceiveProps(nextProps) {
-    const { name } = nextProps
-    if (this.props.name !== name) {
-      this.removeListener(this.control)
-      this.configureControl(nextProps, this.context)
-      this.addListener()
-    }
-  }
   componentWillUnmount() {
+    const { control } = this.props
     // Remove Listener
-    console.log('UNMOUNT CALLED =========>', this)
-    this.removeListener(this.control)
-    console.log('UNMOUNT CALLED =========>', this.props.control)
+    this.removeListener(control)
   }
   shouldComponentUpdate(props) {
     if (!props.strict) {
@@ -66,29 +44,25 @@ export default class Field extends React.Component {
     return false
   }
   getComponent() {
-    const { render, children } = this.props
+    const { render, children, control } = this.props
     warning(
-      this.control,
+      control,
       `Missing Control.Please make sure that an instance of FormControl, FormGroup or FormArray must be passed as a control prop in the Field component`
     )
-    if (this.control) {
+    if (control) {
       // Render function as child
       if (isFunction(children)) {
-        return children(this.control)
+        return children(control)
       }
       // Render function as render prop
       if (isFunction(render)) {
-        return render(this.control)
+        return render(control)
       }
-      // Render function as component
-      if (typeof render === 'string') {
-        return React.createElement(render, this.control)
-      }
+      return null
     }
     return null
   }
   render() {
-    console.log('RENDER GOT CALLED', this.props.name, this)
     return this.getComponent()
   }
 }
@@ -99,9 +73,10 @@ Field.defaultProps = {
 
 Field.propTypes = {
   strict: PropTypes.bool,
-  control: PropTypes.object,
+  control: PropTypes.oneOfType([
+    PropTypes.instanceOf(FormControl),
+    PropTypes.instanceOf(FormArray),
+    PropTypes.instanceOf(FormGroup)
+  ]).isRequired,
   render: PropTypes.func
-}
-Field.contextTypes = {
-  parentControl: PropTypes.object
 }
