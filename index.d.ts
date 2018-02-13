@@ -293,8 +293,21 @@ export interface FieldProps {
     render: (control: FormArray|FormControl|FormGroup) => React.ReactElement<any>|React.ReactElement<any>[];
     control: AbstractControl;
 }
+export interface GroupProps {
+    strict: boolean;
+    render: (control: FormArray|FormControl|FormGroup) => React.ReactElement<any>|React.ReactElement<any>[];
+    control: AbstractControl;
+    name: string;
+    index: number;
+    formState: any;
+    options: AbstractControlOptions;
+    parent: AbstractControl;
+}
 declare module "react-reactive-form" {
     export class Field extends React.Component<FieldProps, any> {}
+    export class FieldGroup extends React.Component<GroupProps, any> {}
+    export class FieldArray extends React.Component<GroupProps, any> {}
+    export class FieldControl extends React.Component<GroupProps, any> {}
     /**
      * Creates an `AbstractControl` from a user-specified configuration.
      *
