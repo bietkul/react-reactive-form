@@ -56,7 +56,7 @@ const configureControl = (props, context, reference) => {
             getControlFromReference(reference, options, formState)
           )
         } else {
-          warning(null, `A control is already present with name ${name}.`)
+          // warning(null, `A control is already present with name ${name}.`)
         }
         returnControl = parentControl.get(name)
       }
