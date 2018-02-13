@@ -31,13 +31,12 @@ export default class Login extends Component {
         rememberMe: false
       });
     }
-    handleReset=(e) => {
+    handleReset=() => {
         this.loginForm.reset();
-        e.preventDefault();
     }
     handleSubmit=(e) => {
-        console.log("Form values", this.loginForm.value);
         e.preventDefault();
+        console.log("Form values", this.loginForm.value);
     }
     render() {
         return (
@@ -79,7 +78,8 @@ export default class Login extends Component {
                         </div>
                       )}
                     />
-                    <button 
+                    <button
+                      type="button" 
                       onClick={this.handleReset}
                     >
                       Reset
