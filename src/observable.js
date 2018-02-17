@@ -6,12 +6,16 @@ export default class Observable {
     this.observers.push(fn)
   }
   unsubscribe(fn) {
-    this.observers = this.observers.filter(item => {
-      if (item !== fn) {
-        return item
-      }
-      return null
-    })
+    if (fn) {
+      this.observers = this.observers.filter(item => {
+        if (item !== fn) {
+          return item
+        }
+        return null
+      })
+    } else {
+      this.observers = []
+    }
   }
   next(o, thisObj) {
     var scope = thisObj || window
