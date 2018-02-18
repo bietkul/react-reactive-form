@@ -260,7 +260,7 @@ export default class Login extends Component {
 
 ## The best practice
 # Documentation
-* [Getting Started](docs/GettingStarted.md)
+* [Getting Started](docs)
 * [API](docs/api/)
 # Code Sandboxes
 Try out `react-reactive-forms` in these sandbox versions of the Examples.
