@@ -73,11 +73,6 @@ export default class Validators {
     if (isEmptyInputValue(control.value)) {
       return null
     }
-    console.log(
-      'THIS IS THE ERRRO',
-      control.value,
-      EMAIL_REGEXP.test(control.value)
-    )
     return EMAIL_REGEXP.test(control.value) ? null : { email: true }
   }
 
