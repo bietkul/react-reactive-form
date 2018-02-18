@@ -4,7 +4,7 @@ A react component which creates a new or can be used with an existing [FormGroup
 
 ## How it works
  - It creates a new instance of [FormGroup](FormGroup.md) in absence of the `name` and `control` props.
- - If a `name` prop is defined then it means that the control has to be added in an already existing parent control (  FormGroup/FormArray) i.e the parent control must be present.
+ - If a `name` prop is defined then it means that the control has to be added in an already existing parent control (  [FormGroup](FormGroup.md) / [FormArray](FormArray.md)) i.e the parent control must be present.
  - If a control with the same name is already present in the parent control then it just returns the same otherwise it'll create a new instance of [FormGroup](FormGroup.md) class. 
  - You can define a parent control either by passing the `parent` prop or using the component as a child of the `FieldGroup` component.
  - If a `control` prop is defined then it just returns the same.
