@@ -98,7 +98,7 @@ export default class Login extends Component {
 }
 ```
 ## Add Dynamic Control
-You can also create dynamic controls without even initializing the group control object with the help of new react form components ( FieldGroup, FieldControl, FieldArray ).
+You can also create dynamic controls without even initializing the group control object with the help of new react form components ( [FieldGroup](docs/api/FieldGroup.md), [FieldControl](docs/api/FieldControl.md), [FieldArray](docs/api/FieldArray.md)).
 
 ```js
 import React, { Component } from 'react';
