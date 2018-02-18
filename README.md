@@ -173,7 +173,7 @@ export default class Login extends Component {
     }
 }
 ```
-<b>So, it's not necessary that you should define your control separately but if you need the better control then you should do that, if your controls are dynamic then you can also initalize the empty group control and add the controls later.
+<b>So, it's not mandatory that you need to define your control separately but if you want better control then you should do that, if your controls are dynamic then you can also initalize the empty group control and add the controls later.
 See the example:</b>
 
 ```js
@@ -258,7 +258,6 @@ export default class Login extends Component {
 }
 ```
 
-## The best practice
 # Documentation
 * [Getting Started](docs)
 * [API](docs/api/)
@@ -269,6 +268,7 @@ Try out `react-reactive-forms` in these sandbox versions of the Examples.
 * [User Registeration Form With Nested Forms](https://codesandbox.io/s/p2rqmr8qk7)
 * [Form Array With Dynamic Controls](https://codesandbox.io/s/nw9wxw2nvl)
 * [Update On Submit](https://codesandbox.io/s/3qk1ly16j1)
+* [Multi-page Wizard Form](https://codesandbox.io/s/zk1m06r5y3)
 
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
 
