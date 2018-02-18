@@ -248,7 +248,8 @@ export default class Login extends Component {
 
 * [Getting Started](docs)
 * [API](docs/api/)
-  # Code Sandboxes
+
+# Code Sandboxes
   Try out `react-reactive-forms` in these sandbox versions of the Examples.
 * [Simple Form](https://codesandbox.io/s/4rxokpr270)
 * [Sync & Async Validation](https://codesandbox.io/s/qq8xq7j2w)
