@@ -290,18 +290,18 @@ declare abstract class AbstractControl {
     abstract reset(value?: any, options?: Object): void;
 }
 export interface FieldProps {
-    render: (control: FormArray|FormControl|FormGroup) => React.ReactElement<any>|React.ReactElement<any>[];
+    render?: (control: FormArray|FormControl|FormGroup) => React.ReactElement<any>|React.ReactElement<any>[];
     control: AbstractControl;
 }
 export interface GroupProps {
-    strict: boolean;
-    render: (control: FormArray|FormControl|FormGroup) => React.ReactElement<any>|React.ReactElement<any>[];
-    control: AbstractControl;
-    name: string;
-    index: number;
-    formState: any;
-    options: AbstractControlOptions;
-    parent: AbstractControl;
+    strict?: boolean;
+    render?: (control: FormArray|FormControl|FormGroup) => React.ReactElement<any>|React.ReactElement<any>[];
+    control?: AbstractControl;
+    name?: string;
+    index?: number;
+    formState?: any;
+    options?: AbstractControlOptions;
+    parent?: AbstractControl;
 }
 declare module "react-reactive-form" {
     export class Field extends React.Component<FieldProps, any> {}
