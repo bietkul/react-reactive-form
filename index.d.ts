@@ -771,6 +771,16 @@ declare module "react-reactive-form" {
         constructor(formState: any,
             validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
             asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null);
+
+        /**
+         * Emits an event every time the value of the control changes, in
+         * the UI by onChang event.
+         */
+        onValueChanges: Observable<any>;
+        /**
+         * Emits an event every time whenever a blur event triggers.
+         */
+        onBlurChanges: Observable<any>;
         /**
          * Function needs to be called whenever a value change happens.
          */
