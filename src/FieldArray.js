@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FormGroup, FormArray } from './model'
-import Field from './Field'
 import configureControl from './configureControl'
+import Field from './Field'
 
-class FieldGroup extends React.Component {
+class FieldArray extends React.Component {
   constructor(props, context) {
     super(props, context)
-    this.control = configureControl(props, context, 'FormGroup')
+    this.control = configureControl(props, context, 'FormArray')
   }
   getChildContext() {
     return {
@@ -16,39 +16,36 @@ class FieldGroup extends React.Component {
   }
   render() {
     const { strict, children, render } = this.props
-    return (
-      <Field
-        control={this.control}
-        strict={strict}
-        render={render || children || null}
-      />
-    )
+    const FieldProps = {
+      control: this.control,
+      strict,
+      render: render || children || null
+    }
+    return React.createElement(Field, FieldProps)
   }
 }
-
-FieldGroup.childContextTypes = {
+FieldArray.childContextTypes = {
   parentControl: PropTypes.oneOfType([
     PropTypes.instanceOf(FormArray),
     PropTypes.instanceOf(FormGroup)
   ])
 }
-FieldGroup.contextTypes = {
+FieldArray.contextTypes = {
   parentControl: PropTypes.oneOfType([
     PropTypes.instanceOf(FormArray),
     PropTypes.instanceOf(FormGroup)
   ])
 }
-
-FieldGroup.defaultProps = {
+FieldArray.defaultProps = {
   strict: true
 }
 
-FieldGroup.propTypes = {
+FieldArray.propTypes = {
   strict: PropTypes.bool,
   render: PropTypes.func,
   name: PropTypes.string,
   index: PropTypes.number,
-  control: PropTypes.instanceOf(FormGroup),
+  control: PropTypes.instanceOf(FormArray),
   options: PropTypes.shape({
     validators: PropTypes.oneOfType([
       PropTypes.func,
@@ -65,4 +62,4 @@ FieldGroup.propTypes = {
     PropTypes.instanceOf(FormGroup)
   ])
 }
-export default FieldGroup
+export default FieldArray

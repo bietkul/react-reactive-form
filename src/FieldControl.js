@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FormControl, FormArray, FormGroup } from './model'
+import {
+  FormControl,
+  FormArray,
+  FormGroup
+} from './model'
 import configureControl from './configureControl'
 import Field from './Field'
 
@@ -10,20 +14,25 @@ export default class FieldControl extends React.Component {
     this.control = configureControl(props, context, 'FormControl')
   }
   componentWillReceiveProps(nextProps) {
-    const { name } = nextProps
+    const {
+      name
+    } = nextProps
     if (this.props.name !== name) {
       this.control = configureControl(nextProps, this.context, 'FormControl')
     }
   }
   render() {
-    const { strict, children, render } = this.props
-    return (
-      <Field
-        control={this.control}
-        strict={strict}
-        render={render || children || null}
-      />
-    )
+    const {
+      strict,
+      children,
+      render
+    } = this.props
+    const FieldProps = {
+      control: this.control,
+      strict,
+      render: render || children || null
+    }
+    return React.createElement(Field, FieldProps)
   }
 }
 
