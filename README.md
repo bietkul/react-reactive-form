@@ -257,7 +257,7 @@ export default class Login extends Component {
 * [User Registeration Form With Nested Forms](https://codesandbox.io/s/p2rqmr8qk7)
 * [Form Array With Dynamic Controls](https://codesandbox.io/s/nw9wxw2nvl)
 * [Update On Submit](https://codesandbox.io/s/3qk1ly16j1)
-* [Multi-page Wizard Form](https://codesandbox.io/s/zk1m06r5y3)
+* [Multi-page Wizard Form](https://codesandbox.io/s/136340om74)
 
 
 # FAQ
