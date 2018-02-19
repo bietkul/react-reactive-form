@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/bietkul/react-reactive-form.svg?branch=master)](https://travis-ci.org/bietkul/react-reactive-form)
 [![NPM Version](https://img.shields.io/npm/v/react-reactive-form.svg?style=flat)](https://www.npmjs.com/package/react-reactive-form)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 It's a library inspired by the [Angular's Reactive Forms](https://angular.io/guide/reactive-forms), which allows to create a tree of form control objects in the component class and bind them with native form control elements.
 
@@ -249,6 +250,16 @@ export default class Login extends Component {
 * [Getting Started](docs)
 * [API](docs/api/)
 
+# Code Sandboxes
+  Try out `react-reactive-forms` in these sandbox versions of the Examples.
+* [Simple Form](https://codesandbox.io/s/4rxokpr270)
+* [Sync & Async Validation](https://codesandbox.io/s/qq8xq7j2w)
+* [User Registeration Form With Nested Forms](https://codesandbox.io/s/p2rqmr8qk7)
+* [Form Array With Dynamic Controls](https://codesandbox.io/s/nw9wxw2nvl)
+* [Update On Submit](https://codesandbox.io/s/3qk1ly16j1)
+* [Multi-page Wizard Form](https://codesandbox.io/s/zk1m06r5y3)
+
+
 # FAQ
 
 ### How is it different from other form libraries?
@@ -300,16 +311,6 @@ Field components are subscribed to the state changes of a particular control whi
 ### How updateOn feature works?
 
 Its an another performance booster in RRF, it just holds the computation needed to be made after every keystroke or value changes until you want to execute.It has three options `change`(default), `blur` and `submit`, you can define all of them at both field and record level.
-
-
-# Code Sandboxes
-  Try out `react-reactive-forms` in these sandbox versions of the Examples.
-* [Simple Form](https://codesandbox.io/s/4rxokpr270)
-* [Sync & Async Validation](https://codesandbox.io/s/qq8xq7j2w)
-* [User Registeration Form With Nested Forms](https://codesandbox.io/s/p2rqmr8qk7)
-* [Form Array With Dynamic Controls](https://codesandbox.io/s/nw9wxw2nvl)
-* [Update On Submit](https://codesandbox.io/s/3qk1ly16j1)
-* [Multi-page Wizard Form](https://codesandbox.io/s/zk1m06r5y3)
 
 
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
