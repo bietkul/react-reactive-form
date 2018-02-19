@@ -116,6 +116,16 @@ onBlur: () => void;
 Function needs to be called whenever a blur event triggers.
 ##
 ```ts
+onValueChanges: Observable<any>;
+```
+Emits an event every time the value of the control changes, in the UI by onChange event.
+##
+```ts
+onBlurChanges: Observable<any>;
+```
+Emits an event every time whenever a blur event triggers.
+##
+```ts
 handler: (inputType?: InputType, value?: string) => Handler;
 ```
 Returns the props required to bind a control to a native input element.
