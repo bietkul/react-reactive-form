@@ -105,9 +105,9 @@ export default class Login extends Component {
 }
 ```
 
-## Add Dynamic Control
+## Add Controls Dynamically
 
-You can also create dynamic controls without even initializing the group control object with the help of new react form components ( [FieldGroup](docs/api/FieldGroup.md), [FieldControl](docs/api/FieldControl.md), [FieldArray](docs/api/FieldArray.md)).
+You can also create controls without even initializing the group control object with the help of new react form components ( [FieldGroup](docs/api/FieldGroup.md), [FieldControl](docs/api/FieldControl.md), [FieldArray](docs/api/FieldArray.md)).
 
 ```js
 import React, { Component } from 'react'
@@ -169,7 +169,7 @@ export default class Login extends Component {
 }
 ```
 
-<b>So, it's not mandatory that you need to define your control separately but if you want better control then you should do that, if your controls are dynamic then you can also initalize the empty group control and add the controls later.
+<b>So, it's not mandatory that you need to define your control separately but if you want a better control over your form state then you should do that, if your controls are dynamic then you can also initalize the empty group control and add the controls later.
 See the example:</b>
 
 ```js
