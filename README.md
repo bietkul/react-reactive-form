@@ -15,7 +15,8 @@ It's a library inspired by the [Angular's Reactive Forms](https://angular.io/gui
 * Provides a set of validators & also supports custom sync & async validators.
 * Better form management with `FormGroup` & `FormArray` apis.
 * Customizable update strategy for better performace with large forms.
-  # Installation
+
+# Installation
 
 ```sh
 npm install react-reactive-form --save
