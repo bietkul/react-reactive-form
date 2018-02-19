@@ -148,3 +148,85 @@ export default class Login extends Component {
     }
 }
 ```
+
+## Common Operations
+
+### Add Listeners
+
+You can add subscriptions for listening the state changes in form.
+There are a total of five observables available currently:
+
+#### valueChanges
+Emits an event every time when the control's value changes.
+#### stateChanges
+Emits an event every time when the control's state(value, touched, ...) changes.
+#### statusChanges
+Emits an event every time when the control's status(PENDING, INVALID, VALID, DISABLED) changes.
+#### onValueChanges
+Emits an event every time when the control's value is changed by onChange event i.e by user.
+#### onBlurChnages
+Emits an event every time when a blur event triggers on a control.
+
+You can use these listeners to modify the form state dynamically based on the value of other controls.
+
+Example:
+
+#### Disable/Enable a control based on another control's value
+
+```js
+class Form extends Component {
+  myForm = {
+    public: true,
+    images: [[]]
+  }
+  componentDidMount() {
+    this.myForm.get('public').valueChanges.subscribe((value) => {
+      const imagesControl = this.myForm.get('images')
+      if(value) {
+        imagesControl.disable()
+      } else {
+        imagesControl.enable()
+      }
+    })
+  }
+  componentWillUnmount() {
+    this.myForm.get('public').valueChanges.unsubscribe()
+  }
+}
+```
+
+#### Set the value of a control based on another control's value
+
+The following example ensures that one of the control's value must be `true`.
+
+```js
+class Form extends Component {
+  myForm = {
+    showMeMen: true,
+    showMeWomen: true
+  }
+  componentDidMount() {
+    const showMeMenControl = this.myForm.get('showMeMen').unsubscribe()
+    const showMeWomenControl = this.myForm.get('showMeWomen')
+    
+    showMeMenControl.valueChanges.subscribe((value) => {
+      if(!value && !showMeWomenControl.value) {
+        showMeWomenControl.setValue(true)
+      }
+    })
+    
+    showMeWomenControl.valueChanges.subscribe((value) => {
+      if(!value && !showMeMenControl.value) {
+        showMeMenControl.setValue(true)
+      }
+    })
+    
+  }
+  
+  componentWillUnmount() {
+    this.myForm.get('showMeMen').valueChanges.unsubscribe()
+    this.myForm.get('showMeWomen').valueChanges.unsubscribe()
+  }
+}
+```
+
