@@ -249,6 +249,59 @@ export default class Login extends Component {
 * [Getting Started](docs)
 * [API](docs/api/)
 
+# FAQ
+
+### How is it different from other form libraries?
+
+React has many libraries which works on the form logic, but here are some concerns with these:
+
+#### Code Complexity
+If you’re using the redux-form then you should know the pain, for just a two field login form you’d to write the store logic.In RRF you can see that how simple is to deal with simple and complex forms.
+
+`And one of the awesome thing is that you can just write your form controls logic anywhere in your application.`
+
+#### Dependencies
+Many libraries come with dependencies for e.g redux is required for redux-form, So what If I’m using another state management or not event using any.
+According to Dan Abramov, form state is inherently ephemeral and local, so tracking it in Redux (or any kind of Flux library) is unnecessary.
+RRF comes with `zero` dependency, So it’s totally up to you that how you want to save your form state if needed.
+
+#### Performance
+Now that’s a big problem with almost all libraries when you're dealing with large forms.
+
+How RRF does solve performance issues ?
+- It uses subscription to update the components so rather updating all the fields on every input changes, it only update the particular field for which the state change takes place.
+- RRF has a nice option to define that when(blur, submit or change) to update your form's state by using the `updateOn` property.
+
+#### Dynamic Changes
+With the help of subscribers it's pretty easy to listen for a particular state changes and modify the controls accordingly.
+
+
+### What are `value` and `status` changes subscribers?
+
+RRF uses inbuilt `Subject`, A `Subject` is an object with the method next(v).To feed a new value to the Subject,RRF just calls the next(theValue), and it will be multicasted to the Observers registered to listen to the Subject.
+So basically it provides three subjects for each AbstractControl `valueChanges`, `statusChanges` and `stateChanges` and additional two subjects for FormControl ( `onValueChanges`, `onBlurChanges`)
+You can register an observer to a particular Subject to do some actions whenever some particular changes happen.
+
+Example:
+
+```ts
+componentDidMount() {
+  this.myForm.get(“gender”).valueChanges.subscribe((value) => {
+    // do something
+  })
+}
+```
+Checkout the [Basic usage guide](docs) for more details.
+
+### How the Field components work?
+
+Field components are subscribed to the state changes of a particular control which means that it’ll re-render the component only when it’s state changes disregarding of other field changes.You can also implement your custom wrappers by using the stateChanges `Subject`.
+
+### How updateOn feature works?
+
+Its an another performance booster in RRF, it just holds the computation needed to be made after every keystroke or value changes until you want to execute.It has three options `change`(default), `blur` and `submit`, you can define all of them at both field and record level.
+
+
 # Code Sandboxes
   Try out `react-reactive-forms` in these sandbox versions of the Examples.
 * [Simple Form](https://codesandbox.io/s/4rxokpr270)
@@ -257,6 +310,7 @@ export default class Login extends Component {
 * [Form Array With Dynamic Controls](https://codesandbox.io/s/nw9wxw2nvl)
 * [Update On Submit](https://codesandbox.io/s/3qk1ly16j1)
 * [Multi-page Wizard Form](https://codesandbox.io/s/zk1m06r5y3)
+
 
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
 
