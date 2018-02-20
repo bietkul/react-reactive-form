@@ -313,6 +313,12 @@ Field components are subscribed to the state changes of a particular control whi
 
 Its an another performance booster in RRF, it just holds the computation needed to be made after every keystroke or value changes until you want to execute.It has three options `change`(default), `blur` and `submit`, you can define all of them at both field and record level.
 
+### Is this library compatible with React Native?
+
+Yes, this library works with react-native also, currently it supports react-native `TextInput` and `Switch` component.
+
+
+
 
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
 
