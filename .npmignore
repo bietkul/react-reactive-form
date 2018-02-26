@@ -3,4 +3,4 @@ docs
 .npmignore
 package-lock.json
 yarn.lock
-/src/
+src/
