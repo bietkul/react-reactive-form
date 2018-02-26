@@ -3,6 +3,15 @@
 ## [Field](Field.md)
 A subscription based higher order component which connects a control with react component.
 
+## [FieldControl](FieldControl.md)
+A subscription based higher order component which connects an instance of [FormControl](FormControl.md) with react component.
+
+## [FieldGroup](FieldGroup.md)
+A subscription based higher order component which connects an instance of [FormGroup](FormGroup.md) with react component.
+
+## [FieldArray](FieldArray.md)
+A subscription based higher order component which connects an instance of [FormArray](FormArray.md) with react component.
+
 ## [Abstract Control](AbstractControl.md)
 Base class for [FormControl](FormControl.md), [FormGroup](FormGroup.md), and [FormArray](FormArray.md).
 

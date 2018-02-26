@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/bietkul/react-reactive-form.svg?branch=master)](https://travis-ci.org/bietkul/react-reactive-form)
 [![NPM Version](https://img.shields.io/npm/v/react-reactive-form.svg?style=flat)](https://www.npmjs.com/package/react-reactive-form)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 It's a library inspired by the [Angular's Reactive Forms](https://angular.io/guide/reactive-forms), which allows to create a tree of form control objects in the component class and bind them with native form control elements.
 
@@ -14,7 +15,8 @@ It's a library inspired by the [Angular's Reactive Forms](https://angular.io/gui
 * Provides a set of validators & also supports custom sync & async validators.
 * Better form management with `FormGroup` & `FormArray` apis.
 * Customizable update strategy for better performace with large forms.
-  # Installation
+
+# Installation
 
 ```sh
 npm install react-reactive-form --save
@@ -105,9 +107,9 @@ export default class Login extends Component {
 }
 ```
 
-## Add Dynamic Control
+## Add Controls Dynamically
 
-You can also create dynamic controls without even initializing the group control object with the help of new react form components ( [FieldGroup](docs/api/FieldGroup.md), [FieldControl](docs/api/FieldControl.md), [FieldArray](docs/api/FieldArray.md)).
+You can also create controls without even initializing the group control object with the help of new react form components ( [FieldGroup](docs/api/FieldGroup.md), [FieldControl](docs/api/FieldControl.md), [FieldArray](docs/api/FieldArray.md)).
 
 ```js
 import React, { Component } from 'react'
@@ -169,7 +171,7 @@ export default class Login extends Component {
 }
 ```
 
-<b>So, it's not mandatory that you need to define your control separately but if you want better control then you should do that, if your controls are dynamic then you can also initalize the empty group control and add the controls later.
+<b>So, it's not mandatory that you need to define your control separately but if you want a better control over your form state then you should do that, if your controls are dynamic then you can also initalize the empty group control and add the controls later.
 See the example:</b>
 
 ```js
@@ -256,7 +258,67 @@ export default class Login extends Component {
 * [User Registeration Form With Nested Forms](https://codesandbox.io/s/p2rqmr8qk7)
 * [Form Array With Dynamic Controls](https://codesandbox.io/s/nw9wxw2nvl)
 * [Update On Submit](https://codesandbox.io/s/3qk1ly16j1)
-* [Multi-page Wizard Form](https://codesandbox.io/s/zk1m06r5y3)
+* [Multi-page Wizard Form](https://codesandbox.io/s/136340om74)
+
+
+# FAQ
+
+### How is it different from other form libraries?
+
+React has many libraries which works on the form logic, but here are some concerns with these:
+
+#### Code Complexity
+If you’re using the redux-form then you should know the pain, for just a two field login form you’d to write the store logic.In RRF you can see that how simple is to deal with simple and complex forms.
+
+`And one of the awesome thing is that you can just write your form controls logic anywhere in your application.`
+
+#### Dependencies
+Many libraries come with dependencies for e.g redux is required for redux-form, So what If I’m using another state management or not event using any.
+According to Dan Abramov, form state is inherently ephemeral and local, so tracking it in Redux (or any kind of Flux library) is unnecessary.
+RRF comes with `zero` dependency, So it’s totally up to you that how you want to save your form state if needed.
+
+#### Performance
+Now that’s a big problem with almost all libraries when you're dealing with large forms.
+
+How RRF does solve performance issues ?
+- It uses subscription to update the components so rather updating all the fields on every input changes, it only update the particular field for which the state change takes place.
+- RRF has a nice option to define that when(blur, submit or change) to update your form's state by using the `updateOn` property.
+
+#### Dynamic Changes
+With the help of subscribers it's pretty easy to listen for a particular state changes and modify the controls accordingly.
+
+
+### What are `value` and `status` changes subscribers?
+
+RRF uses inbuilt `Subject`, A `Subject` is an object with the method next(v).To feed a new value to the Subject,RRF just calls the next(theValue), and it will be multicasted to the Observers registered to listen to the Subject.
+So basically it provides three subjects for each AbstractControl `valueChanges`, `statusChanges` and `stateChanges` and additional two subjects for FormControl ( `onValueChanges`, `onBlurChanges`)
+You can register an observer to a particular Subject to do some actions whenever some particular changes happen.
+
+Example:
+
+```ts
+componentDidMount() {
+  this.myForm.get(“gender”).valueChanges.subscribe((value) => {
+    // do something
+  })
+}
+```
+Checkout the [Basic usage guide](docs) for more details.
+
+### How the Field components work?
+
+Field components are subscribed to the state changes of a particular control which means that it’ll re-render the component only when it’s state changes disregarding of other field changes.You can also implement your custom wrappers by using the stateChanges `Subject`.
+
+### How updateOn feature works?
+
+Its an another performance booster in RRF, it just holds the computation needed to be made after every keystroke or value changes until you want to execute.It has three options `change`(default), `blur` and `submit`, you can define all of them at both field and record level.
+
+### Is this library compatible with React Native?
+
+Yes, this library works with react-native also, currently it supports react-native `TextInput` and `Switch` component.
+
+
+
 
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
 
