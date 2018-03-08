@@ -1,3 +1,5 @@
+<img src="logo.png" class="logo" height="200" width="300"/>
+
 # React Reactive Forms
 
 [![Build Status](https://travis-ci.org/bietkul/react-reactive-form.svg?branch=master)](https://travis-ci.org/bietkul/react-reactive-form)
