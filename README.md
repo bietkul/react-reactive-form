@@ -1,4 +1,4 @@
-<img align="right" src="logo.png" class="logo" height="140" width="240"/>
+<img src="logo.png" class="logo" height="140" width="240"/>
 
 # React Reactive Forms
 
