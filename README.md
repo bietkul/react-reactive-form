@@ -1,4 +1,6 @@
-<img align="right" src="logo.png" class="logo" height="80" width="140"/>
+<p align="center">
+  <img src="logo.png" alt="React Native Game Engine" height="120" />
+</p>
 
 # React Reactive Forms
 
