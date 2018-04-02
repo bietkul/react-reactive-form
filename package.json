@@ -29,7 +29,9 @@
     "url": "https://github.com/bietkul/react-reactive-form/issues"
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ]
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
