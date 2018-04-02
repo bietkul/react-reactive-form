@@ -7,6 +7,16 @@
 [![Build Status](https://travis-ci.org/bietkul/react-reactive-form.svg?branch=master)](https://travis-ci.org/bietkul/react-reactive-form)
 [![NPM Version](https://img.shields.io/npm/v/react-reactive-form.svg?style=flat)](https://www.npmjs.com/package/react-reactive-form)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+<img 
+    alt="gzip size"
+    src="https://img.shields.io/badge/gzip%20size-3.4%20kB-brightgreen.svg"
+  />
+<a href="https://github.com/bietkul/react-reactive-form/pulls">
+    <img
+      alt="PRs welcome"
+      src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"
+    />
+ </a>
 
 It's a library inspired by the [Angular's Reactive Forms](https://angular.io/guide/reactive-forms), which allows to create a tree of form control objects in the component class and bind them with native form control elements.
 
