@@ -332,7 +332,8 @@ Its an another performance booster in RRF, it just holds the computation needed 
 Yes, this library works with react-native also, currently it supports react-native `TextInput` and `Switch` component.
 
 ### Note: 
-If you're using react-native then please add the following line of code in 'index.js' of your project to avoid error in android devices.
+If you're using react-native then please add the following line of code in `index.js` of your project to avoid error in android devices.
+
 `import "babel-polyfill"`
 
 
