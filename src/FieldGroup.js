@@ -15,7 +15,10 @@ class FieldGroup extends React.Component {
     }
   }
   render() {
-    const { strict, children, render } = this.props
+    const { strict, children, render, meta } = this.props
+    if (this.control) {
+      this.control.meta = meta || {}
+    }
     const FieldProps = {
       control: this.control,
       strict,
@@ -62,6 +65,7 @@ FieldGroup.propTypes = {
   parent: PropTypes.oneOfType([
     PropTypes.instanceOf(FormArray),
     PropTypes.instanceOf(FormGroup)
-  ])
+  ]),
+  meta: PropTypes.object
 }
 export default FieldGroup

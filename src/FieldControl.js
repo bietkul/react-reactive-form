@@ -1,32 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  FormControl,
-  FormArray,
-  FormGroup
-} from './model'
+import { FormControl, FormArray, FormGroup } from './model'
 import configureControl from './configureControl'
 import Field from './Field'
-
 export default class FieldControl extends React.Component {
   constructor(props, context) {
     super(props, context)
     this.control = configureControl(props, context, 'FormControl')
   }
   componentWillReceiveProps(nextProps) {
-    const {
-      name
-    } = nextProps
+    const { name } = nextProps
     if (this.props.name !== name) {
       this.control = configureControl(nextProps, this.context, 'FormControl')
     }
   }
   render() {
-    const {
-      strict,
-      children,
-      render
-    } = this.props
+    const { strict, children, render, meta } = this.props
+    if (this.control) {
+      this.control.meta = meta || {}
+    }
     const FieldProps = {
       control: this.control,
       strict,
@@ -67,7 +59,8 @@ FieldControl.propTypes = {
   parent: PropTypes.oneOfType([
     PropTypes.instanceOf(FormArray),
     PropTypes.instanceOf(FormGroup)
-  ])
+  ]),
+  meta: PropTypes.object
 }
 FieldControl.contextTypes = {
   parentControl: PropTypes.oneOfType([
