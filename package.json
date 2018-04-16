@@ -1,6 +1,6 @@
 {
   "name": "react-reactive-form",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Angular like Reactive Forms in React",
   "keywords": [
     "forms",
@@ -29,7 +29,9 @@
     "url": "https://github.com/bietkul/react-reactive-form/issues"
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ]
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -44,10 +46,13 @@
     "eslint-plugin-react": "^7.5.1",
     "prettier": "^1.8.2",
     "prettier-eslint-cli": "^4.4.2",
-    "react": "^16.1.1"
+    "react": "^16.1.1",
+    "prop-types": "^15.6.0"
   },
   "peerDependencies": {
-    "react": "^15.0.0-0 || ^16.0.0-0"
+    "react": "^15.0.0-0 || ^16.0.0-0",
+    "prop-types": "^15.6.0",
+    "babel-polyfill": "^6.26.0"
   },
   "typings": "./index.d.ts",
   "homepage": "https://github.com/bietkul/react-reactive-form#readme"

@@ -63,7 +63,7 @@ The above example will create an instance of [FormGroup](FormGroup.md) class whi
 
 
 ### step2: Connect form with component
-This steps is not needed if you're using dynamic controls but if you want a better control over your form state then you should do that, if your controls are dynamic then you can also initalize the empty group control and add the controls later.  
+This step is not needed if you're using dynamic controls but if you want a better control over your form state then you should do that, if your controls are dynamic then you can also initalize the empty group control and add the controls later.  
 Example:
 
 ```js
@@ -154,7 +154,7 @@ export default class Login extends Component {
 ### Add Listeners
 
 You can add subscriptions for listening the state changes in form.
-There are a total of five observables available currently:
+There are a total of five observables available now:
 
 #### valueChanges
 Emits an event every time when the control's value changes.
@@ -164,7 +164,7 @@ Emits an event every time when the control's state(value, touched, ...) changes.
 Emits an event every time when the control's status(PENDING, INVALID, VALID, DISABLED) changes.
 #### onValueChanges
 Emits an event every time when the control's value is changed by onChange event i.e by user.
-#### onBlurChnages
+#### onBlurChanges
 Emits an event every time when a blur event triggers on a control.
 
 You can use these listeners to modify the form state dynamically based on the value of other controls.
