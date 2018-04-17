@@ -47,6 +47,16 @@ import {
     Validators,
  } from "react-reactive-form";
 
+const TextInput = ({ handler, touched, hasError, meta }) => (
+  <div>
+    <input placeholder={meta.placeholder} {...handler()}/>
+    <span>
+        {touched
+        && hasError("required")
+        && `${meta.label} is required`}
+    </span>
+  </div>  
+)
 export default class Login extends Component {
     loginForm = FormBuilder.group({
         username: ["", Validators.required],
@@ -67,32 +77,19 @@ export default class Login extends Component {
                 control={this.loginForm}
                 render={({ get, invalid }) => (
                   <form onSubmit={this.handleSubmit}>
+
                     <FieldControl
                       name="username"
-                      render={({ handler, touched, hasError }) => (
-                        <div>
-                          <input {...handler()}/>
-                          <span>
-                              {touched
-                              && hasError("required")
-                              && "Username is required"}
-                          </span>
-                        </div>  
-                      )}
+                      render={TextInput}
+                      meta={{ label: "Username", placeholder: "Enter username" }}
                     />
+
                     <FieldControl
                       name="password"
-                      render={({ handler, touched, hasError }) => (
-                        <div>
-                          <input {...handler()}/>
-                          <span>
-                              {touched
-                              && hasError("required")
-                              && "Password is required"}
-                          </span>
-                        </div>  
-                      )}
+                      render={TextInput}
+                      meta={{ label: "Password", placeholder: "Enter password" }}
                     />
+
                     <FieldControl
                       name="rememberMe"
                       render={({handler}) => (
