@@ -76,3 +76,20 @@ For eg.
 parent: AbstractControl;
 ```
 An instance of FormGroup or FormArray class as a parent control.
+
+##
+```ts
+meta: {[key: string]: any};
+```
+You can pass an object of custom variables to customize your component.
+
+For example:
+
+```ts
+<FieldArray
+  meta={{
+    title: "Products"
+  }}
+ ...
+/>
+```
