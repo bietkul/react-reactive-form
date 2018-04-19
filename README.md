@@ -49,7 +49,7 @@ import {
 
 const TextInput = ({ handler, touched, hasError, meta }) => (
   <div>
-    <input placeholder={meta.placeholder} {...handler()}/>
+    <input placeholder=`Enter ${meta.label}` {...handler()}/>
     <span>
         {touched
         && hasError("required")
@@ -81,13 +81,13 @@ export default class Login extends Component {
                     <FieldControl
                       name="username"
                       render={TextInput}
-                      meta={{ label: "Username", placeholder: "Enter username" }}
+                      meta={{ label: "Username" }}
                     />
 
                     <FieldControl
                       name="password"
                       render={TextInput}
-                      meta={{ label: "Password", placeholder: "Enter password" }}
+                      meta={{ label: "Password" }}
                     />
 
                     <FieldControl
