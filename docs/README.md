@@ -164,7 +164,7 @@ Emits an event every time when the control's state(value, touched, ...) changes.
 Emits an event every time when the control's status(PENDING, INVALID, VALID, DISABLED) changes.
 #### onValueChanges
 Emits an event every time when the control's value is changed by onChange event i.e by user.
-#### onBlurChnages
+#### onBlurChanges
 Emits an event every time when a blur event triggers on a control.
 
 You can use these listeners to modify the form state dynamically based on the value of other controls.
