@@ -110,10 +110,10 @@ export const getAbsoluteValue = value =>
   value === undefined || value === null ? '' : value
 
 export const getInputControls = inputType =>
-  isReactNative()
-    ? controlsToBeMap.ReactNative[inputType] ||
-      controlsToBeMap.ReactNative.default
-    : controlsToBeMap.default
+  isReactNative() ?
+  controlsToBeMap.ReactNative[inputType] ||
+  controlsToBeMap.ReactNative.default :
+  controlsToBeMap.default
 
 export function getHandler(inputType, value, control) {
   const controlObject = {}
@@ -158,4 +158,11 @@ export function warning(condition, message) {
       console.error(`Warning: ${message}`)
     }
   }
+}
+/**
+ * Generates the unique key for react elements
+ * @param {*} pre 
+ */
+export const generateKey = (pre) => {
+  return `${ pre }_${ new Date().getTime() }`;
 }

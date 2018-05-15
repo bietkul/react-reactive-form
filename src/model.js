@@ -1,4 +1,9 @@
-import { toObservable, isEvent, getHandler, isReactNative } from './utils'
+import {
+  toObservable,
+  isEvent,
+  getHandler,
+  isReactNative
+} from './utils'
 import Subject from './observable'
 import Validators from './validators'
 
@@ -111,34 +116,36 @@ function normalizeAsyncValidator(validator) {
  * @return {Function|null}
  */
 function composeValidators(validators) {
-  return validators != null
-    ? Validators.compose(validators.map(normalizeValidator))
-    : null
+  return validators != null ?
+    Validators.compose(validators.map(normalizeValidator)) :
+    null
 }
 /**
  * @param {Function[]} validators
  * @return {Function|null}
  */
 function composeAsyncValidators(validators) {
-  return validators != null
-    ? Validators.composeAsync(validators.map(normalizeAsyncValidator))
-    : null
+  return validators != null ?
+    Validators.composeAsync(validators.map(normalizeAsyncValidator)) :
+    null
 }
+
 function coerceToValidator(validatorOrOpts) {
-  const validator = isOptionsObj(validatorOrOpts)
-    ? validatorOrOpts.validators
-    : validatorOrOpts
-  return Array.isArray(validator)
-    ? composeValidators(validator)
-    : validator || null
+  const validator = isOptionsObj(validatorOrOpts) ?
+    validatorOrOpts.validators :
+    validatorOrOpts
+  return Array.isArray(validator) ?
+    composeValidators(validator) :
+    validator || null
 }
+
 function coerceToAsyncValidator(asyncValidator, validatorOrOpts) {
-  const origAsyncValidator = isOptionsObj(validatorOrOpts)
-    ? validatorOrOpts.asyncValidators
-    : asyncValidator
-  return Array.isArray(origAsyncValidator)
-    ? composeAsyncValidators(origAsyncValidator)
-    : origAsyncValidator || null
+  const origAsyncValidator = isOptionsObj(validatorOrOpts) ?
+    validatorOrOpts.asyncValidators :
+    asyncValidator
+  return Array.isArray(origAsyncValidator) ?
+    composeAsyncValidators(origAsyncValidator) :
+    origAsyncValidator || null
 }
 /**
  * This is the base class for `FormControl`, `FormGroup`, and
@@ -186,9 +193,9 @@ export class AbstractControl {
    * Possible values: `'change'` (default) | `'blur'` | `'submit'`
    */
   get updateOn() {
-    return this._updateOn
-      ? this._updateOn
-      : this.parent ? this.parent.updateOn : 'change'
+    return this._updateOn ?
+      this._updateOn :
+      this.parent ? this.parent.updateOn : 'change'
   }
   /**
    * A control is `dirty` if the user has changed the value
@@ -291,7 +298,9 @@ export class AbstractControl {
     this.status = DISABLED
     this.errors = null
     this._forEachChild(control => {
-      control.disable({ onlySelf: true })
+      control.disable({
+        onlySelf: true
+      })
     })
     this._updateValue()
 
@@ -316,9 +325,14 @@ export class AbstractControl {
   enable(opts = {}) {
     this.status = VALID
     this._forEachChild(control => {
-      control.enable({ onlySelf: true })
+      control.enable({
+        onlySelf: true
+      })
     })
-    this.updateValueAndValidity({ onlySelf: true, emitEvent: opts.emitEvent })
+    this.updateValueAndValidity({
+      onlySelf: true,
+      emitEvent: opts.emitEvent
+    })
     this._updateAncestors(!!opts.onlySelf)
     this._onDisabledChange.forEach(changeFn => changeFn(false))
   }
@@ -394,7 +408,9 @@ export class AbstractControl {
     this.submitted = false
 
     this._forEachChild(control => {
-      control.markAsUnsubmitted({ onlySelf: true })
+      control.markAsUnsubmitted({
+        onlySelf: true
+      })
     })
 
     if (opts.emitEvent !== false) {
@@ -414,7 +430,9 @@ export class AbstractControl {
     this.pristine = true
     this._pendingDirty = false
     this._forEachChild(control => {
-      control.markAsPristine({ onlySelf: true })
+      control.markAsPristine({
+        onlySelf: true
+      })
     })
     if (this._parent && !opts.onlySelf) {
       this._parent._updatePristine(opts)
@@ -433,7 +451,9 @@ export class AbstractControl {
     this.touched = false
     this._pendingTouched = false
     this._forEachChild(control => {
-      control.markAsUntouched({ onlySelf: true })
+      control.markAsUntouched({
+        onlySelf: true
+      })
     })
     if (this._parent && !opts.onlySelf) {
       this._parent._updateTouched(opts)
@@ -604,7 +624,9 @@ export class AbstractControl {
       this.status = PENDING
       const obs = toObservable(this.asyncValidator(this))
       this._asyncValidationSubscription = obs.subscribe(errors =>
-        this.setErrors(errors, { emitEvent })
+        this.setErrors(errors, {
+          emitEvent
+        })
       )
     }
   }
@@ -707,7 +729,10 @@ export class FormControl extends AbstractControl {
     this._pendingTouched = false
     this.onValueChanges = new Subject()
     this.onBlurChanges = new Subject()
-    this.updateValueAndValidity({ onlySelf: true, emitEvent: false })
+    this.updateValueAndValidity({
+      onlySelf: true,
+      emitEvent: false
+    })
     this._initObservables()
     /**
      * Called whenevers an onChange event triggers.
@@ -832,9 +857,15 @@ export class FormControl extends AbstractControl {
     if (this._isBoxedValue(formState)) {
       this.value = this._pendingValue = formState.value
       if (formState.disabled) {
-        this.disable({ onlySelf: true, emitEvent: false })
+        this.disable({
+          onlySelf: true,
+          emitEvent: false
+        })
       } else {
-        this.enable({ onlySelf: true, emitEvent: false })
+        this.enable({
+          onlySelf: true,
+          emitEvent: false
+        })
       }
     } else {
       this.value = this._pendingValue = formState
@@ -864,14 +895,18 @@ export class FormGroup extends AbstractControl {
     this._initObservables()
     this._setUpdateStrategy(validatorOrOpts)
     this._setUpControls()
-    this.updateValueAndValidity({ onlySelf: true, emitEvent: false })
+    this.updateValueAndValidity({
+      onlySelf: true,
+      emitEvent: false
+    })
     this.handleSubmit = e => {
-      // console.log("FORM HAS BEEN SUBMITTED", this._syncPendingControls());
       if (e) {
         e.preventDefault()
       }
       if (this._anyControlsUnsubmitted()) {
-        this.markAsSubmitted({ emitEvent: false })
+        this.markAsSubmitted({
+          emitEvent: false
+        })
       }
       if (!this._syncPendingControls()) {
         this.updateValueAndValidity()
@@ -1139,13 +1174,18 @@ export class FormArray extends AbstractControl {
     this._initObservables()
     this._setUpdateStrategy(validatorOrOpts)
     this._setUpControls()
-    this.updateValueAndValidity({ onlySelf: true, emitEvent: false })
+    this.updateValueAndValidity({
+      onlySelf: true,
+      emitEvent: false
+    })
     this.handleSubmit = e => {
       if (e) {
         e.preventDefault()
       }
       if (this._anyControlsUnsubmitted()) {
-        this.markAsSubmitted({ emitEvent: false })
+        this.markAsSubmitted({
+          emitEvent: false
+        })
       }
       if (!this._syncPendingControls()) {
         this.updateValueAndValidity()
@@ -1288,9 +1328,9 @@ export class FormArray extends AbstractControl {
    */
   getRawValue() {
     return this.controls.map(control => {
-      return control instanceof FormControl
-        ? control.value
-        : control.getRawValue()
+      return control instanceof FormControl ?
+        control.value :
+        control.getRawValue()
     })
   }
 
