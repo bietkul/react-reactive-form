@@ -13,16 +13,55 @@ import {
 } from './utils'
 import configureControl from './configureControl'
 
-export default class FormGenerator extends React.PureComponent {
+export default class FormGenerator extends React.Component {
   constructor(props) {
     super(props)
     this.form = null
+  }
+  shouldComponentUpdate(nextProps) {
+    // Only Re-renders for changes in field config
+    if (nextProps.fieldConfig !== this.props.fieldConfig) {
+      return true
+    }
+    return false
+  }
+  // Called after the form setup
+  formDidMount() {
+    const {
+      onMount,
+      onValueChanges,
+      onStatusChanges
+    } = this.props;
+    if (this.form) {
+      // Call the onMount callback
+      onMount(this.form)
+      // Add listener for value changes
+      if (onValueChanges) {
+        this.form.valueChanges.subscribe((value) => {
+          onValueChanges(value)
+        })
+      }
+      // Add listener for status changes
+      if (onStatusChanges) {
+        this.form.statusChanges.subscribe((status) => {
+          onStatusChanges(status)
+        })
+      }
+    }
+  }
+  componentWillUnmount() {
+    const {
+      onUnmount
+    } = this.props;
+    onUnmount()
   }
   getFields() {
     const fields = []
     const {
       fieldConfig
     } = this.props
+    // Resets the form
+    this.form = null;
     // Creates an AbstractControl & push it to the fields array ( For leaf controls )
     const setControl = (metaControl, index) => {
       if (metaControl && !metaControl.controls) {
@@ -105,11 +144,17 @@ export default class FormGenerator extends React.PureComponent {
       // Throw error
       warning(false, `Missing controls in fieldConfig.`)
     }
+    this.formDidMount()
     return fields
   }
   render() {
-    const renderFields = this.getFields()
-    return renderFields
+    const {
+      fieldConfig
+    } = this.props
+    if (fieldConfig) {
+      return this.getFields()
+    }
+    return null
   }
 }
 
@@ -143,5 +188,13 @@ FormGenerator.propTypes = {
       PropTypes.instanceOf(FormGroup)
     ]),
     meta: PropTypes.object
-  })
+  }).isRequired,
+  onMount: PropTypes.func,
+  onUnmount: PropTypes.func,
+  onValueChanges: PropTypes.func,
+  onStatusChanges: PropTypes.func,
+}
+FormGenerator.defaultProps = {
+  onMount: () => null,
+  onUnmount: () => null,
 }

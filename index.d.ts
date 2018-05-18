@@ -311,7 +311,11 @@ export interface FieldConfig extends GroupProps {
     controls: {[key: string]: any} | Array<any>
 }
 export interface FormGeneratorProps {
-    fieldConfig: FieldConfig
+    fieldConfig: FieldConfig,
+    onMount?: (form: FormArray|FormGroup) => void,
+    onUnmount?: () => void,
+    onValueChanges?: (value: {[key: string]: any} | Array<any>) => void,
+    onStatusChanges?: (status: Status) => void,
 }
 declare module "react-reactive-form" {
     export class Field extends React.Component<FieldProps, any> {}
