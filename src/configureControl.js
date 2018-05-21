@@ -4,7 +4,7 @@ import { warning } from './utils'
 const getControlFromReference = (reference, options, formState) => {
   switch (reference) {
     case 'FormGroup':
-      return new FormGroup([], options)
+      return new FormGroup({}, options)
     case 'FormArray':
       return new FormArray([], options)
     case 'FormControl':

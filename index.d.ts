@@ -134,6 +134,10 @@ declare abstract class AbstractControl {
     parent: FormGroup | FormArray;
     errors: ValidationErrors;
     /**
+     * To set the meta properties
+     */
+    meta: Object;
+    /**
      * Returns the update strategy of the `AbstractControl` (i.e.
      * the event on which the control will update itself).
      * Possible values: `'change'` (default) | `'blur'` | `'submit'`
@@ -304,11 +308,22 @@ export interface GroupProps {
     parent?: AbstractControl;
     meta?: any;
 }
+export interface FieldConfig extends GroupProps {
+    controls: {[key: string]: any} | Array<any>
+}
+export interface FormGeneratorProps {
+    fieldConfig: FieldConfig,
+    onMount?: (form: FormArray|FormGroup) => void,
+    onUnmount?: () => void,
+    onValueChanges?: (value: {[key: string]: any} | Array<any>) => void,
+    onStatusChanges?: (status: Status) => void,
+}
 declare module "react-reactive-form" {
-    export class Field extends React.Component<FieldProps, any> { }
-    export class FieldGroup extends React.Component<GroupProps, any> { }
-    export class FieldArray extends React.Component<GroupProps, any> { }
-    export class FieldControl extends React.Component<GroupProps, any> { }
+    export class Field extends React.Component<FieldProps, any> {}
+    export class FieldGroup extends React.Component<GroupProps, any> {}
+    export class FieldArray extends React.Component<GroupProps, any> {}
+    export class FieldControl extends React.Component<GroupProps, any> {}
+    export class FormGenerator extends React.Component<FormGeneratorProps, any> {}
     /**
      * Creates an `AbstractControl` from a user-specified configuration.
      *
