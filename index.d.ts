@@ -3,8 +3,8 @@ import * as React from "react";
 export type ValidationErrors = {
     [key: string]: any
 };
-export type Status = 'VALID'|'INVALID'|'DISABLED'|'PENDING';
-export type InputType = 'checkbox'|'radio'|'switch';
+export type Status = 'VALID' | 'INVALID' | 'DISABLED' | 'PENDING';
+export type InputType = 'checkbox' | 'radio' | 'switch';
 export type Handler = {
     value: any;
     onChange: (e: any) => void;
@@ -16,8 +16,8 @@ export type Handler = {
 }
 export interface Observable<T> {
     observers: Array<T>;
-    subscribe: (fn:Function) => void;
-    unsubscribe: (fn:Function) => void;
+    subscribe: (fn: Function) => void;
+    unsubscribe: (fn: Function) => void;
 }
 type Meta = {
     value: any;
@@ -33,27 +33,27 @@ type Meta = {
     status: Status;
     pending: boolean;
     _pendingValue: any;
-    hasError: (errorCode: string, path?: String|Number[]|String) => boolean;
-    getError: (errorCode: string, path?: String|Number[]|String) => any;
+    hasError: (errorCode: string, path?: String | Number[] | String) => boolean;
+    getError: (errorCode: string, path?: String | Number[] | String) => any;
     handler: (inputType?: InputType, value?: string) => Handler;
 }
 interface Child {
-    [key: string]: Meta;  
+    [key: string]: Meta;
 }
 export type FormProps = Child & Meta;
 export type FormHooks = 'change' | 'blur' | 'submit';
 
 export interface AbstractControlOptions {
-  validators?: ValidatorFn|ValidatorFn[]|null;
-  asyncValidators?: AsyncValidatorFn|AsyncValidatorFn[]|null;
-  updateOn?: FormHooks;
+    validators?: ValidatorFn | ValidatorFn[] | null;
+    asyncValidators?: AsyncValidatorFn | AsyncValidatorFn[] | null;
+    updateOn?: FormHooks;
 }
-export interface ValidatorFn { (c: AbstractControl|FormGroup|FormArray): ValidationErrors|null; }
+export interface ValidatorFn { (c: AbstractControl | FormGroup | FormArray): ValidationErrors | null; }
 export interface AsyncValidatorFn {
-    (c: AbstractControl|FormGroup|FormArray): Promise<ValidationErrors|null>|Observable<ValidationErrors|null>;
+    (c: AbstractControl | FormGroup | FormArray): Promise<ValidationErrors | null> | Observable<ValidationErrors | null>;
 }
 declare abstract class AbstractControl {
-    constructor(validator: ValidatorFn|null, asyncValidator: AsyncValidatorFn|null)
+    constructor(validator: ValidatorFn | null, asyncValidator: AsyncValidatorFn | null)
     /**
      * Emits an event every time the value of the control changes, in
      * the UI or programmatically.
@@ -131,7 +131,7 @@ declare abstract class AbstractControl {
     /**
      * The parent control.
      */
-    parent: FormGroup|FormArray;
+    parent: FormGroup | FormArray;
     errors: ValidationErrors;
     /**
      * Returns the update strategy of the `AbstractControl` (i.e.
@@ -154,7 +154,7 @@ declare abstract class AbstractControl {
      *
      * * `this.form.get(['person', 'name']);`
      */
-    get: (path: String|Number[]|String) => AbstractControl;
+    get: (path: String | Number[] | String) => AbstractControl;
     /**
      * Retrieves the top-level ancestor of this control.
      */
@@ -165,7 +165,7 @@ declare abstract class AbstractControl {
      *
      * If the control has children, all children will be disabled to maintain the model.
      */
-    disable: (opts?: {onlySelf?: boolean, emitEvent?: boolean}) => void;
+    disable: (opts?: { onlySelf?: boolean, emitEvent?: boolean }) => void;
     /**
      * Enables the control. This means the control will be included in validation checks and
      * the aggregate value of its parent. Its status is re-calculated based on its value and
@@ -173,31 +173,31 @@ declare abstract class AbstractControl {
      *
      * If the control has children, all children will be enabled.
      */
-    enable: (opts?: {onlySelf?: boolean, emitEvent?: boolean}) => void;
+    enable: (opts?: { onlySelf?: boolean, emitEvent?: boolean }) => void;
     /**
      * Updates value, validity & status of the control & parent
      */
-    updateValueAndValidity: (opts?: {onlySelf?: boolean, emitEvent?: boolean}) => void;
+    updateValueAndValidity: (opts?: { onlySelf?: boolean, emitEvent?: boolean }) => void;
     /**
      * Marks the control as `submitted`.
      *
      * If the control has any children, it will also mark all children as `submitted`
      */
-    markAsSubmitted: (opts?: {emitEvent?: boolean}) => void;
+    markAsSubmitted: (opts?: { emitEvent?: boolean }) => void;
     /**
      * Marks the control as `unsubmitted`.
      *
      * If the control has any children, it will also mark all children as `unsubmitted`.
      *
      */
-    markAsUnsubmitted: (opts?: {emitEvent?: boolean}) => void;
+    markAsUnsubmitted: (opts?: { emitEvent?: boolean }) => void;
     /**
      * Marks the control as `touched`.
      *
      * This will also mark all direct ancestors as `touched` to maintain
      * the model.
      */
-    markAsTouched: (opts?: {onlySelf?: boolean}) => void;
+    markAsTouched: (opts?: { onlySelf?: boolean }) => void;
     /**
      * Marks the control as `pristine`.
      *
@@ -205,7 +205,7 @@ declare abstract class AbstractControl {
      * to maintain the model, and re-calculate the `pristine` status of all parent
      * controls.
      */
-    markAsPristine: (opts?: {onlySelf?: boolean}) => void;
+    markAsPristine: (opts?: { onlySelf?: boolean }) => void;
     /**
      * Marks the control as `untouched`.
      *
@@ -213,19 +213,19 @@ declare abstract class AbstractControl {
      * to maintain the model, and re-calculate the `touched` status of all parent
      * controls.
      */
-    markAsUntouched: (opts?: {onlySelf?: boolean}) => void;
+    markAsUntouched: (opts?: { onlySelf?: boolean }) => void;
     /**
      * Marks the control as `dirty`.
      *
      * This will also mark all direct ancestors as `dirty` to maintain
      * the model.
      */
-    markAsDirty: (opts?: {onlySelf?: boolean}) => void;
+    markAsDirty: (opts?: { onlySelf?: boolean }) => void;
     /**
      * Sets the synchronous validators that are active on this control.  Calling
      * this will overwrite any existing sync validators.
      */
-    setValidators: (newValidator: Function|Function[]|null) => void;
+    setValidators: (newValidator: Function | Function[] | null) => void;
     /**
      * Sets the async validators that are active on this control. 
      * Calling this will overwrite any existing async validators.
@@ -256,26 +256,26 @@ declare abstract class AbstractControl {
      *
      * ```
      */
-    setErrors: (errors: ValidationErrors|null, opts?: {onlySelf?: boolean}) => void;
+    setErrors: (errors: ValidationErrors | null, opts?: { onlySelf?: boolean }) => void;
     /**
      * Returns error data if the control with the given path has the error specified. Otherwise
      * returns null or undefined.
      *
      * If no path is given, it checks for the error on the present control.
      */
-    getError: (errorCode: string, path?: String|Number[]|String) => any;
+    getError: (errorCode: string, path?: String | Number[] | String) => any;
     /**
      * Returns true if the control with the given path has the error specified. Otherwise
      * returns false.
      *
      * If no path is given, it checks for the error on the present control.
      */
-    hasError: (errorCode: string, path?: String|Number[]|String) => boolean;
+    hasError: (errorCode: string, path?: String | Number[] | String) => boolean;
     /**
      * Binds an input element to control.
      */
     handler: (inputType?: InputType, value?: string) => Handler;
-    setParent: (parent: FormGroup|FormArray) => void; 
+    setParent: (parent: FormGroup | FormArray) => void;
     /**
      * Sets the value of the control. Abstract method (implemented in sub-classes).
      */
@@ -290,24 +290,25 @@ declare abstract class AbstractControl {
     abstract reset(value?: any, options?: Object): void;
 }
 export interface FieldProps {
-    render?: (control: FormArray|FormControl|FormGroup) => React.ReactElement<any>|React.ReactElement<any>[];
+    render?: (control: FormArray | FormControl | FormGroup) => React.ReactElement<any> | React.ReactElement<any>[];
     control: AbstractControl;
 }
 export interface GroupProps {
     strict?: boolean;
-    render?: (control: FormArray|FormControl|FormGroup) => React.ReactElement<any>|React.ReactElement<any>[];
+    render?: (control: FormArray | FormControl | FormGroup) => React.ReactElement<any> | React.ReactElement<any>[];
     control?: AbstractControl;
     name?: string;
     index?: number;
     formState?: any;
     options?: AbstractControlOptions;
     parent?: AbstractControl;
+    meta?: any;
 }
 declare module "react-reactive-form" {
-    export class Field extends React.Component<FieldProps, any> {}
-    export class FieldGroup extends React.Component<GroupProps, any> {}
-    export class FieldArray extends React.Component<GroupProps, any> {}
-    export class FieldControl extends React.Component<GroupProps, any> {}
+    export class Field extends React.Component<FieldProps, any> { }
+    export class FieldGroup extends React.Component<GroupProps, any> { }
+    export class FieldArray extends React.Component<GroupProps, any> { }
+    export class FieldControl extends React.Component<GroupProps, any> { }
     /**
      * Creates an `AbstractControl` from a user-specified configuration.
      *
@@ -320,7 +321,7 @@ declare module "react-reactive-form" {
          * Construct a new `FormGroup` with the given map of configuration.
          * Valid keys for the `extra` parameter map are same as `AbstractControlOptions`.
          */
-        static group(controlsConfig: {[key: string]: any}, extra?: AbstractControlOptions|null): FormGroup
+        static group(controlsConfig: { [key: string]: any }, extra?: AbstractControlOptions | null): FormGroup
         /**
          * Construct a new `FormControl` with the given `formState`,`validators`,
          * `asyncValidators` and `updateOn`.
@@ -329,14 +330,14 @@ declare module "react-reactive-form" {
          * that contains both a value and a disabled status.
          *
          */
-        static control(formState: Object, validators?: ValidatorFn|ValidatorFn[]|null,
-            asyncValidators?: AsyncValidatorFn|AsyncValidatorFn[]|null, updateOn?: FormHooks): FormControl
+        static control(formState: Object, validators?: ValidatorFn | ValidatorFn[] | null,
+            asyncValidators?: AsyncValidatorFn | AsyncValidatorFn[] | null, updateOn?: FormHooks): FormControl
         /**
          * Construct a `FormArray` from the given `controlsConfig` array of
          * configuration.
          * Valid keys for the `extra` parameter map are same as `AbstractControlOptions`.
          */
-        static array(controlsConfig: any[], extra?: AbstractControlOptions|null): FormArray
+        static array(controlsConfig: any[], extra?: AbstractControlOptions | null): FormArray
     }
     /**
      * Tracks the value and validity state of an array of `FormControl`,
@@ -399,7 +400,7 @@ declare module "react-reactive-form" {
      * as broken change detection.
      *
      */
-    export class FormArray extends AbstractControl  {
+    export class FormArray extends AbstractControl {
         /**
          * Array of controls
          */
@@ -449,7 +450,7 @@ declare module "react-reactive-form" {
          *  console.log(arr.value);   // ['Jon', 'Snow']
          *  ```
          */
-        setValue(value: any[], options: {onlySelf?: boolean, emitEvent?: boolean}): void
+        setValue(value: any[], options: { onlySelf?: boolean, emitEvent?: boolean }): void
         /**
          *  Patches the value of the `FormArray`. It accepts an array that matches the
          *  structure of the control, and will do its best to match the values to the correct
@@ -470,7 +471,7 @@ declare module "react-reactive-form" {
          *  console.log(arr.value);   // ['Jon', null]
          *  ```
          */
-        patchValue(value: any[], options: {onlySelf?: boolean, emitEvent?: boolean}): void
+        patchValue(value: any[], options: { onlySelf?: boolean, emitEvent?: boolean }): void
         /**
          * Resets the `FormArray`. This means by default:
          *
@@ -502,7 +503,7 @@ declare module "react-reactive-form" {
          * console.log(this.arr.get(0).status);  // 'DISABLED'
          * ```
          */
-        reset(value: any[], options: {onlySelf?: boolean, emitEvent?: boolean}): void
+        reset(value: any[], options: { onlySelf?: boolean, emitEvent?: boolean }): void
         /**
          * The aggregate value of the array, including any disabled controls.
          *
@@ -589,10 +590,10 @@ declare module "react-reactive-form" {
      */
     export class FormGroup extends AbstractControl {
         constructor(
-            controls: {[key: string]: AbstractControl},
-            validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
-            asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null)
-        controls: {[key: string]: AbstractControl}
+            controls: { [key: string]: AbstractControl },
+            validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+            asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null)
+        controls: { [key: string]: AbstractControl }
         /**
          * Registers a control with the group's list of controls.
          *
@@ -641,7 +642,7 @@ declare module "react-reactive-form" {
          *
          *  ```
          */
-        setValue(value: {[key: string]: any}, options?: {onlySelf?: boolean, emitEvent?: boolean}):void
+        setValue(value: { [key: string]: any }, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
         /**
          *  Patches the value of the FormGroup. It accepts an object with control
          *  names as keys, and will do its best to match the values to the correct controls
@@ -663,7 +664,7 @@ declare module "react-reactive-form" {
          *
          *  ```
          */
-        patchValue(value: {[key: string]: any}, options?: {onlySelf?: boolean, emitEvent?: boolean}): void
+        patchValue(value: { [key: string]: any }, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
         /**
          * Resets the FormGroup. This means by default:
          *
@@ -696,7 +697,7 @@ declare module "react-reactive-form" {
          * console.log(this.form.get('first').status);  // 'DISABLED'
          * ```
          */
-        reset(value?: any, options?: {onlySelf?: boolean, emitEvent?: boolean}): void
+        reset(value?: any, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
         /**
          * Submit action, can be used to tell the form that it has been submitted.
          * Useful when `updateOn` property is `submit`.
@@ -704,7 +705,7 @@ declare module "react-reactive-form" {
          * <form onSubmit={this.form.handleSubmit}/>
          * ```
          */
-        handleSubmit():void
+        handleSubmit(): void
     }
     /**
      * Tracks the value and validation status of an individual form control.
@@ -769,8 +770,8 @@ declare module "react-reactive-form" {
      */
     export class FormControl extends AbstractControl {
         constructor(formState: any,
-            validatorOrOpts?: ValidatorFn|ValidatorFn[]|AbstractControlOptions|null,
-            asyncValidator?: AsyncValidatorFn|AsyncValidatorFn[]|null);
+            validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
+            asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
 
         /**
          * Emits an event every time the value of the control changes, in
@@ -803,7 +804,7 @@ declare module "react-reactive-form" {
          * change will cause a `valueChanges` event on the `FormControl` to be emitted. This defaults
          * to true (as it falls through to `updateValueAndValidity`).
          */
-        setValue(value: any, options?: {onlySelf?: boolean,emitEvent?: boolean}): void
+        setValue(value: any, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
         /**
          * Patches the value of a control.
          *
@@ -811,7 +812,7 @@ declare module "react-reactive-form" {
          * It exists for symmetry with `patchValue` on `FormGroups` and
          * `FormArrays`, where it does behave differently.
          */
-        patchValue(value: any, options?: {onlySelf?: boolean, emitEvent?: boolean }): void
+        patchValue(value: any, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
         /**
          * Resets the form control. This means by default:
          *
@@ -840,21 +841,21 @@ declare module "react-reactive-form" {
          * console.log(this.control.status);  // 'DISABLED'
          * ```
          */
-        reset(formState?: any, options?: {onlySelf?: boolean, emitEvent?: boolean}): void
+        reset(formState?: any, options?: { onlySelf?: boolean, emitEvent?: boolean }): void
     }
     export class Validators {
         /**
          * Validator that requires controls to have a non-empty value.
          */
-        static required(control: AbstractControl): ValidationErrors|null
+        static required(control: AbstractControl): ValidationErrors | null
         /**
          * Validator that requires control value to be true.
          */
-        static requiredTrue(control: AbstractControl): ValidationErrors|null
+        static requiredTrue(control: AbstractControl): ValidationErrors | null
         /**
          * Validator that performs email validation.
          */
-        static email(control: AbstractControl): ValidationErrors|null
+        static email(control: AbstractControl): ValidationErrors | null
         /**
          * Validator that requires controls to have a value greater than a number.
          */
@@ -874,7 +875,7 @@ declare module "react-reactive-form" {
         /**
          * Validator that requires a control to match a regex to its value.
          */
-        static pattern(pattern: string|RegExp): ValidatorFn
+        static pattern(pattern: string | RegExp): ValidatorFn
     }
-    export function reactiveForm(ReactComponent: React.SFC|React.ComponentClass<any>, form: FormGroup|FormArray):React.ComponentClass<any>;
+    export function reactiveForm(ReactComponent: React.SFC | React.ComponentClass<any>, form: FormGroup | FormArray): React.ComponentClass<any>;
 }
