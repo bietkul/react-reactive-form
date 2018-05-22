@@ -1,6 +1,6 @@
 {
   "name": "react-reactive-form",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "Angular like Reactive Forms in React",
   "keywords": [
     "forms",
@@ -29,9 +29,7 @@
     "url": "https://github.com/bietkul/react-reactive-form/issues"
   },
   "babel": {
-    "presets": [
-      "es2015"
-    ]
+    "presets": ["es2015"]
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

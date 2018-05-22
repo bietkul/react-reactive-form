@@ -136,7 +136,7 @@ declare abstract class AbstractControl {
     /**
      * To set the meta properties
      */
-    meta: Object;
+    meta: {[key: string]: any};
     /**
      * Returns the update strategy of the `AbstractControl` (i.e.
      * the event on which the control will update itself).
@@ -306,6 +306,7 @@ export interface GroupProps {
     formState?: any;
     options?: AbstractControlOptions;
     parent?: AbstractControl;
+    meta?: {[key: string]: any};
 }
 export interface FieldConfig extends GroupProps {
     controls: {[key: string]: any} | Array<any>
