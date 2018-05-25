@@ -33,7 +33,7 @@ export default class FormGenerator extends React.Component {
     this.form = configureControl(fieldConfig, {}, type)
   }
   // Creates the control from fieldConfig.
-  setControl = (configProps, key, name = null) => {
+  setControl(configProps, key, name = null) {
     // Map the props to be passed in Field
     const propsToBePassed = mapConfigToFieldProps(configProps)
     // Set the key
