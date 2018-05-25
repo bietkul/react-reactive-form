@@ -15,10 +15,7 @@ class FieldGroup extends React.Component {
     }
   }
   render() {
-    const { strict, children, render, meta } = this.props
-    if (this.control) {
-      this.control.meta = meta || {}
-    }
+    const { strict, children, render } = this.props
     const FieldProps = {
       control: this.control,
       strict,
