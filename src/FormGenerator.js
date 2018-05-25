@@ -11,8 +11,11 @@ import configureControl from './configureControl'
 const FIELD_CONFIG_STRING = '$field_'
 
 export default class FormGenerator extends React.Component {
-  // Intiate the form property
-  form = null
+  constructor(props) {
+    super(props)
+    // Intiate the form property
+    this.form = null
+  }
   shouldComponentUpdate(nextProps) {
     // Only Re-renders for changes in field config
     if (nextProps.fieldConfig !== this.props.fieldConfig) {
