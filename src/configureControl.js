@@ -14,7 +14,7 @@ const getControlFromReference = (reference, options, formState) => {
   }
 }
 const configureControl = (props, context, reference) => {
-  const { name, parent, options, index, control, formState } = props
+  const { name, parent, options, index, control, formState, meta } = props
   const parentControl = parent || context.parentControl
   let returnControl = null
   if (control) {
@@ -80,6 +80,10 @@ const configureControl = (props, context, reference) => {
         }
       }
     }
+  }
+  // Add the meta data about the control
+  if(returnControl && meta) {
+    returnControl.meta = meta
   }
   return returnControl
 }

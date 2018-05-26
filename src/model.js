@@ -179,13 +179,17 @@ export class AbstractControl {
      * *not* mark it dirty.
      */
     this.pristine = true
+    this.meta={}
     this._pendingChange = this.updateOn !== 'change'
     this._pendingDirty = false
     this._pendingTouched = false
     this._onDisabledChange = []
     this.hasError = this.hasError.bind(this)
     this.getError = this.getError.bind(this)
+    this.reset = this.reset.bind(this)
     this.get = this.get.bind(this)
+    this.patchValue = this.patchValue.bind(this)
+    this.setValue = this.setValue.bind(this)
   }
   /**
    * Returns the update strategy of the `AbstractControl` (i.e.
@@ -1393,4 +1397,6 @@ export class FormArray extends AbstractControl {
     control.setParent(this)
     control._registerOnCollectionChange(this._onCollectionChange)
   }
+
+  _onCollectionChange() {}
 }

@@ -166,3 +166,17 @@ export function warning(condition, message) {
 export const generateKey = (pre) => {
   return `${ pre }_${ new Date().getTime() }`;
 }
+
+export const FIELD_PROPS = ["strict", "render", "name", "index", "control", "formState", "options", "parent", "meta"]
+
+export const mapConfigToFieldProps = (config) => {
+  const props = {}
+  if(config) {
+    Object.keys(config).forEach((configKey) => {
+      if(FIELD_PROPS.indexOf(configKey) > -1) {
+        props[configKey] = config[configKey]
+      }
+    })
+  }
+  return props
+} 
