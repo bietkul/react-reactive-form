@@ -381,6 +381,7 @@ export class AbstractControl {
     if (this._parent && !opts.onlySelf) {
       this._parent.markAsTouched(opts)
     }
+    this.stateChanges.next()
   }
   /**
    * Marks the control as `submitted`.
