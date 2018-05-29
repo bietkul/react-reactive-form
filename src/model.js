@@ -1,9 +1,4 @@
-import {
-  toObservable,
-  isEvent,
-  getHandler,
-  isReactNative
-} from './utils'
+import { toObservable, isEvent, getHandler, isReactNative } from './utils'
 import Subject from './observable'
 import Validators from './validators'
 
@@ -116,36 +111,36 @@ function normalizeAsyncValidator(validator) {
  * @return {Function|null}
  */
 function composeValidators(validators) {
-  return validators != null ?
-    Validators.compose(validators.map(normalizeValidator)) :
-    null
+  return validators != null
+    ? Validators.compose(validators.map(normalizeValidator))
+    : null
 }
 /**
  * @param {Function[]} validators
  * @return {Function|null}
  */
 function composeAsyncValidators(validators) {
-  return validators != null ?
-    Validators.composeAsync(validators.map(normalizeAsyncValidator)) :
-    null
+  return validators != null
+    ? Validators.composeAsync(validators.map(normalizeAsyncValidator))
+    : null
 }
 
 function coerceToValidator(validatorOrOpts) {
-  const validator = isOptionsObj(validatorOrOpts) ?
-    validatorOrOpts.validators :
-    validatorOrOpts
-  return Array.isArray(validator) ?
-    composeValidators(validator) :
-    validator || null
+  const validator = isOptionsObj(validatorOrOpts)
+    ? validatorOrOpts.validators
+    : validatorOrOpts
+  return Array.isArray(validator)
+    ? composeValidators(validator)
+    : validator || null
 }
 
 function coerceToAsyncValidator(asyncValidator, validatorOrOpts) {
-  const origAsyncValidator = isOptionsObj(validatorOrOpts) ?
-    validatorOrOpts.asyncValidators :
-    asyncValidator
-  return Array.isArray(origAsyncValidator) ?
-    composeAsyncValidators(origAsyncValidator) :
-    origAsyncValidator || null
+  const origAsyncValidator = isOptionsObj(validatorOrOpts)
+    ? validatorOrOpts.asyncValidators
+    : asyncValidator
+  return Array.isArray(origAsyncValidator)
+    ? composeAsyncValidators(origAsyncValidator)
+    : origAsyncValidator || null
 }
 /**
  * This is the base class for `FormControl`, `FormGroup`, and
@@ -179,7 +174,7 @@ export class AbstractControl {
      * *not* mark it dirty.
      */
     this.pristine = true
-    this.meta={}
+    this.meta = {}
     this._pendingChange = this.updateOn !== 'change'
     this._pendingDirty = false
     this._pendingTouched = false
@@ -197,9 +192,11 @@ export class AbstractControl {
    * Possible values: `'change'` (default) | `'blur'` | `'submit'`
    */
   get updateOn() {
-    return this._updateOn ?
-      this._updateOn :
-      this.parent ? this.parent.updateOn : 'change'
+    return this._updateOn
+      ? this._updateOn
+      : this.parent
+        ? this.parent.updateOn
+        : 'change'
   }
   /**
    * A control is `dirty` if the user has changed the value
@@ -373,13 +370,16 @@ export class AbstractControl {
    *
    * This will also mark all direct ancestors as `touched` to maintain
    * the model.
-   * @param {{onlySelf: Boolean}} opts
+   * @param {{onlySelf: Boolean, emitEvent: Boolean}} opts
    * @return {void}
    */
   markAsTouched(opts = {}) {
     this.touched = true
     if (this._parent && !opts.onlySelf) {
       this._parent.markAsTouched(opts)
+    }
+    if (opts.emitEvent) {
+      this.stateChanges.next()
     }
   }
   /**
@@ -448,7 +448,7 @@ export class AbstractControl {
    * If the control has any children, it will also mark all children as `untouched`
    * to maintain the model, and re-calculate the `touched` status of all parent
    * controls.
-   * @param {{onlySelf: Boolean}} opts
+   * @param {{onlySelf: Boolean, emitEvent: Boolean}} opts
    * @return {void}
    */
   markAsUntouched(opts = {}) {
@@ -461,6 +461,9 @@ export class AbstractControl {
     })
     if (this._parent && !opts.onlySelf) {
       this._parent._updateTouched(opts)
+    }
+    if (opts.emitEvent) {
+      this.stateChanges.next()
     }
   }
   /**
@@ -1332,9 +1335,9 @@ export class FormArray extends AbstractControl {
    */
   getRawValue() {
     return this.controls.map(control => {
-      return control instanceof FormControl ?
-        control.value :
-        control.getRawValue()
+      return control instanceof FormControl
+        ? control.value
+        : control.getRawValue()
     })
   }
 
