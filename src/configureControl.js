@@ -82,7 +82,7 @@ const configureControl = (props, context, reference) => {
     }
   }
   // Add the meta data about the control
-  if(returnControl && meta) {
+  if (returnControl && meta) {
     returnControl.meta = meta
   }
   return returnControl
