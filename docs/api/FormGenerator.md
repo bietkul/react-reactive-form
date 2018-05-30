@@ -226,5 +226,78 @@ parent: AbstractControl;
 ```
 An instance of [FormGroup](FormGroup.md) or [FormArray](FormArray.md) class as a parent control.
 
+## Inject a component
+FormGenerator generates the UI in the same order in which the controls have been defined in the `formConfig`, so sometime you may need to add a component in between the controls.
+FormGenerator provides this facility by defining a `$field_` property to determine that the control is not need to be added so it just renders the component.
 
+If the parent is `FormGroup` then you can inject a component by defining the control name starts with`$field_`.
 
+For Example:
+```ts
+const fieldConfig = {
+  controls: {
+    $field_0: {
+      render: () => <span>Username:</span>
+    },
+    username: {
+      render: TextInput,
+    },
+    $field_1: {
+      render: () => <span>Password:</span>
+    },
+    password: {
+      render: TextInput,
+      meta: {
+        label: "Password",
+        type: "password"
+      }
+    }
+  }
+}
+```
+If the parent is `FormArray` then you can inject a component by defining the control's index starts with`$field_`.
+
+```ts
+const fieldConfig = {
+  controls: [
+    {
+      index: "$field_0"
+      render: () => <span>Item1:</span>
+    },
+    {
+      render: TextInput
+    },
+    {
+      index: "$field_1"
+      render: () => <span>Item2:</span>
+    },
+    {
+      render: TextInput
+    }
+  ]
+}
+```
+You can also access the root control object by using the `$field_` control & subscribe the component for the form state changes by just defining the `isStatic` property as `false`.
+
+For example:
+
+```ts
+const fieldConfig = {
+  controls: {
+    username: {
+      render: TextInput,
+    },
+    password: {
+      render: TextInput,
+      meta: {
+        label: "Password",
+        type: "password"
+      }
+    },
+    $field_0: {
+      isStatic: false,
+      render: ({ invalid }) => <button disabled={invalid}>Submit</button>
+    },
+  }
+}
+```
