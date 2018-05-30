@@ -47,10 +47,14 @@ export default class FormGenerator extends React.Component {
       (typeof configProps.index === 'string' &&
         configProps.index.startsWith(FIELD_CONFIG_STRING))
     ) {
-      return React.createElement(
-        Field,
-        Object.assign({}, { control: this.form }, propsToBePassed)
-      )
+      // Only subscribe when isStatic is false
+      if (configProps.isStatic === false) {
+        return React.createElement(
+          Field,
+          Object.assign({}, { control: this.form }, propsToBePassed)
+        )
+      }
+      return propsToBePassed.render()
     }
 
     if (configProps.controls) {
