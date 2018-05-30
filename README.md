@@ -354,6 +354,7 @@ export default class Login extends Component {
 # Code Sandboxes
   Try out `react-reactive-forms` in these sandbox versions of the Examples.
 * [Simple Form](https://codesandbox.io/s/4rxokpr270)
+* [Simple Form With FormGenerator](https://codesandbox.io/s/jpkjny836v)
 * [Sync & Async Validation](https://codesandbox.io/s/qq8xq7j2w)
 * [User Registeration Form With Nested Forms](https://codesandbox.io/s/p2rqmr8qk7)
 * [Form Array With Dynamic Controls](https://codesandbox.io/s/nw9wxw2nvl)
