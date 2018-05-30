@@ -12,7 +12,6 @@ A react component which generates a tree of control objects & render the UI by k
 
 
 ## Props
-##
 ```ts
 onMount: (form: FormGroup|FormArray) => void 
 ```
@@ -131,7 +130,7 @@ The above example will create a structure like that:
 ```ts
 formState: any|{ value: any, disabled: boolean }
 ```
-You can use this prop to define the initial state of the control.
+You can use this property to define the initial state of the control.
 ### Note:
 Only works with [FormControl](FormControl.md)
 
