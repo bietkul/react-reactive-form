@@ -201,7 +201,7 @@ declare abstract class AbstractControl {
      * This will also mark all direct ancestors as `touched` to maintain
      * the model.
      */
-    markAsTouched: (opts?: {onlySelf?: boolean}) => void;
+    markAsTouched: (opts?: {onlySelf?: boolean, emitEvent?: boolean}) => void;
     /**
      * Marks the control as `pristine`.
      *
@@ -217,7 +217,7 @@ declare abstract class AbstractControl {
      * to maintain the model, and re-calculate the `touched` status of all parent
      * controls.
      */
-    markAsUntouched: (opts?: {onlySelf?: boolean}) => void;
+    markAsUntouched: (opts?: {onlySelf?: boolean, emitEvent?: boolean}) => void;
     /**
      * Marks the control as `dirty`.
      *
