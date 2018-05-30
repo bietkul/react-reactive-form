@@ -1,12 +1,12 @@
 
 # FormGenerator
-A react component which generates a new tree of control objects or can be used with an existing control tree & assign the components to the controls.
+A react component which generates a tree of control objects or can be append to an existing control tree & renders the associated React components in the same order.
 
 ## How it works
- - It creates a new instance of [FormControl](FormControl.md) if the `name` prop is defined.
- - If a `name` prop is defined then it means that the control has to be added in an already existing parent control (  [FormGroup](FormGroup.md) / [FormArray](FormArray.md)) i.e the parent control must be present.
- - If a control with the same name is already present in the parent control then it just returns the same otherwise it'll create a new instance of [FormControl](FormControl.md) class. 
- - You can define a parent control either by passing the `parent` prop or using the component as a child of the `FieldArray` or `FieldGroup` component.
+ - It creates a new instance of [FormGroup](FormGroup.md) ( if `controls` property is an object ) or [FormArray]
+   (FormArray.md) ( if `controls` property is an array ).
+ - It renders the UI of the form according to associated components to the controls by keeping the same order in which they    have been defined in `fieldConfig`.
+ - You can define a parent control by passing the `parent` property.
  - If a `control` prop is defined then it just returns the same.
 
 
@@ -91,7 +91,11 @@ formState: any|{ value: any, disabled: boolean }
 ```
 You can use this prop to define the initial state of the control.
 ##
-
+```ts
+meta: {[key: string]: any};
+```
+##
+You can pass an object of custom variables to customize your component.
 ```ts
     render: (control: FormArray|FormControl|FormGroup) => React.ReactElement<any>|React.ReactElement<any>[];
 ```
@@ -105,12 +109,7 @@ control: AbstractControl;
 An instance of [AbstractControl](AbstractControl.md) control.
 
 ##
-```ts
-name: string;
-```
-Name of the control.
 
-##
 ```ts
 index: number
 ```
@@ -128,20 +127,5 @@ parent: AbstractControl;
 ```
 An instance of [FormGroup](FormGroup.md) or [FormArray](FormArray.md) class as a parent control.
 
-##
-```ts
-meta: {[key: string]: any};
-```
-You can pass an object of custom variables to customize your component.
 
-For example:
 
-```ts
-<FieldControl
-  meta={{
-    label: "First Name",
-    placeholder: "Enter your first name"
-  }}
- ...
-/>
-```
