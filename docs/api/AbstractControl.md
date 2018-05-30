@@ -172,6 +172,7 @@ If the control has any children, it will also mark all children as `unsubmitted`
 ```ts
 markAsTouched(opts: {
     onlySelf?: boolean;
+    emitEvent?: boolean;
 } = {}): void
 ```
 Marks the control as `touched`.
@@ -181,6 +182,7 @@ This will also mark all direct ancestors as `touched` to maintain the model.
 ```ts
 markAsUntouched(opts: {
     onlySelf?: boolean;
+    emitEvent?: boolean;
 } = {}): void
 ```
 Marks the control as `untouched`.
