@@ -49,7 +49,7 @@ import {
 
 const TextInput = ({ handler, touched, hasError, meta }) => (
   <div>
-    <input placeholder=`Enter ${meta.label}` {...handler()}/>
+    <input placeholder={`Enter ${meta.label}`} {...handler()}/>
     <span>
         {touched
         && hasError("required")
@@ -62,8 +62,7 @@ export default class Login extends Component {
         username: ["", Validators.required],
         password: ["", Validators.required],
         rememberMe: false
-      });
-    }
+    });
     handleReset=() => {
         this.loginForm.reset();
     }
@@ -117,7 +116,97 @@ export default class Login extends Component {
     }
 }
 ```
-
+## Using [FormGenerator](FormGenerator.md)
+```js
+import React, { Component } from 'react';
+import {
+    Validators,
+    FormGenerator
+ } from "./react-reactive-form/src";
+// Input component
+const TextInput = ({ handler, touched, hasError, meta }) => (
+  <div>
+    <input placeholder={`Enter ${meta.label}`} {...handler()}/>
+    <span>
+        {touched
+        && hasError("required")
+        && `${meta.label} is required`}
+    </span>
+  </div>  
+)
+// Checkbox component
+const CheckBox = ({ handler }) => (
+    <div>
+      <input {...handler("checkbox")}/>
+    </div>
+  )
+// Field config to configure form
+const fieldConfig = {
+    controls: {
+        username: {
+            options: {
+                validators: Validators.required
+            },
+            render: TextInput,
+            meta: { label: "Username" }
+        },
+        password: {
+            options: {
+                validators: Validators.required
+            },
+            render: TextInput,
+            meta: { label: "Password" }
+        },
+        rememberMe: {
+            render: CheckBox
+        },
+        $field_0: {
+            isStatic: false,
+            render: ({ invalid, meta: { handleReset } }) => (
+                <div>
+                    <button
+                      type="button"
+                      onClick={handleReset}
+                    >
+                      Reset
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={invalid}
+                    >
+                      Submit
+                    </button>
+                </div>
+            )
+        }
+    },
+}
+export default class Login extends Component {
+    handleReset=() => {
+        this.loginForm.reset();
+    }
+    handleSubmit=(e) => {
+        e.preventDefault();
+        console.log("Form values", this.loginForm.value);
+    }
+    setForm = (form) => {
+        this.loginForm = form;
+        this.loginForm.meta = {
+            handleReset: this.handleReset
+        }
+    }
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <FormGenerator
+                    onMount={this.setForm}
+                    fieldConfig={fieldConfig}
+                />
+            </form>
+        );
+    }
+}
+```
 ## Add Controls Dynamically
 
 You can also create controls without even initializing the group control object with the help of new react form components ( [FieldGroup](docs/api/FieldGroup.md), [FieldControl](docs/api/FieldControl.md), [FieldArray](docs/api/FieldArray.md)).
@@ -265,6 +354,7 @@ export default class Login extends Component {
 # Code Sandboxes
   Try out `react-reactive-forms` in these sandbox versions of the Examples.
 * [Simple Form](https://codesandbox.io/s/4rxokpr270)
+* [Simple Form With FormGenerator](https://codesandbox.io/s/jpkjny836v)
 * [Sync & Async Validation](https://codesandbox.io/s/qq8xq7j2w)
 * [User Registeration Form With Nested Forms](https://codesandbox.io/s/p2rqmr8qk7)
 * [Form Array With Dynamic Controls](https://codesandbox.io/s/nw9wxw2nvl)
