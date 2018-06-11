@@ -1,6 +1,6 @@
 {
   "name": "react-reactive-form",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "Angular like Reactive Forms in React",
   "keywords": [
     "forms",
@@ -20,7 +20,9 @@
   "main": "dist/react-reactive-form.cjs.js",
   "jsnext:main": "dist/react-reactive-form.es.js",
   "module": "dist/react-reactive-form.es.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "nps",
     "test": "nps test",
@@ -50,6 +52,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.5.1",
+    "nps": "^5.9.0",
     "nps-utils": "^1.5.0",
     "prettier": "^1.12.1",
     "prettier-eslint-cli": "^4.4.2",
@@ -70,7 +73,10 @@
     "babel-polyfill": "^6.26.0"
   },
   "lint-staged": {
-    "*.{js*,ts*,json,md,css}": ["prettier --write", "git add"]
+    "*.{js*,ts*,json,md,css}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "typings": "dist/index.d.ts",
   "homepage": "https://github.com/bietkul/react-reactive-form#readme"
