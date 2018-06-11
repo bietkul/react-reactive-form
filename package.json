@@ -17,27 +17,14 @@
     "react-native",
     "form-controls"
   ],
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
-  "files": ["dist", "lib", "es", "src"],
+  "main": "dist/react-reactive-form.cjs.js",
+  "jsnext:main": "dist/react-reactive-form.es.js",
+  "module": "dist/react-reactive-form.es.js",
+  "files": ["dist"],
   "scripts": {
-    "test": "NODE_ENV=test",
-    "clean": "rimraf lib dist es",
-    "build":
-      "npm run build:commonjs && npm run build:umd && npm run build:umd:min && npm run build:es",
-    "build:watch":
-      "echo 'build && watch the COMMONJS version of the package - for other version, run specific tasks' && npm run build:commonjs:watch",
-    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
-    "build:commonjs:watch": "npm run build:commonjs -- --watch",
-    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
-    "build:es:watch": "npm run build:es -- --watch",
-    "build:umd":
-      "cross-env BABEL_ENV=es NODE_ENV=development node_modules/.bin/rollup src/index.js --config --sourcemap --output dist/lite-router.js",
-    "build:umd:watch": "npm run build:umd -- --watch",
-    "build:umd:min":
-      "cross-env BABEL_ENV=es NODE_ENV=production rollup src/index.js --config --output dist/lite-router.min.js",
-    "prepare": "npm run clean && npm test && npm run build"
+    "start": "nps",
+    "test": "nps test",
+    "precommit": "lint-staged && npm start validate"
   },
   "repository": {
     "type": "git",
@@ -55,6 +42,7 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "cross-env": "^5.1.6",
     "eslint": "^4.16.0",
     "eslint-config-react-app": "^2.1.0",
@@ -62,6 +50,7 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.5.1",
+    "nps-utils": "^1.5.0",
     "prettier": "^1.12.1",
     "prettier-eslint-cli": "^4.4.2",
     "prop-types": "^15.6.0",
@@ -80,6 +69,9 @@
     "prop-types": "^15.6.0",
     "babel-polyfill": "^6.26.0"
   },
-  "typings": "./index.d.ts",
+  "lint-staged": {
+    "*.{js*,ts*,json,md,css}": ["prettier --write", "git add"]
+  },
+  "typings": "dist/index.d.ts",
   "homepage": "https://github.com/bietkul/react-reactive-form#readme"
 }
