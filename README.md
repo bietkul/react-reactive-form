@@ -421,7 +421,10 @@ Yes, this library works with react-native also, currently it supports react-nati
 ### Note: 
 If you're using react-native then please add the following line of code in `index.js` of your project to avoid error in android devices.
 
-`import "babel-polyfill"`
+```js
+import "core-js/es6/symbol";
+import "core-js/fn/symbol/iterator";
+```
 
 
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
