@@ -16,6 +16,12 @@ export default class FormGenerator extends React.Component {
     // Intiate the form property
     this.form = null
   }
+  componentDidMount() {
+    this.props.onMount(this.form)
+  }
+  componentDidUpdate(){
+    this.props.onMount(this.form)
+  }
   shouldComponentUpdate(nextProps) {
     // Only Re-renders for changes in field config
     if (nextProps.fieldConfig !== this.props.fieldConfig) {
@@ -99,10 +105,9 @@ export default class FormGenerator extends React.Component {
   generateFields() {
     // Reset the form instance
     this.form = null
-    const { fieldConfig, onMount } = this.props
+    const { fieldConfig } = this.props
     if (fieldConfig.controls) {
-      const fields = this.setControl(fieldConfig, 'my_form')
-      onMount(this.form)
+      const fields = this.setControl(fieldConfig, `my_form${new Date().getTime()}`)
       return fields
     } else {
       // Throw error
