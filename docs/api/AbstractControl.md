@@ -192,6 +192,7 @@ If the control has any children, it will also mark all children as `untouched` t
 ```ts
 markAsDirty(opts: {
     onlySelf?: boolean;
+    emitEvent?: boolean;
 } = {}): void
 ```
 Marks the control as `dirty`.
@@ -201,6 +202,7 @@ This will also mark all direct ancestors as `dirty` to maintain the model.
 ```ts
 markAsPristine(opts: {
     onlySelf?: boolean;
+    emitEvent?: boolean;
 } = {}): void
 ```
 Marks the control as `pristine`.
