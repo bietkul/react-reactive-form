@@ -73,7 +73,7 @@
     "prop-types": "^15.6.0"
   },
   "lint-staged": {
-    "*.{js*,ts*,json,md,css}": ["eslint", "prettier --write", "git add"]
+    "*.js": ["eslint", "prettier --write", "git add"]
   },
   "typings": "dist/index.d.ts",
   "homepage": "https://github.com/bietkul/react-reactive-form#readme"
