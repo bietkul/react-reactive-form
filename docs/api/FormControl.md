@@ -106,6 +106,16 @@ console.log(this.control.status);  // 'DISABLED'
 ```
 ##
 ```ts
+active: boolean;
+```
+`true` means control is in `focused` state.
+##
+```ts
+inactive: boolean;
+```
+`true` means control is in `unfocused` state.
+##
+```ts
 onChange: (value: any) => void;
 ```
 Function needs to be called whenever a value change happens.
@@ -114,6 +124,11 @@ Function needs to be called whenever a value change happens.
 onBlur: () => void;
 ```
 Function needs to be called whenever a blur event triggers.
+##
+```ts
+onFocus: (e: any) => void;
+```
+Function needs to be called whenever a focus event triggers.
 ##
 ```ts
 onValueChanges: Observable<any>;
@@ -194,6 +209,11 @@ Function needs to be called whenever a value change event triggers.
 onBlur: (e: any) => void;
 ```
 Function needs to be called whenever a `blur` event triggers.
+##
+```ts
+onFocus: (e: any) => void;
+```
+Function needs to be called whenever a `focus` event triggers.
 ##
 ```ts
 disabled: boolean;
