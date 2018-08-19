@@ -9,7 +9,7 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 <img 
     alt="gzip size"
-    src="https://img.shields.io/badge/gzip%20size-7.1%20kB-brightgreen.svg"
+    src="https://img.shields.io/badge/gzip%20size-7%20kB-brightgreen.svg"
   />
 <a href="https://github.com/bietkul/react-reactive-form/pulls">
     <img
