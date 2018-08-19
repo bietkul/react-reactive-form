@@ -219,7 +219,7 @@ declare abstract class AbstractControl {
    * to maintain the model, and re-calculate the `pristine` status of all parent
    * controls.
    */
-  markAsPristine: (opts?: { onlySelf?: boolean }) => void
+  markAsPristine: (opts?: { onlySelf?: boolean; emitEvent?: boolean }) => void
   /**
    * Marks the control as `untouched`.
    *
@@ -234,7 +234,7 @@ declare abstract class AbstractControl {
    * This will also mark all direct ancestors as `dirty` to maintain
    * the model.
    */
-  markAsDirty: (opts?: { onlySelf?: boolean }) => void
+  markAsDirty: (opts?: { onlySelf?: boolean; emitEvent?: boolean }) => void
   /**
    * Sets the synchronous validators that are active on this control.  Calling
    * this will overwrite any existing sync validators.
