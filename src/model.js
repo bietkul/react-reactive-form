@@ -734,6 +734,10 @@ export class FormControl extends AbstractControl {
     this._pendingChange = true
     this._pendingDirty = false
     this._pendingTouched = false
+    /**
+     * A control is `active` when its focused.
+     */
+    this.active = false
     this.onValueChanges = new Subject()
     this.onBlurChanges = new Subject()
     this.updateValueAndValidity({
@@ -770,6 +774,7 @@ export class FormControl extends AbstractControl {
      */
 
     this.onBlur = () => {
+      this.active = false
       if (this.updateOn === 'blur') {
         if (!this.dirty) {
           this.markAsDirty()
@@ -796,11 +801,25 @@ export class FormControl extends AbstractControl {
       this.onBlurChanges.next(this._pendingValue)
     }
     /**
+     * Called whenevers an onFocus event triggers.
+     */
+    this.onFocus = () => {
+      this.active = true
+      this.stateChanges.next()
+    }
+    /**
      * Returns the required props to bind an input element.
      * @param {string} inputType
      * @param {any} value
      */
     this.handler = (inputType, value) => getHandler(inputType, value, this)
+  }
+  /**
+   * A control is `inactive` when its not focused.
+   * @return {Boolean}
+   */
+  get inactive() {
+    return !this.active
   }
   /**
    * @param {{onlySelf: Boolean, emitEvent: Boolean}} options

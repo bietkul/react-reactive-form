@@ -5,7 +5,7 @@ import FieldArray from './FieldArray'
 import FieldGroup from './FieldGroup'
 import Field from './Field'
 import { FormGroup, FormArray } from './model'
-import { warning, mapConfigToFieldProps } from './utils'
+import { warning, mapConfigToFieldProps, generateKey } from './utils'
 import configureControl from './configureControl'
 
 const FIELD_CONFIG_STRING = '$field_'
@@ -19,7 +19,7 @@ export default class FormGenerator extends React.Component {
   componentDidMount() {
     this.props.onMount(this.form)
   }
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.props.onMount(this.form)
   }
   shouldComponentUpdate(nextProps) {
@@ -107,7 +107,7 @@ export default class FormGenerator extends React.Component {
     this.form = null
     const { fieldConfig } = this.props
     if (fieldConfig.controls) {
-      const fields = this.setControl(fieldConfig, `my_form${new Date().getTime()}`)
+      const fields = this.setControl(fieldConfig, generateKey('my_form'))
       return fields
     } else {
       // Throw error

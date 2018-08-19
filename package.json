@@ -20,9 +20,7 @@
   "main": "dist/react-reactive-form.cjs.js",
   "jsnext:main": "dist/react-reactive-form.es.js",
   "module": "dist/react-reactive-form.es.js",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "start": "nps",
     "test": "nps test",
@@ -58,7 +56,7 @@
     "prettier": "^1.12.1",
     "prettier-eslint-cli": "^4.4.2",
     "prop-types": "^15.6.0",
-    "react": "^16.1.1",
+    "react": "^16.4.2",
     "rimraf": "^2.6.2",
     "rollup": "^0.59.4",
     "rollup-plugin-babel": "^3.0.4",
@@ -66,18 +64,16 @@
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-uglify": "^4.0.0",
-    "rollup-watch": "^4.3.1"
+    "rollup-watch": "^4.3.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.2"
   },
   "peerDependencies": {
-    "react": "^15.0.0-0 || ^16.0.0-0",
-    "prop-types": "^15.6.0",
-    "babel-polyfill": "^6.26.0"
+    "react": "^15.0.0-0 || ^16.4.0-0",
+    "prop-types": "^15.6.0"
   },
   "lint-staged": {
-    "*.{js*,ts*,json,md,css}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js*,ts*,json,md,css}": ["eslint", "prettier --write", "git add"]
   },
   "typings": "dist/index.d.ts",
   "homepage": "https://github.com/bietkul/react-reactive-form#readme"

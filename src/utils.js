@@ -90,12 +90,14 @@ export const controlsToBeMap = {
       value: 'value',
       onValueChange: 'onChange',
       onBlur: 'onBlur',
+      onFocus: 'onFocus',
       disabled: 'disabled'
     },
     default: {
       value: 'value',
       onChange: 'onChange',
       onBlur: 'onBlur',
+      onFocus: 'onFocus',
       editable: 'enabled'
     }
   },
@@ -103,6 +105,7 @@ export const controlsToBeMap = {
     value: 'value',
     onChange: 'onChange',
     onBlur: 'onBlur',
+    onFocus: 'onFocus',
     disabled: 'disabled'
   }
 }
@@ -110,10 +113,10 @@ export const getAbsoluteValue = value =>
   value === undefined || value === null ? '' : value
 
 export const getInputControls = inputType =>
-  isReactNative() ?
-  controlsToBeMap.ReactNative[inputType] ||
-  controlsToBeMap.ReactNative.default :
-  controlsToBeMap.default
+  isReactNative()
+    ? controlsToBeMap.ReactNative[inputType] ||
+      controlsToBeMap.ReactNative.default
+    : controlsToBeMap.default
 
 export function getHandler(inputType, value, control) {
   const controlObject = {}
@@ -161,22 +164,32 @@ export function warning(condition, message) {
 }
 /**
  * Generates the unique key for react elements
- * @param {*} pre 
+ * @param {*} pre
  */
-export const generateKey = (pre) => {
-  return `${ pre }_${ new Date().getTime() }`;
+export const generateKey = pre => {
+  return `${pre}_${new Date().getTime()}`
 }
 
-export const FIELD_PROPS = ["strict", "render", "name", "index", "control", "formState", "options", "parent", "meta"]
+export const FIELD_PROPS = [
+  'strict',
+  'render',
+  'name',
+  'index',
+  'control',
+  'formState',
+  'options',
+  'parent',
+  'meta'
+]
 
-export const mapConfigToFieldProps = (config) => {
+export const mapConfigToFieldProps = config => {
   const props = {}
-  if(config) {
-    Object.keys(config).forEach((configKey) => {
-      if(FIELD_PROPS.indexOf(configKey) > -1) {
+  if (config) {
+    Object.keys(config).forEach(configKey => {
+      if (FIELD_PROPS.indexOf(configKey) > -1) {
         props[configKey] = config[configKey]
       }
     })
   }
   return props
-} 
+}
