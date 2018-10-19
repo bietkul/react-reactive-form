@@ -117,7 +117,7 @@ export default class Login extends Component {
     }
 }
 ```
-## Using [FormGenerator](FormGenerator.md)
+## Using [FormGenerator](docs/api/FormGenerator.md)
 ```js
 import React, { Component } from 'react';
 import {
