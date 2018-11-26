@@ -20,16 +20,22 @@
   "main": "dist/react-reactive-form.cjs.js",
   "jsnext:main": "dist/react-reactive-form.es.js",
   "module": "dist/react-reactive-form.es.js",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "start": "nps",
     "test": "nps test",
     "precommit": "lint-staged && npm start validate",
-    "prepare": "nps build"
+    "prepare": "npm start validate"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bietkul/react-reactive-form"
+  },
+  "author": "Kuldeep Saxena <kul.anjuma@gmail.com>",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bietkul/react-reactive-form/issues"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -67,11 +73,8 @@
     "prop-types": "^15.6.0"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint",
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["eslint", "prettier --write", "git add"]
   },
-  "typings": "dist/index.d.ts"
+  "typings": "dist/index.d.ts",
+  "homepage": "https://github.com/bietkul/react-reactive-form#readme"
 }
