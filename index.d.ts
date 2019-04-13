@@ -327,6 +327,11 @@ export interface GroupProps {
 }
 export interface FieldConfig extends GroupProps {
   controls: { [key: string]: any } | Array<any>
+  control: FormArray | FormGroup
+  parent: FormArray | FormGroup
+  options?: AbstractControlOptions
+  strict?: boolean
+  meta?: { [key: string]: any }
 }
 export interface FormGeneratorProps {
   fieldConfig: FieldConfig
@@ -335,11 +340,11 @@ export interface FormGeneratorProps {
   onValueChanges?: (value: { [key: string]: any } | Array<any>) => void
   onStatusChanges?: (status: Status) => void
 }
-export class Field extends React.Component<FieldProps, any> { }
-export class FieldGroup extends React.Component<GroupProps, any> { }
-export class FieldArray extends React.Component<GroupProps, any> { }
-export class FieldControl extends React.Component<GroupProps, any> { }
-export class FormGenerator extends React.Component<FormGeneratorProps, any> { }
+export class Field extends React.Component<FieldProps, any> {}
+export class FieldGroup extends React.Component<GroupProps, any> {}
+export class FieldArray extends React.Component<GroupProps, any> {}
+export class FieldControl extends React.Component<GroupProps, any> {}
+export class FormGenerator extends React.Component<FormGeneratorProps, any> {}
 /**
  * Creates an `AbstractControl` from a user-specified configuration.
  *
@@ -442,6 +447,15 @@ export class FormBuilder {
  *
  */
 export class FormArray extends AbstractControl {
+  constructor(
+    controls: AbstractControl[],
+    validatorOrOpts?:
+      | ValidatorFn
+      | ValidatorFn[]
+      | AbstractControlOptions
+      | null,
+    asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null
+  )
   /**
    * Array of controls
    */
