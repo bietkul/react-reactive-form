@@ -760,15 +760,16 @@ export class FormControl extends AbstractControl {
      */
     this.onChange = event => {
       const value = getControlValue(event);
+      const isDirty = value !== this.value;
       if (this.updateOn !== "change") {
         this._pendingValue = value;
         this._pendingChange = true;
-        if (!this._pendingDirty) {
+        if (isDirty && !this._pendingDirty) {
           this._pendingDirty = true;
         }
         this.stateChanges.next();
       } else {
-        if (!this.dirty) {
+        if (isDirty && !this.dirty) {
           this.markAsDirty();
         }
         this.setValue(value);
@@ -782,7 +783,7 @@ export class FormControl extends AbstractControl {
     this.onBlur = () => {
       this.active = false;
       if (this.updateOn === "blur") {
-        if (!this.dirty) {
+        if (this._pendingDirty && !this.dirty) {
           this.markAsDirty();
         }
         if (!this.touched) {
@@ -791,12 +792,8 @@ export class FormControl extends AbstractControl {
         this.setValue(this._pendingValue);
       } else if (this.updateOn === "submit") {
         this._pendingTouched = true;
-        this._pendingDirty = true;
       } else {
         const emitChangeToView = !this.touched;
-        if (!this.dirty) {
-          this.markAsDirty();
-        }
         if (!this.touched) {
           this.markAsTouched();
         }

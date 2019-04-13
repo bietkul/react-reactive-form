@@ -20,7 +20,9 @@
   "main": "dist/react-reactive-form.cjs.js",
   "jsnext:main": "dist/react-reactive-form.es.js",
   "module": "dist/react-reactive-form.es.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "start": "nps",
     "test": "nps test",
@@ -73,7 +75,11 @@
     "prop-types": "^15.6.0"
   },
   "lint-staged": {
-    "*.js": ["eslint", "prettier --write", "git add"]
+    "*.js": [
+      "eslint",
+      "prettier --write",
+      "git add"
+    ]
   },
   "typings": "dist/index.d.ts",
   "homepage": "https://github.com/bietkul/react-reactive-form#readme"
