@@ -6,7 +6,6 @@ import FieldGroup from './FieldGroup'
 import FieldControl from './FieldControl'
 import FieldArray from './FieldArray'
 import FormGenerator from './FormGenerator'
-import reactiveForm from './reactiveForm'
 
 export {
   FormBuilder,
@@ -14,7 +13,6 @@ export {
   FormControl,
   FormArray,
   Validators,
-  reactiveForm,
   Field,
   FieldGroup,
   FieldControl,

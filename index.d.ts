@@ -964,7 +964,3 @@ export class Validators {
    */
   static pattern(pattern: string | RegExp): ValidatorFn
 }
-export function reactiveForm(
-  ReactComponent: React.SFC | React.ComponentClass<any>,
-  form: FormGroup | FormArray
-): React.ComponentClass<any>
