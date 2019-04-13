@@ -189,8 +189,8 @@ Otherwise, the value property is the best way to get the value of the group.
 ```ts
 handleSubmit():void
 ```
-Submit action, can be used to tell the form that it has been submitted.
-Useful when `updateOn` property is `handleSubmit`.
+Submit action, can be used to tell the form that it has been submitted.    
+Useful when `updateOn` property is set to `submit`.
 
 Example
 ```ts
