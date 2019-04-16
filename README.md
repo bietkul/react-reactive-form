@@ -123,7 +123,7 @@ import React, { Component } from 'react';
 import {
     Validators,
     FormGenerator
- } from "./react-reactive-form/src";
+ } from "react-reactive-form";
 // Input component
 const TextInput = ({ handler, touched, hasError, meta }) => (
   <div>
