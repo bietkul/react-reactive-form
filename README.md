@@ -5,6 +5,8 @@
 # React Reactive Forms
 
 [![Build Status](https://travis-ci.org/bietkul/react-reactive-form.svg?branch=master)](https://travis-ci.org/bietkul/react-reactive-form)
+[![Backers on Open Collective](https://opencollective.com/react-reactive-form/backers/badge.svg)](#backers) 
+[![Sponsors on Open Collective](https://opencollective.com/react-reactive-form/sponsors/badge.svg)](#sponsors) 
 [![NPM Version](https://img.shields.io/npm/v/react-reactive-form.svg?style=flat)](https://www.npmjs.com/package/react-reactive-form)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 <img 
@@ -431,3 +433,33 @@ import "core-js/fn/symbol/iterator";
 Let's make React Reactive Forms better! If you're interested in helping, all contributions are welcome and appreciated.
 
 And don't forget to star the repo, I will ensure more frequent updates! Thanks!
+
+## Contributors
+
+This project exists thanks to all the people who contribute. 
+<a href="https://github.com/bietkul/react-reactive-form/graphs/contributors"><img src="https://opencollective.com/react-reactive-form/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/react-reactive-form#backer)]
+
+<a href="https://opencollective.com/react-reactive-form#backers" target="_blank"><img src="https://opencollective.com/react-reactive-form/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/react-reactive-form#sponsor)]
+
+<a href="https://opencollective.com/react-reactive-form/sponsor/0/website" target="_blank"><img src="https://opencollective.com/react-reactive-form/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/react-reactive-form/sponsor/1/website" target="_blank"><img src="https://opencollective.com/react-reactive-form/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/react-reactive-form/sponsor/2/website" target="_blank"><img src="https://opencollective.com/react-reactive-form/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/react-reactive-form/sponsor/3/website" target="_blank"><img src="https://opencollective.com/react-reactive-form/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/react-reactive-form/sponsor/4/website" target="_blank"><img src="https://opencollective.com/react-reactive-form/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/react-reactive-form/sponsor/5/website" target="_blank"><img src="https://opencollective.com/react-reactive-form/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/react-reactive-form/sponsor/6/website" target="_blank"><img src="https://opencollective.com/react-reactive-form/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/react-reactive-form/sponsor/7/website" target="_blank"><img src="https://opencollective.com/react-reactive-form/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/react-reactive-form/sponsor/8/website" target="_blank"><img src="https://opencollective.com/react-reactive-form/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/react-reactive-form/sponsor/9/website" target="_blank"><img src="https://opencollective.com/react-reactive-form/sponsor/9/avatar.svg"></a>
+
+
