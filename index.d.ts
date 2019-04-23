@@ -327,8 +327,8 @@ export interface GroupProps {
 }
 export interface FieldConfig extends GroupProps {
   controls: { [key: string]: any } | Array<any>
-  control?: FormArray | FormGroup
-  parent?: FormArray | FormGroup
+  control: FormArray | FormGroup
+  parent: FormArray | FormGroup
   options?: AbstractControlOptions
   strict?: boolean
   meta?: { [key: string]: any }
