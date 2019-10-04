@@ -4,26 +4,31 @@ import { FormControl, FormArray, FormGroup } from './model'
 import { isFunction, warning } from './utils'
 
 export default class Field extends React.Component {
-  componentDidMount() {
-    const { control } = this.props
-    // Add listener
-    this.addListener(control)
+  state = {
+    forceUpdate: () => this.forceUpdate()
   }
-  componentWillReceiveProps(nextProps) {
-    const { control } = nextProps
-    if (this.props.control !== control) {
-      this.removeListener(control)
-      this.addListener(control)
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { control } = nextProps;
+    if (control !== prevState.lastControl) {
+      Field.removeListener(control);
+      Field.addListener(control, prevState.forceUpdate);
+      return {
+        ...prevState,
+        lastControl: control
+      }
     }
+    return null
   }
-  addListener(control) {
+
+  static addListener(control, forceUpdate) {
     if (control) {
       control.stateChanges.subscribe(() => {
-        this.forceUpdate()
+        forceUpdate()
       })
     }
   }
-  removeListener(control) {
+  static removeListener(control) {
     if (control) {
       if (control.stateChanges.observers) {
         control.stateChanges.observers.forEach(observer => {
@@ -35,7 +40,7 @@ export default class Field extends React.Component {
   componentWillUnmount() {
     const { control } = this.props
     // Remove Listener
-    this.removeListener(control)
+    Field.removeListener(control)
   }
   shouldComponentUpdate(props) {
     if (!props.strict) {

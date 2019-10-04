@@ -3,21 +3,27 @@ import PropTypes from 'prop-types'
 import { FormControl, FormArray, FormGroup } from './model'
 import configureControl from './configureControl'
 import Field from './Field'
-export default class FieldControl extends React.Component {
-  constructor(props, context) {
-    super(props, context)
-    this.control = configureControl(props, context, 'FormControl')
-  }
-  componentWillReceiveProps(nextProps) {
-    const { name } = nextProps
-    if (this.props.name !== name) {
-      this.control = configureControl(nextProps, this.context, 'FormControl')
+
+class FieldControlInternal extends React.Component {
+  state = {}
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { name } = nextProps;
+    if (!prevState || prevState.oldName !== name) {
+      return {
+        ...prevState,
+        control: configureControl(nextProps, {}, 'FormControl'),
+        oldName: name
+      }
     }
+    return null
   }
+
   render() {
     const { strict, children, render } = this.props
+    const { control } = this.state
     const FieldProps = {
-      control: this.control,
+      control,
       strict,
       render: render || children || null
     }
@@ -25,10 +31,10 @@ export default class FieldControl extends React.Component {
   }
 }
 
-FieldControl.defaultProps = {
+FieldControlInternal.defaultProps = {
   strict: true
 }
-FieldControl.propTypes = {
+FieldControlInternal.propTypes = {
   strict: PropTypes.bool,
   render: PropTypes.func,
   name: PropTypes.string,
@@ -58,9 +64,14 @@ FieldControl.propTypes = {
   ]),
   meta: PropTypes.object
 }
+
+const FieldControl = (props, context) => React.createElement(FieldControlInternal, {...props, parent: props.parent || context.parentControl})
+
 FieldControl.contextTypes = {
   parentControl: PropTypes.oneOfType([
     PropTypes.instanceOf(FormArray),
     PropTypes.instanceOf(FormGroup)
   ])
 }
+
+export default FieldControl
