@@ -27,7 +27,8 @@
     "start": "nps",
     "test": "nps test",
     "precommit": "lint-staged && npm start validate",
-    "prepare": "npm start validate"
+    "prepare": "npm start validate",
+    "postinstall": "opencollective-postinstall"
   },
   "repository": {
     "type": "git",
@@ -82,5 +83,13 @@
     ]
   },
   "typings": "dist/index.d.ts",
-  "homepage": "https://github.com/bietkul/react-reactive-form#readme"
+  "homepage": "https://github.com/bietkul/react-reactive-form#readme",
+  "dependencies": {
+    "opencollective-postinstall": "^2.0.2",
+    "opencollective": "^1.0.3"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/react-reactive-form"
+  }
 }
