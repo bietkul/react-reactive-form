@@ -9,9 +9,9 @@ export default class Field extends React.Component {
     // Add listener
     this.addListener(control)
   }
-  componentWillReceiveProps(nextProps) {
-    const { control } = nextProps
-    if (this.props.control !== control) {
+  componentDidUpdate(prevProps) {
+    const { control } = this.props
+    if (control !== prevProps.control) {
       this.removeListener(control)
       this.addListener(control)
     }
