@@ -8,10 +8,9 @@ export default class FieldControl extends React.Component {
     super(props, context)
     this.control = configureControl(props, context, 'FormControl')
   }
-  componentWillReceiveProps(nextProps) {
-    const { name } = nextProps
-    if (this.props.name !== name) {
-      this.control = configureControl(nextProps, this.context, 'FormControl')
+  componentDidUpdate(prevProps) {
+    if (this.props.name !== prevProps.name) {
+      this.control = configureControl(this.props, this.context, 'FormControl')
     }
   }
   render() {
