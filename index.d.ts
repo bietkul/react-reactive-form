@@ -18,7 +18,7 @@ export type Handler = {
 export interface Observable<T> {
   observers: Array<T>
   subscribe: (fn: Function) => void
-  unsubscribe: (fn: Function) => void
+  unsubscribe: (fn?: Function) => void
 }
 type Meta = {
   value: any
