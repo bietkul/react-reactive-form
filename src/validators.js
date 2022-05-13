@@ -1,7 +1,7 @@
 import { fromPromise } from './utils'
 
 function isEmptyInputValue(value) {
-  return value == null || value.length === 0
+  return value == null || value.trim().length === 0
 }
 function isPresent(o) {
   return o != null
