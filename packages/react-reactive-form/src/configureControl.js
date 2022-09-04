@@ -15,7 +15,7 @@ const getControlFromReference = (reference, options, formState) => {
 }
 const configureControl = (props, context, reference) => {
   const { name, parent, options, index, control, formState, meta } = props
-  const parentControl = parent || context.parentControl
+  const parentControl = parent || context
   let returnControl = null
   if (control) {
     if (reference === 'FormGroup' && control instanceof FormGroup) {

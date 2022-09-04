@@ -26,7 +26,7 @@ export default class Field extends React.Component {
   removeListener(control) {
     if (control) {
       if (control.stateChanges.observers) {
-        control.stateChanges.observers.forEach(observer => {
+        control.stateChanges.observers.forEach((observer) => {
           control.stateChanges.unsubscribe(observer)
         })
       }
@@ -68,7 +68,7 @@ export default class Field extends React.Component {
 }
 
 Field.defaultProps = {
-  strict: true
+  strict: true,
 }
 
 Field.propTypes = {
@@ -76,7 +76,7 @@ Field.propTypes = {
   control: PropTypes.oneOfType([
     PropTypes.instanceOf(FormControl),
     PropTypes.instanceOf(FormArray),
-    PropTypes.instanceOf(FormGroup)
+    PropTypes.instanceOf(FormGroup),
   ]).isRequired,
-  render: PropTypes.func
+  render: PropTypes.func,
 }

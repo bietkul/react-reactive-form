@@ -14,6 +14,10 @@ module.exports = {
       description: "delete the build folders",
       script: "rimraf lib dist es"
     },
+    watch: {
+			description: 'delete the dist directory and run all builds in watch mode',
+			default: series(rimraf('dist'), concurrent.nps('build.esWatch', 'build.cjsWatch')),
+		},
     build: {
       description: "delete the dist directory and run all builds",
       default: series(
@@ -34,6 +38,14 @@ module.exports = {
         description: "run rollup build with CommonJS format",
         script: "rollup --config --environment FORMAT:cjs"
       },
+      esWatch: {
+				description: 'run the build with rollup (uses rollup.config.js)',
+				script: 'rollup --config --environment FORMAT:es --watch',
+			},
+			cjsWatch: {
+				description: 'run rollup build with CommonJS format',
+				script: 'rollup --config --environment FORMAT:cjs --watch',
+			},
       umd: {
         min: {
           description: "run the rollup build with sourcemaps",
