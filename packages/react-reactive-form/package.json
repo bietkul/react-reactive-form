@@ -1,6 +1,6 @@
 {
   "name": "react-reactive-form",
-  "version": "1.0.32",
+  "version": "2.0.0",
   "description": "Angular like Reactive Forms in React",
   "keywords": [
     "forms",
